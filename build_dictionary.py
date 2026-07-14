@@ -6,7 +6,8 @@ import urllib.request
 from collections import Counter
 
 # Inputs/Outputs
-INPUT_JSON = "extracted_works.json"
+INPUT_AITAG = "extracted_works.json"
+INPUT_DANBOORU = "danbooru_raw_works.json"
 DATABASE_JSON = "novelai_v4_5_database.json"
 DATABASE_CSV = "novelai_v4_5_database.csv"
 TAG_DICT_CSV = "novelai_v4_5_tag_dictionary.csv"
@@ -157,8 +158,6 @@ def clean_tag(tag):
 
 def load_translation_dict():
     trans_dict = {}
-    
-    # Download reference files if missing
     try:
         download_file(MANUAL_JP_URL, MANUAL_JP_FILE)
         download_file(MACHINE_JP_URL, MACHINE_JP_FILE)
@@ -191,21 +190,16 @@ def load_translation_dict():
 
 def get_meaning(tag, trans_dict):
     tag_lower = tag.lower().strip()
-    
-    # Check manual overrides first
     if tag_lower in AI_OVERRIDES:
         return AI_OVERRIDES[tag_lower]
         
-    # Artist tags
     if tag_lower.startswith("artist:"):
         return f"\u7d75\u5e2b: {tag[7:]}\u98a8"
         
-    # Style tags
     if tag_lower.startswith("in_") and tag_lower.endswith("_style"):
         style_name = tag[3:-6].replace("_", " ")
         return f"{style_name}\u98a8\u306e\u7d75\u67c4"
         
-    # Hair colors
     hair_match = re.match(r'^(black|white|blonde|brown|silver|grey|red|blue|green|pink|purple|orange|yellow|light\s+blue|dark\s+blue|light\s+green|dark\s+green)\s+hair$', tag_lower)
     if hair_match:
         color_map = {
@@ -219,7 +213,6 @@ def get_meaning(tag, trans_dict):
         color_jp = color_map.get(hair_match.group(1), hair_match.group(1))
         return f"{color_jp}\u9aea"
 
-    # Eye colors
     eyes_match = re.match(r'^(black|white|blonde|brown|silver|grey|red|blue|green|pink|purple|orange|yellow|light\s+blue|dark\s+blue|light\s+green|dark\s+green)\s+eyes$', tag_lower)
     if eyes_match:
         color_map = {
@@ -233,7 +226,6 @@ def get_meaning(tag, trans_dict):
         color_jp = color_map.get(eyes_match.group(1), eyes_match.group(1))
         return f"{color_jp}\u306e\u76ee"
 
-    # Look up in loaded dictionary
     lookup_tag = tag_lower.replace(" ", "_")
     if tag_lower in trans_dict:
         m = trans_dict[tag_lower]
@@ -243,72 +235,107 @@ def get_meaning(tag, trans_dict):
     elif lookup_tag in trans_dict:
         m = trans_dict[lookup_tag]
         if m == "\u9589\u3058\u308b" and "close" in tag_lower:
-            return "\u63a5\u5199 (\u30af\u30ed\u30fc\u30ba\u30a2\u30c3\u30d7)"
+            return "\u63a5\u5199 (\u30af\u30ed\u30ba\u30a2\u30c3\u30d7)"
         return m
 
     return ""
 
 def process_data():
-    if not os.path.exists(INPUT_JSON):
-        print(f"Error: {INPUT_JSON} not found. Please run extract_tags.py first.")
-        return
-
-    print("Parsing raw JSON data...")
-    with open(INPUT_JSON, 'r', encoding='utf-8') as f:
-        raw_works = json.load(f)
-
     flat_records = []
     all_tags = []
     total_images = 0
 
-    for item in raw_works:
-        work = item.get("work", {})
-        images = item.get("images", [])
-        
-        work_id = work.get("id")
-        title = work.get("title", "")
-        pixiv_tags = work.get("tags", [])
-        
-        for img in images:
-            model = img.get("model", "")
-            if "NovelAI Diffusion V4.5" not in model:
-                continue
+    # 1. Parse AITAG (NovelAI 4.5) data if exists
+    if os.path.exists(INPUT_AITAG):
+        print(f"Parsing NovelAI gallery data: {INPUT_AITAG}...")
+        with open(INPUT_AITAG, 'r', encoding='utf-8') as f:
+            raw_works = json.load(f)
+            
+        for item in raw_works:
+            work = item.get("work", {})
+            images = item.get("images", [])
+            
+            work_id = work.get("id")
+            title = work.get("title", "")
+            pixiv_tags = work.get("tags", [])
+            
+            for img in images:
+                model = img.get("model", "")
+                if "NovelAI Diffusion V4.5" not in model:
+                    continue
+                    
+                total_images += 1
+                prompt = img.get("prompt_text", "")
+                neg_prompt = img.get("negative_prompt", "")
                 
+                clean_prompt_list = [clean_tag(t) for t in prompt.split(",") if t.strip()]
+                clean_neg_list = [clean_tag(t) for t in neg_prompt.split(",") if t.strip()]
+                all_tags.extend(clean_prompt_list)
+                
+                flat_records.append({
+                    "source": "aitag.win",
+                    "work_id": str(work_id),
+                    "title": title,
+                    "model": model,
+                    "prompt": ",".join(clean_prompt_list),
+                    "negative_prompt": ",".join(clean_neg_list),
+                    "steps": img.get("steps"),
+                    "scale": img.get("scale"),
+                    "sampler": img.get("sampler"),
+                    "width": img.get("width"),
+                    "height": img.get("height")
+                })
+    else:
+        print(f"Skipping {INPUT_AITAG} (not found).")
+
+    # 2. Parse Danbooru raw posts data if exists
+    if os.path.exists(INPUT_DANBOORU):
+        print(f"Parsing Danbooru posts data: {INPUT_DANBOORU}...")
+        with open(INPUT_DANBOORU, 'r', encoding='utf-8') as f:
+            danbooru_posts = json.load(f)
+            
+        for post in danbooru_posts:
             total_images += 1
-            prompt = img.get("prompt_text", "")
-            neg_prompt = img.get("negative_prompt", "")
-            
-            clean_prompt_list = [clean_tag(t) for t in prompt.split(",") if t.strip()]
-            clean_neg_list = [clean_tag(t) for t in neg_prompt.split(",") if t.strip()]
-            
+            tag_string = post.get("tag_string", "")
+            # Convert space separated tag string to comma separated NAI style prompt
+            clean_prompt_list = [clean_tag(t) for t in tag_string.split(" ") if t.strip()]
             all_tags.extend(clean_prompt_list)
             
+            # Danbooru rating mapping: e -> explicit, q -> questionable, s -> sensitive, g -> general
+            rating_map = {"e": "Explicit / NSFW", "q": "Questionable", "s": "Sensitive", "g": "General"}
+            rating_str = rating_map.get(post.get("rating", ""), "Unknown")
+            
             flat_records.append({
-                "work_id": work_id,
-                "title": title,
-                "pixiv_tags": json.dumps(pixiv_tags, ensure_ascii=False),
-                "model": model,
+                "source": "danbooru",
+                "work_id": str(post.get("id")),
+                "title": f"Danbooru Post {post.get('id')}",
+                "model": f"Danbooru Base ({rating_str})",
                 "prompt": ",".join(clean_prompt_list),
-                "negative_prompt": ",".join(clean_neg_list),
-                "steps": img.get("steps"),
-                "scale": img.get("scale"),
-                "sampler": img.get("sampler"),
-                "width": img.get("width"),
-                "height": img.get("height")
+                "negative_prompt": "", # Danbooru has no negative prompt
+                "steps": "",
+                "scale": post.get("score"), # Use score as scaling parameter equivalent in database
+                "sampler": "",
+                "width": post.get("width"),
+                "height": post.get("height")
             })
+    else:
+        print(f"Skipping {INPUT_DANBOORU} (not found).")
+
+    if not flat_records:
+        print("No source database found to build dictionary. Please run extract_tags.py or extract_danbooru_tags.py.")
+        return
 
     # Save flattened database
-    print(f"Saving flattened database: {DATABASE_JSON} & {DATABASE_CSV} ({len(flat_records)} images)")
+    print(f"Saving flattened database: {DATABASE_JSON} & {DATABASE_CSV} ({len(flat_records)} total entries)")
     with open(DATABASE_JSON, 'w', encoding='utf-8') as f:
         json.dump(flat_records, f, ensure_ascii=False, indent=2)
 
-    if flat_records:
-        headers = list(flat_records[0].keys())
-        with open(DATABASE_CSV, 'w', encoding='utf-8', newline='') as f:
-            writer = csv.DictWriter(f, fieldnames=headers)
-            writer.writeheader()
-            for r in flat_records:
-                writer.writerow(r)
+    headers = list(flat_records[0].keys())
+    with open(DATABASE_CSV, 'w', encoding='utf-8', newline='') as f:
+        writer = csv.DictWriter(f, fieldnames=headers)
+        writer.writeheader()
+        for r in flat_records:
+            writer.writerow(r)
 
     # Build Tag Dictionary CSV
     print("Building tag frequency dictionary...")
@@ -345,20 +372,26 @@ def process_data():
     generate_markdown_guide(flat_records, tag_dict_rows, total_images)
 
 def generate_markdown_guide(records, tags, total_images):
-    # Find patterns
     samplers = Counter([r["sampler"] for r in records if r.get("sampler")]).most_common(5)
     resolutions = Counter([f"{r['width']}x{r['height']}" for r in records if r.get("width") and r.get("height")]).most_common(5)
+    sources = Counter([r["source"] for r in records if r.get("source")]).most_common()
     
-    md_content = """# NovelAI Diffusion V4.5 \u30d7\u30ed\u30f3\u30d7\u30c8\u8f9e\u5178
+    md_content = """# NovelAI Diffusion V4.5 & Danbooru \u30d7\u30ed\u30f3\u30d7\u30c8\u8f9e\u5178
 
-aitag.win\u306e\u6708\u9593\u30e9\u30f3\u30ad\u30f3\u30b0\u304b\u3089\u62bd\u51fa\u3057\u305f\u7d71\u8a08\u30c7\u30fc\u30bf\u306b\u57fa\u3065\u304f\u3001NovelAI Diffusion V4.5 \u30e2\u30c7\u30eb\u306e\u924content\u30bf\u30b0\u30ea\u30b9\u30c8\u3068\u3057\u3066\u306e\u958b\u767a\u30ac\u30a4\u30c9\u3067\u3059\u3002
+aitag.win\u304a\u3088\u3073 Danbooru API \u304c\u3089\u62bd\u51fa\u3057\u305f\u7d71\u8a08\u30c7\u30fc\u30bf\u306b\u57fa\u3065\u304f\u3001NovelAI\u306e\u924content\u30bf\u30b0\u30ea\u30b9\u30c8\u306e\u958b\u767a\u30ac\u30a4\u30c9\u3067\u3059\u3002
 
+## \ud83d\udcca \u30c7\u30fc\u30bf\u30bd\u30fc\u30b9\u7d71\u8a08 (Data Source)
+"""
+    for src, c in sources:
+        md_content += f"- **{src}**: {c} \u4ef6 ({c/total_images*100:.1f}%)\n"
+
+    md_content += """
 ## ⚙\ufe0f \u63a8\u5968\u8a2d\u5b9a\u30d1\u30bf\u30fc\u30f3 (\u7d71\u8a08)
 
-### \u30b5\u30f3\u30d7\u30e9\u30fc (Sampler)
+### \u30b5\u30f3\u30d7\u30e9\u30fc (Sampler - NovelAI)
 """
     for s, c in samplers:
-        md_content += f"- **{s}**: {c} \u4ef6 ({c/total_images*100:.1f}%)\n"
+        md_content += f"- **{s}**: {c} \u4ef6\n"
         
     md_content += "\n### \u89e3\u50cf\u5ea6 (Resolution)\n"
     for r, c in resolutions:
@@ -368,12 +401,6 @@ aitag.win\u306e\u6708\u9593\u30e9\u30f3\u30ad\u30f3\u30b0\u304b\u3089\u62bd\u51f
     quality_tags = [t for t in tags if t["category"] == "Quality"][:10]
     md_content += "| \u30bf\u30b0 | \u610f\u5473 | \u51fa\u73fe\u56de\u6570 | \u4f7f\u7528\u7387 |\n|---|---|---|---|\n"
     for t in quality_tags:
-        md_content += f"| `{t['tag']}` | {t['meaning']} | {t['count']} | {t['usage_rate']} |\n"
-
-    md_content += "\n## \ud83e\uddd1 \u4e3b\u8981\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30bf\u30b0\n"
-    char_tags = [t for t in tags if t["category"] == "Character"][:15]
-    md_content += "| \u30bf\u30b0 | \u610f\u5473 | \u51fa\u73fe\u56de\u6570 | \u4f7f\u7528\u7387 |\n|---|---|---|---|\n"
-    for t in char_tags:
         md_content += f"| `{t['tag']}` | {t['meaning']} | {t['count']} | {t['usage_rate']} |\n"
 
     md_content += "\n## \ud83d\udc57 \u4e3b\u8981\u8863\u88c5\u30bf\u30b0\n"

@@ -1,8 +1,8 @@
-# NovelAI Diffusion V4.5 Prompt Dictionary & Database
+# NovelAI Diffusion & Danbooru Prompt Dictionary & Database
 
-aitag.win の月間ランキングデータから抽出した、NovelAI Diffusion V4.5 の画像生成プロンプト（タグ）統計データベースおよび日本語タグ辞典リポジトリです。
+aitag.win および Danbooru API から抽出した統計データに基づく、NovelAI Diffusion 画像生成プロンプト（タグ）データベースおよび日本語タグ辞典リポジトリです。
 
-リポジトリに含まれるプログラムを実行することで、いつでも最新のデータをスクレイピングしてタグ辞典を更新できます。
+本リポジトリに含まれるプログラムを実行することで、ファンアート投稿や本家Danbooruの統計から自動で最新のプロンプトデータベースを構築できます。
 
 ---
 
@@ -13,21 +13,20 @@ aitag.win の月間ランキングデータから抽出した、NovelAI Diffusio
 * **`novelai_v4_5_dictionary.md`**
   * 統計データに基づく、カテゴリ別の主要タグ（クオリティ、キャラクター、衣装、背景等）のまとめガイド。
 * **`novelai_v4_5_database.csv` / `.json`**
-  * スクレイピングした生データの全画像（全プロンプト、設定、サンプラー、ステップ等）を記録したフラットデータベース。
+  * 抽出した全画像データ（AITAGおよびDanbooru）を統一フォーマットで記録したフラットデータベース。
 * **`extract_tags.py`**
   * aitag.win から NovelAI Diffusion V4.5 のデータをスクレイピングして `extracted_works.json` を保存するスクリプト。
+* **`extract_danbooru_tags.py`**
+  * Danbooru API から高スコアの投稿データ（NSFW含む）を抽出して `danbooru_raw_works.json` を保存するスクリプト。
 * **`build_dictionary.py`**
-  * `extracted_works.json` からデータベース（CSV/JSON）、タグ辞書（CSV）、Markdownガイドを自動生成・補完するビルドスクリプト。実行時に自動的に日本語翻訳データ（Danbooru日本語タグマッピング）をWebからダウンロードしてマージします。
+  * 抽出された生データ（AITAG/Danbooruの片方または両方）を統合し、データベース（CSV/JSON）、タグ辞書CSV、Markdownガイドを自動生成するビルドスクリプト。実行時に自動的に日本語翻訳データ（Danbooru日本語タグマッピング）をWebからダウンロードしてマージします。
 
 ---
 
 ## 🚀 使い方（最新データへの更新手順）
 
-以下のいずれかの方法で、いつでも最新のランキングデータからプロンプトデータベースと辞典を再構築できます。
-
 ### 1. GitHubのWeb画面から実行（推奨・最も簡単）
 本リポジトリには GitHub Actions が設定されているため、ローカル PC に環境を構築せず、GitHub上だけでデータを安全に更新できます。
-
 * **自動定期実行**: 毎週日曜日の深夜に、自動的に新規データをスクレイピングしてタグ辞書を更新します。
 * **手動実行手順**:
   1. リポジトリ上部の「**Actions**」タブをクリックします。
@@ -36,19 +35,28 @@ aitag.win の月間ランキングデータから抽出した、NovelAI Diffusio
   4. 数分でスクリプトが実行され、CSV や Markdown などの成果物が自動的に最新化され、コミット＆プッシュされます。
 
 ### 2. ローカル PC でスクレイピング（抽出）
-ローカルで手動実行したい場合は、以下のコマンドを実行します（引数で目標取得件数を指定可能。デフォルトは1000件）。
+ローカルで手動実行したい場合は、目的に応じて以下のスクリプトを実行します。
+
+#### A. aitag.win（NovelAI V4.5 ギャラリー）から取得
 ```bash
+# 引数で目標取得件数を指定可能（デフォルト1000件）
 python3 extract_tags.py 1000
 ```
-* ※ aitag.winのサーバーに負荷をかけないよう、適度なディレイを挟んで自動実行されます。
-* ※ 実行を途中で中断（Ctrl+C）しても、そこまでのデータは保存され、次回実行時に続きから再開されます。
 
-### 3. ローカル PC でビルド（生成・補完）
-`extracted_works.json` をもとに、CSV や Markdown をローカルで更新します。
+#### B. Danbooru（本家学習ソース・NSFW含む）から取得
+```bash
+# 引数1: 目標取得件数（デフォルト1000件）, 引数2: 検索クエリ（デフォルト "score:>=50"）
+python3 extract_danbooru_tags.py 1000 "score:>=50"
+```
+* ※ NSFW（R-18）のデータをピンポイントで集めたい場合は、検索クエリに `rating:explicit` などを指定可能です。
+  （例: `python3 extract_danbooru_tags.py 1000 "rating:explicit score:>=100"`）
+
+### 3. ローカル PC でビルド（データベースと辞典の生成）
+抽出された生データファイルを読み込み、CSV や Markdown を統合・生成します。
 ```bash
 python3 build_dictionary.py
 ```
-* ※ 実行すると、自動的にWeb上の最新のDanbooruタグ日本語翻訳テーブルがダウンロードされ、英語タグに対する日本語訳（meaningカラム）が一括で自動補完・修正されます。
+* ※ `extracted_works.json` と `danbooru_raw_works.json` の両方がフォルダにあれば、それらを自動的にマージして一つの巨大なタグ統計辞書をビルドします。
 
 ---
 
