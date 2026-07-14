@@ -1,0 +1,42 @@
+name: Update NovelAI Tags Dictionary
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # Weekly on Sundays at 00:00 UTC
+  workflow_dispatch: # Allows manual execution from GitHub Web UI
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Run Scraping Script
+        run: |
+          # Fetch incremental updates (200 works) to keep run time short
+          python extract_tags.py 200
+
+      - name: Run Build Dictionary Script
+        run: |
+          python build_dictionary.py
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: auto-update database and dictionary from aitag.win [skip ci]"
+            git push origin master
+          fi
