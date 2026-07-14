@@ -378,7 +378,7 @@ def generate_markdown_guide(records, tags, total_images):
     
     md_content = """# NovelAI Diffusion V4.5 & Danbooru \u30d7\u30ed\u30f3\u30d7\u30c8\u8f9e\u5178
 
-aitag.win\u304a\u3088\u3073 Danbooru API \u304c\u3089\u62bd\u51fa\u3057\u305f\u7d71\u8a08\u30c7\u30fc\u30bf\u306b\u57fa\u3065\u304f\u3001NovelAI\u306e\u924content\u30bf\u30b0\u30ea\u30b9\u30c8\u306e\u958b\u767a\u30ac\u30a4\u30c9\u3067\u3059\u3002
+aitag.win\u304a\u3088\u3073 Danbooru API \u304b\u3089\u62bd\u51fa\u3057\u305f\u7d71\u8a08\u30c7\u30fc\u30bf\u306b\u57fa\u3065\u304f\u3001NovelAI\u306e\u9244\u677f\u30bf\u30b0\u30ea\u30b9\u30c8\u306e\u958b\u767a\u30ac\u30a4\u30c9\u3067\u3059\u3002
 
 ## \ud83d\udcca \u30c7\u30fc\u30bf\u30bd\u30fc\u30b9\u7d71\u8a08 (Data Source)
 """
@@ -397,7 +397,7 @@ aitag.win\u304a\u3088\u3073 Danbooru API \u304c\u3089\u62bd\u51fa\u3057\u305f\u7
     for r, c in resolutions:
         md_content += f"- **{r}**: {c} \u4ef6 ({c/total_images*100:.1f}%)\n"
 
-    md_content += "\n## \ud83d\udd11 \u30af\u30aa\u30ea\u30c6\u30a3\u30bf\u30b0\u924content\u30bb\u30c3\u30c8\n"
+    md_content += "\n## \ud83d\udd11 \u30af\u30aa\u30ea\u30c6\u30a3\u30bf\u30b0\u9244\u677f\u30bb\u30c3\u30c8\n"
     quality_tags = [t for t in tags if t["category"] == "Quality"][:10]
     md_content += "| \u30bf\u30b0 | \u610f\u5473 | \u51fa\u73fe\u56de\u6570 | \u4f7f\u7528\u7387 |\n|---|---|---|---|\n"
     for t in quality_tags:
