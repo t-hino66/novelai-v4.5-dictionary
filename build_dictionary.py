@@ -380,7 +380,7 @@ def generate_markdown_guide(records, tags, total_images):
 
 aitag.win\u304a\u3088\u3073 Danbooru API \u304b\u3089\u62bd\u51fa\u3057\u305f\u7d71\u8a08\u30c7\u30fc\u30bf\u306b\u57fa\u3065\u304f\u3001NovelAI\u306e\u9244\u677f\u30bf\u30b0\u30ea\u30b9\u30c8\u306e\u958b\u767a\u30ac\u30a4\u30c9\u3067\u3059\u3002
 
-## \ud83d\udcca \u30c7\u30fc\u30bf\u30bd\u30fc\u30b9\u7d71\u8a08 (Data Source)
+## \U0001f4ca \u30c7\u30fc\u30bf\u30bd\u30fc\u30b9\u7d71\u8a08 (Data Source)
 """
     for src, c in sources:
         md_content += f"- **{src}**: {c} \u4ef6 ({c/total_images*100:.1f}%)\n"
@@ -397,19 +397,19 @@ aitag.win\u304a\u3088\u3073 Danbooru API \u304b\u3089\u62bd\u51fa\u3057\u305f\u7
     for r, c in resolutions:
         md_content += f"- **{r}**: {c} \u4ef6 ({c/total_images*100:.1f}%)\n"
 
-    md_content += "\n## \ud83d\udd11 \u30af\u30aa\u30ea\u30c6\u30a3\u30bf\u30b0\u9244\u677f\u30bb\u30c3\u30c8\n"
+    md_content += "\n## \U0001f511 \u30af\u30aa\u30ea\u30c6\u30a3\u30bf\u30b0\u9244\u677f\u30bb\u30c3\u30c8\n"
     quality_tags = [t for t in tags if t["category"] == "Quality"][:10]
     md_content += "| \u30bf\u30b0 | \u610f\u5473 | \u51fa\u73fe\u56de\u6570 | \u4f7f\u7528\u7387 |\n|---|---|---|---|\n"
     for t in quality_tags:
         md_content += f"| `{t['tag']}` | {t['meaning']} | {t['count']} | {t['usage_rate']} |\n"
 
-    md_content += "\n## \ud83d\udc57 \u4e3b\u8981\u8863\u88c5\u30bf\u30b0\n"
+    md_content += "\n## \U0001f457 \u4e3b\u8981\u8863\u88c5\u30bf\u30b0\n"
     cloth_tags = [t for t in tags if t["category"] == "Clothing"][:15]
     md_content += "| \u30bf\u30b0 | \u610f\u5473 | \u51fa\u73fe\u56de\u6570 | \u4f7f\u7528\u7387 |\n|---|---|---|---|\n"
     for t in cloth_tags:
         md_content += f"| `{t['tag']}` | {t['meaning']} | {t['count']} | {t['usage_rate']} |\n"
 
-    md_content += "\n## \ud83c\udfed \u80cc\u666f\u30fb\u7167\u660e\u30bf\u30b0\n"
+    md_content += "\n## \U0001f3ed \u80cc\u666f\u30fb\u7167\u660e\u30bf\u30b0\n"
     bg_tags = [t for t in tags if t["category"] == "Background"][:15]
     md_content += "| \u30bf\u30b0 | \u610f\u5473 | \u51fa\u73fe\u56de\u6570 | \u4f7f\u7528\u7387 |\n|---|---|---|---|\n"
     for t in bg_tags:
