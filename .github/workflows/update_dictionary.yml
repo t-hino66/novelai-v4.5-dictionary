@@ -1,4 +1,4 @@
-name: Update NovelAI Tags Dictionary
+name: Update NovelAI & Danbooru Tags Dictionary
 
 on:
   schedule:
@@ -20,10 +20,15 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Run Scraping Script
+      - name: Run AITAG Scraping Script
         run: |
-          # Fetch incremental updates (200 works) to keep run time short
+          # Fetch incremental updates (200 works)
           python extract_tags.py 200
+
+      - name: Run Danbooru Scraping Script
+        run: |
+          # Fetch incremental high score posts from Danbooru (200 posts)
+          python extract_danbooru_tags.py 200 "score:>=50"
 
       - name: Run Build Dictionary Script
         run: |
@@ -37,6 +42,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "chore: auto-update database and dictionary from aitag.win [skip ci]"
+            git commit -m "chore: auto-update database from aitag.win and danbooru [skip ci]"
             git push origin master
           fi
