@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovelAI & Danbooru Prompt Search System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0d0f12;
+            --panel-color: #171b22;
+            --accent-color: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.4);
+            --text-color: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: #2d3748;
+            --badge-bg: #1e293b;
+            --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 2rem;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+        }
+
+        header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Sidebar Panel */
+        .sidebar {
+            background-color: var(--panel-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .filter-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-section h3 {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #0b0d10;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .form-group-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(to right, #3b82f6, #2563eb);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 1rem;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .results-panel {
+            background-color: var(--panel-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 1.2rem;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Prompt Block */
+        .prompt-box {
+            background-color: #0b0d10;
+            border: 1px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 1.2rem;
+            position: relative;
+            margin-bottom: 1.5rem;
+            font-family: monospace;
+            word-break: break-all;
+            color: #a7f3d0;
+            font-size: 0.95rem;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.8rem;
+            right: 0.8rem;
+            background-color: var(--badge-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .neg-prompt {
+            color: #fca5a5;
+        }
+
+        /* Tags Container */
+        .tags-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag-badge {
+            background-color: var(--badge-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tag-badge:hover {
+            border-color: var(--accent-color);
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+
+        .tag-badge .count {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 0.1rem 0.4rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Works list */
+        .works-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .work-card {
+            background-color: #0b0d10;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.2rem;
+            transition: transform 0.2s;
+        }
+
+        .work-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-color);
+        }
+
+        .work-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+        }
+
+        .work-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .work-title:hover {
+            color: var(--accent-color);
+        }
+
+        .work-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .work-tags {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            word-break: break-all;
+            background-color: rgba(255,255,255,0.02);
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-top: 0.8rem;
+        }
+
+        .source-badge {
+            display: inline-block;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .src-aitag { background-color: rgba(96, 165, 250, 0.2); color: #60a5fa; }
+        .src-danbooru { background-color: rgba(244, 63, 94, 0.2); color: #f43f5e; }
+
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>NovelAI & Danbooru Prompt Search</h1>
+        <p>構図や衣装、サンプラーから最適なコピペ呪文と共起タグを探索</p>
+    </header>
+
+    <div class="container">
+        <!-- Filter Panel -->
+        <div class="sidebar">
+            <div class="filter-section">
+                <h3>データソース</h3>
+                <select id="filter-source" class="form-control">
+                    <option value="all">すべて (All)</option>
+                    <option value="aitag.win">NovelAI V4.5 (aitag.win)</option>
+                    <option value="danbooru">Danbooru (本家スコア画像)</option>
+                </select>
+            </div>
+
+            <div class="filter-section">
+                <h3>サンプラー</h3>
+                <select id="filter-sampler" class="form-control">
+                    <option value="all">すべて (All)</option>
+                    <option value="k_euler_ancestral">k_euler_ancestral</option>
+                    <option value="k_euler">k_euler</option>
+                    <option value="native">native</option>
+                </select>
+            </div>
+
+            <div class="filter-section">
+                <h3>縦横比</h3>
+                <select id="filter-aspect" class="form-control">
+                    <option value="all">すべて (All)</option>
+                    <option value="portrait">縦長 (Portrait)</option>
+                    <option value="landscape">横長 (Landscape)</option>
+                    <option value="square">正方形 (Square)</option>
+                </select>
+            </div>
+
+            <div class="filter-section">
+                <h3>特徴・要素 (タグ検索)</h3>
+                <input type="text" id="filter-tags" class="form-control" placeholder="例: 1girl, bedroom, suit">
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">カンマ区切りで複数指定（AND検索）</p>
+            </div>
+
+            <button id="search-btn" class="btn">探索を実行</button>
+        </div>
+
+        <!-- Result Panels -->
+        <div class="main-content">
+            <div id="loader" class="loader">データベースの読込中...</div>
+
+            <!-- Copypasta Prompts -->
+            <div class="results-panel" id="prompt-section" style="display: none;">
+                <div class="section-title">
+                    <span>📋 おすすめコピペ用呪文</span>
+                </div>
+                <h3>ポジティブプロンプト</h3>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyText('pos-prompt')">コピー</button>
+                    <span id="pos-prompt">ここにポジティブ呪文が出力されます</span>
+                </div>
+                <h3>ネガティブプロンプト</h3>
+                <div class="prompt-box">
+                    <button class="copy-btn" onclick="copyText('neg-prompt')">コピー</button>
+                    <span id="neg-prompt" class="neg-prompt">ここにネガティブ呪文が出力されます</span>
+                </div>
+            </div>
+
+            <!-- Co-occurrence Tags -->
+            <div class="results-panel" id="tags-section" style="display: none;">
+                <div class="section-title">
+                    <span>🤝 同時によく使われるタグ（共起関係）</span>
+                </div>
+                <div class="tags-grid" id="co-tags-container">
+                    <!-- Dynamic Badges -->
+                </div>
+            </div>
+
+            <!-- Works References -->
+            <div class="results-panel" id="works-section" style="display: none;">
+                <div class="section-title">
+                    <span>🔗 参考作品URL・パラメータ (最新15件)</span>
+                </div>
+                <div class="works-list" id="works-container">
+                    <!-- Dynamic Cards -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let db = [];
+        
+        // Auto-load database
+        window.addEventListener('DOMContentLoaded', async () => {
+            const loader = document.getElementById('loader');
+            loader.style.display = 'block';
+            try {
+                const response = await fetch('novelai_v4_5_database.json');
+                db = await response.json();
+                loader.style.display = 'none';
+                console.log(`Loaded ${db.length} records.`);
+                
+                // Trigger initial search
+                performSearch();
+            } catch (e) {
+                loader.textContent = 'データベースの読み込みに失敗しました。ローカル環境で実行する場合は、HTTPサーバー（例: python -m http.server）を起動してブラウザでアクセスしてください。';
+                console.error(e);
+            }
+        });
+
+        document.getElementById('search-btn').addEventListener('click', performSearch);
+
+        function performSearch() {
+            const source = document.getElementById('filter-source').value;
+            const sampler = document.getElementById('filter-sampler').value;
+            const aspect = document.getElementById('filter-aspect').value;
+            const tagsInput = document.getElementById('filter-tags').value;
+
+            // Parse filter tags
+            const searchTags = tagsInput.split(',')
+                .map(t => t.trim().toLowerCase())
+                .filter(t => t);
+
+            // 1. Filter database
+            const filtered = db.filter(item => {
+                // Source filter
+                if (source !== 'all' && item.source !== source) return false;
+                
+                // Sampler filter
+                if (sampler !== 'all' && item.sampler !== sampler) return false;
+                
+                // Aspect Ratio filter
+                if (aspect !== 'all') {
+                    const w = parseInt(item.width || 0);
+                    const h = parseInt(item.height || 0);
+                    if (w && h) {
+                        if (aspect === 'portrait' && w >= h) return false;
+                        if (aspect === 'landscape' && w <= h) return false;
+                        if (aspect === 'square' && w !== h) return false;
+                    } else {
+                        return false; // Skip if resolution is missing
+                    }
+                }
+                
+                // Tag filters (AND match)
+                if (searchTags.length > 0) {
+                    const itemTags = (item.prompt || '').toLowerCase().split(',').map(t => t.trim());
+                    for (const sTag of searchTags) {
+                        if (!itemTags.some(it => it.includes(sTag) || it === sTag)) return false;
+                    }
+                }
+
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                alert('条件に合致する作品が見つかりませんでした。条件を緩和してください。');
+                return;
+            }
+
+            // Show sections
+            document.getElementById('prompt-section').style.display = 'block';
+            document.getElementById('tags-section').style.display = 'block';
+            document.getElementById('works-section').style.display = 'block';
+
+            // 2. Calculate co-occurrence tags
+            const allPromptTags = [];
+            const allNegTags = [];
+            
+            filtered.forEach(item => {
+                if (item.prompt) {
+                    allPromptTags.push(...item.prompt.split(',').map(t => t.trim()));
+                }
+                if (item.negative_prompt) {
+                    allNegTags.push(...item.negative_prompt.split(',').map(t => t.trim()));
+                }
+            });
+
+            const tagCounts = countOccurrences(allPromptTags);
+            const negCounts = countOccurrences(allNegTags);
+
+            // Filter out search input tags from co-occurrence results
+            searchTags.forEach(st => {
+                delete tagCounts[st];
+            });
+            // Common quality boilerplate filters
+            const commonQuality = ['masterpiece', 'very aesthetic', 'best quality', 'absurdres', 'highres'];
+            commonQuality.forEach(cq => {
+                delete tagCounts[cq];
+            });
+
+            // 3. Render Co-occurrence Tags
+            const sortedTags = Object.entries(tagCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 25); // Top 25
+
+            const tagsContainer = document.getElementById('co-tags-container');
+            tagsContainer.innerHTML = '';
+            sortedTags.forEach(([tag, count]) => {
+                const badge = document.createElement('div');
+                badge.className = 'tag-badge';
+                badge.innerHTML = `${tag} <span class="count">${count}</span>`;
+                badge.onclick = () => addTagFilter(tag);
+                tagsContainer.appendChild(badge);
+            });
+
+            // 4. Generate Copypasta Prompts
+            // Add user input tags + top co-occurrence tags to prompt generator
+            const topCoTags = sortedTags.slice(0, 10).map(t => t[0]);
+            const finalPosTags = [...commonQuality, ...searchTags, ...topCoTags];
+            document.getElementById('pos-prompt').textContent = finalPosTags.join(', ');
+
+            // Negative prompt generator (top negatives)
+            const sortedNegs = Object.entries(negCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 12)
+                .map(n => n[0]);
+            document.getElementById('neg-prompt').textContent = sortedNegs.length > 0 ? sortedNegs.join(', ') : 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry';
+
+            // 5. Render Works References (Limit to latest 15)
+            const worksContainer = document.getElementById('works-container');
+            worksContainer.innerHTML = '';
+            
+            const limitedWorks = filtered.slice(0, 15);
+            limitedWorks.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'work-card';
+                
+                const url = item.source === 'aitag.win' 
+                    ? `https://aitag.win/work/${item.work_id}` 
+                    : `https://danbooru.donmai.us/posts/${item.work_id}`;
+
+                const badgeClass = item.source === 'aitag.win' ? 'src-aitag' : 'src-danbooru';
+                const sourceName = item.source === 'aitag.win' ? 'NovelAI 4.5' : 'Danbooru';
+
+                card.innerHTML = `
+                    <div class="work-header">
+                        <a href="${url}" target="_blank" class="work-title">${item.title || '無題'}</a>
+                        <span class="source-badge ${badgeClass}">${sourceName}</span>
+                    </div>
+                    <div class="work-meta">
+                        <span>ID: ${item.work_id}</span>
+                        ${item.sampler ? `<span>Sampler: ${item.sampler}</span>` : ''}
+                        ${item.scale ? `<span>Scale: ${item.scale}</span>` : ''}
+                        ${item.width ? `<span>Size: ${item.width}x${item.height}</span>` : ''}
+                    </div>
+                    <div class="work-tags">
+                        ${item.prompt}
+                    </div>
+                `;
+                worksContainer.appendChild(card);
+            });
+        }
+
+        function countOccurrences(arr) {
+            return arr.reduce((acc, val) => {
+                if (val && val !== '') {
+                    acc[val] = (acc[val] || 0) + 1;
+                }
+                return acc;
+            }, {});
+        }
+
+        function addTagFilter(tag) {
+            const input = document.getElementById('filter-tags');
+            const current = input.value.split(',').map(t => t.trim()).filter(t => t);
+            if (!current.includes(tag)) {
+                current.push(tag);
+                input.value = current.join(', ');
+                performSearch();
+            }
+        }
+
+        function copyText(id) {
+            const text = document.getElementById(id).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('コピーしました！');
+            });
+        }
+    </script>
+</body>
+</html>
