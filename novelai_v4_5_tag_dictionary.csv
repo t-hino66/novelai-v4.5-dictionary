@@ -1,58 +1,58 @@
 tag,meaning,category,count,usage_rate
-masterpiece,倪作 (基本クオリティタグ),Quality,3241,124.22%
-very aesthetic,非常に美しい (美的タグ),Quality,3029,116.10%
-1girl,一人の女の子,Character,1364,52.28%
-best quality,,Quality,1363,52.24%
-,,Others,1213,46.49%
-no text,,Others,1157,44.35%
-solo,一人の女の子,Character,880,33.73%
-nsfw,,Others,797,30.55%
-highres,高画質,Quality,717,27.48%
-standing,立っている,Pose,635,24.34%
-amazing quality,,Quality,620,23.76%
-large breasts,巨乳,Character,619,23.73%
-wrinkled skin,しわが寄った肌,Character,586,22.46%
-depth of field,被写界深度 (背景のぼけ),Others,567,21.73%
+masterpiece,倪作 (基本クオリティタグ),Quality,3241,124.18%
+very aesthetic,非常に美しい (美的タグ),Quality,3029,116.05%
+1girl,一人の女の子,Character,1365,52.30%
+best quality,,Quality,1363,52.22%
+,,Others,1213,46.48%
+no text,,Others,1157,44.33%
+solo,一人の女の子,Character,880,33.72%
+nsfw,,Others,797,30.54%
+highres,高画質,Quality,717,27.47%
+standing,立っている,Pose,635,24.33%
+amazing quality,,Quality,620,23.75%
+large breasts,巨乳,Character,619,23.72%
+wrinkled skin,しわが寄った肌,Character,586,22.45%
+depth of field,被写界深度 (背景のぼけ),Others,567,21.72%
 high contrast lighting,,Background,560,21.46%
 upper body,上半身,Others,554,21.23%
 volumetric lighting,空気感のある光 (光の筋),Background,548,21.00%
-anime coloring,アニメの着色,Style,533,20.43%
-absurdres,不条理,Quality,531,20.35%
+anime coloring,アニメの着色,Style,533,20.42%
+absurdres,不条理,Quality,531,20.34%
 official style,公式スタイル,Style,494,18.93%
 in_idolmaster_style,アイドルマスター風の絵柄,Style,489,18.74%
 artist:cyclonereizei,絵師: cyclonereizei風,Style,489,18.74%
 artist:ishigaki_takashi,絵師: ishigaki_takashi風,Style,489,18.74%
-sharp focus,,Others,487,18.67%
+sharp focus,,Others,487,18.66%
 beach,层,Others,465,17.82%
 anime screenshot,,Others,464,17.78%
-shiny skin,光ってる肌,Character,448,17.17%
-official art,公式イラスト・公式画像,Others,431,16.52%
-huge breasts,爆乳,Character,426,16.33%
+shiny skin,光ってる肌,Character,448,17.16%
+official art,公式イラスト・公式画像,Others,431,16.51%
+huge breasts,爆乳,Character,426,16.32%
 no text girl,,Character,417,15.98%
 vivid colors,,Others,412,15.79%
 8k,8K解像度 (クオリティタグ),Others,405,15.52%
-great quality,,Quality,378,14.49%
+great quality,,Quality,378,14.48%
 detailed eyes,,Character,370,14.18%
-wrinkled fabric,しわのある生地,Others,365,13.99%
-close-up,接写 (クローズアップ),Others,365,13.99%
+wrinkled fabric,しわのある生地,Others,365,13.98%
+close-up,接写 (クローズアップ),Others,365,13.98%
 perfect anatomy,,Others,363,13.91%
-hyper detailed,,Others,360,13.80%
+hyper detailed,,Others,360,13.79%
 hard shadows,,Background,358,13.72%
-clean lineart,,Others,356,13.65%
-specular highlights,,Background,355,13.61%
+clean lineart,,Others,356,13.64%
+specular highlights,,Background,355,13.60%
 ray tracing,,Others,352,13.49%
 cinematic lighting,映画風のドラマチックな照明,Background,352,13.49%
-skin gloss,,Character,349,13.38%
-dramatic lighting,,Background,348,13.34%
+skin gloss,,Character,349,13.37%
+dramatic lighting,,Background,348,13.33%
 year 2025,2025年 (投稿・制作年指定),Others,340,13.03%
-glossy skin,,Character,336,12.88%
+glossy skin,,Character,336,12.87%
 soft shadows,,Background,334,12.80%
 extremely detailed,,Others,333,12.76%
-shiny shading,,Others,331,12.69%
-chiaroscuro,Chiaroscuro,Others,331,12.69%
-voluptuous,,Others,330,12.65%
-magazine cover,雑誌の表紙,Others,330,12.65%
-detailed environment,,Others,330,12.65%
+shiny shading,,Others,331,12.68%
+chiaroscuro,Chiaroscuro,Others,331,12.68%
+voluptuous,,Others,330,12.64%
+magazine cover,雑誌の表紙,Others,330,12.64%
+detailed environment,,Others,330,12.64%
 painterly,画家,Others,329,12.61%
 solid eyes,しっかりした目,Character,328,12.57%
 ultra detail,,Others,328,12.57%
@@ -75,8 +75,8 @@ polished surface,,Character,328,12.57%
 key lighting,,Background,328,12.57%
 high exposure,,Others,328,12.57%
 blush,赤面,Character,327,12.53%
-saturated colors,,Others,326,12.50%
-ultra detailed,極めて詳細な描き込み,Others,325,12.46%
+saturated colors,,Others,326,12.49%
+ultra detailed,極めて詳細な描き込み,Others,325,12.45%
 glossy latex,,Others,321,12.30%
 high contrast image,,Others,321,12.30%
 hyper shiny skin,,Character,321,12.30%
@@ -95,60 +95,60 @@ latex,ラテックス,Others,315,12.07%
 photorealistic glowing atmosphere,,Others,315,12.07%
 no text sharpnesses,,Others,315,12.07%
 ufotable,ufotable,Others,315,12.07%
-iseki Shuichi,,Others,314,12.04%
-Nishikori atsushi,,Others,314,12.04%
-arai hiroki,アライ・ヒロキ,Others,314,12.04%
-tanaka masayoshi,田中大山,Others,314,12.04%
-photorealistic global illumination,,Others,313,12.00%
+iseki Shuichi,,Others,314,12.03%
+Nishikori atsushi,,Others,314,12.03%
+arai hiroki,アライ・ヒロキ,Others,314,12.03%
+tanaka masayoshi,田中大山,Others,314,12.03%
+photorealistic global illumination,,Others,313,11.99%
 photorealistic lighting,,Background,311,11.92%
 rim lighting,輪郭を際立せる光 (リムライト),Background,305,11.69%
-gundam build fighters try,ガンダムビルドファイターは試してみてください,Others,296,11.35%
-luminous lighting,,Background,284,10.89%
-hard light,,Background,277,10.62%
+gundam build fighters try,ガンダムビルドファイターは試してみてください,Others,296,11.34%
+luminous lighting,,Background,284,10.88%
+hard light,,Background,277,10.61%
 looking at viewer,カメラ目線 (こちらを見つめる),Pose,275,10.54%
-bright tones,,Others,272,10.43%
-ultra bright background,,Background,270,10.35%
-supreme lighting,,Background,270,10.35%
-ultra-detailed,極めて詳細な描き込み,Others,266,10.20%
+bright tones,,Others,272,10.42%
+ultra bright background,,Background,270,10.34%
+supreme lighting,,Background,270,10.34%
+ultra-detailed,極めて詳細な描き込み,Others,266,10.19%
 strong sunlight flooding scene,,Background,257,9.85%
 light rays,光線,Background,257,9.85%
-girl,女の子,Character,253,9.70%
+girl,女の子,Character,253,9.69%
 photo realistic character,,Others,245,9.39%
-sweat,汗 (肌の描写),Others,242,9.28%
-breasts,胸,Character,239,9.16%
+sweat,汗 (肌の描写),Others,242,9.27%
+breasts,胸,Character,240,9.20%
 white background,白背景,Background,237,9.08%
 detailed skin,,Character,234,8.97%
 ai-assisted,AI支援画像,Others,233,8.93%
-smile,笑顔,Character,229,8.78%
-medium breasts,中乳 (普通の耼),Character,224,8.59%
+smile,笑顔,Character,229,8.77%
+medium breasts,中乳 (普通の耼),Character,224,8.58%
 mutimuti sound onomatopoeia,,Others,222,8.51%
-fate/grand order,運命/大秩序,Others,211,8.09%
+fate/grand order,運命/大秩序,Others,211,8.08%
 high resolution,高解像度,Others,208,7.97%
 game cg,ゲームCG,Style,208,7.97%
 wet,濡れ,Others,202,7.74%
-glistening skin,,Character,193,7.40%
-bikini,ビキニ,Clothing,188,7.21%
-cleavage,耼の谷間,Character,188,7.21%
-illustration,,Others,188,7.21%
-extremely detailed CG,,Others,188,7.21%
-from below,下から,Others,182,6.98%
-hyperrealistic,,Others,170,6.52%
-anime colored,,Others,170,6.52%
-an extremely delicate and beautiful,,Others,170,6.52%
-production art,プロダクションアート,Others,170,6.52%
-textile shading,,Others,170,6.52%
-vivid,,Others,170,6.52%
+glistening skin,,Character,193,7.39%
+bikini,ビキニ,Clothing,188,7.20%
+cleavage,耼の谷間,Character,188,7.20%
+illustration,,Others,188,7.20%
+extremely detailed CG,,Others,188,7.20%
+from below,下から,Others,182,6.97%
+hyperrealistic,,Others,170,6.51%
+anime colored,,Others,170,6.51%
+an extremely delicate and beautiful,,Others,170,6.51%
+production art,プロダクションアート,Others,170,6.51%
+textile shading,,Others,170,6.51%
+vivid,,Others,170,6.51%
 cowboy shot,腿から上のアングル,Character,162,6.21%
 from above,上から,Others,161,6.17%
-from side,横から,Others,158,6.06%
+from side,横から,Others,158,6.05%
 ass,お尻,Others,156,5.98%
-year 2024,2024年 (投稿・制作年指定),Others,152,5.83%
-skin-tight clothes,,Clothing,152,5.83%
+year 2024,2024年 (投稿・制作年指定),Others,152,5.82%
+skin-tight clothes,,Clothing,152,5.82%
 go-toubun no hanayome,go-touun no hanayome,Others,149,5.71%
-simple background,ジンプルな背景,Background,146,5.60%
+simple background,ジンプルな背景,Background,146,5.59%
 japanese sound effect,,Others,143,5.48%
 mutimuti onomatopoeia,,Others,142,5.44%
-thighs,太もの,Character,136,5.21%
+thighs,太もの,Character,137,5.25%
 hip,,Others,136,5.21%
 smooth lines,,Others,136,5.21%
 minimal noise,,Others,136,5.21%
@@ -168,33 +168,33 @@ rin shin,,Others,136,5.21%
 street fighter,ストリートファイター,Background,136,5.21%
 black hair,黒髪,Character,135,5.17%
 light particles,光粒子,Background,135,5.17%
-novel illustration,斬新なイラスト,Others,134,5.14%
+novel illustration,斬新なイラスト,Others,134,5.13%
 realistic skin texture,,Character,132,5.06%
 8k resolution,,Others,131,5.02%
+long_hair,ロングヘア,Character,131,5.02%
 groin,股間,Others,130,4.98%
-long_hair,ロングヘア,Character,130,4.98%
 ai-generated,AI生成画像,Others,129,4.94%
-outdoors,屋外,Background,128,4.91%
-athletic,,Others,128,4.91%
+outdoors,屋外,Background,128,4.90%
+athletic,,Others,128,4.90%
 boy,,Character,126,4.83%
+navel,おへそ,Character,126,4.83%
 highly detailed face,,Character,125,4.79%
-navel,おへそ,Character,125,4.79%
 full body,全身の描写,Others,123,4.71%
 from behind,後ろ姿,Others,120,4.60%
 night,夜,Background,112,4.29%
 looking_at_viewer,主観視点,Others,111,4.25%
-pov,主観,Others,110,4.22%
-blue bikini,ブルービキニ,Clothing,110,4.22%
+pov,主観,Others,110,4.21%
+blue bikini,ブルービキニ,Clothing,110,4.21%
 artist:kafun,絵師: kafun風,Style,109,4.18%
 d-art,d-art,Others,109,4.18%
 blackwhiplash,,Others,109,4.18%
 spacezin,Spacezin,Others,109,4.18%
 soft shading,,Others,109,4.18%
+nude,裸 (ヌード),Others,107,4.10%
 indoors,室内,Background,107,4.10%
 half-closed eyes,半分閉じた目,Character,106,4.06%
-nude,裸 (ヌード),Others,106,4.06%
 school uniform,制服,Clothing,106,4.06%
-commentary,解説,Others,104,3.99%
+commentary,解説,Others,104,3.98%
 dutch angle,ダッチアングル,Others,103,3.95%
 -2::multi view,,Others,103,3.95%
 uncensored,無修正,Others,102,3.91%
@@ -207,8 +207,8 @@ elegant composition,,Others,99,3.79%
 in the sea,,Others,99,3.79%
 partially underwater shot,部分的に水中ショット,Others,99,3.79%
 top quality,,Quality,96,3.68%
+1boy,一人の男の子,Character,95,3.64%
 seductive smile,魅惑的な笑顔,Character,95,3.64%
-1boy,一人の男の子,Character,94,3.60%
 nipples,乳首,Others,94,3.60%
 2girls,二人の女の子,Character,93,3.56%
 armor,鎧,Others,91,3.49%
@@ -231,8 +231,8 @@ leaning forward,前方に傾いています,Pose,81,3.10%
 intricate,,Others,81,3.10%
 green bikini,緑のビキニ,Clothing,81,3.10%
 ahoge,アホ毛,Others,80,3.07%
+pussy,割れ目・秘部,Others,78,2.99%
 bathing,入浴,Others,78,2.99%
-pussy,割れ目・秘部,Others,77,2.95%
 belt,ベルト,Others,76,2.91%
 no lineart,リネートはありません,Others,76,2.91%
 loli,ロリ,Others,75,2.87%
@@ -245,8 +245,8 @@ Artist:Tomose Shunsaku,絵師: Tomose Shunsaku風,Style,74,2.84%
 fujisaki_hikari,藤井hikari,Others,74,2.84%
 rubi-sama,ルビ様,Others,74,2.84%
 upskirt,アップスカート,Clothing,74,2.84%
+sex,セックス,Others,73,2.80%
 outdoor,,Others,73,2.80%
-sex,セックス,Others,72,2.76%
 beautiful,,Others,72,2.76%
 huge ass,巨大なお尻,Others,71,2.72%
 high contrast,ハイコントラスト,Others,71,2.72%
@@ -260,12 +260,12 @@ breastplate,胸当て,Character,70,2.68%
 panty shot,,Others,69,2.64%
 small floating hearts,,Others,69,2.64%
 closed eyes,瞑目,Character,68,2.61%
+penis,ちんちん,Others,68,2.61%
 tongue out,舌出し,Others,67,2.57%
 detailed background,,Background,67,2.57%
-penis,ちんちん,Others,67,2.57%
+hetero,異性愛,Others,67,2.57%
 cinematic composition,,Others,67,2.57%
 window,窓,Background,66,2.53%
-hetero,異性愛,Others,66,2.53%
 nyx queen's blade,,Others,66,2.53%
 clothed female,,Others,66,2.53%
 red dress,赤いドレス,Clothing,66,2.53%
@@ -300,6 +300,7 @@ closed mouth,閉まった口,Character,62,2.38%
 nami one piece,,Others,61,2.34%
 all fours,すべての四,Others,61,2.34%
 boku no hero academia,Bokuノーヒーローアカデミア,Others,61,2.34%
+commentary_request,解説リクエスト,Others,61,2.34%
 happy,ハッピー,Others,60,2.30%
 kamiki mirai,カミキライライ,Others,60,2.30%
 curvy,曲線,Others,60,2.30%
@@ -308,7 +309,6 @@ lineart,線画,Others,60,2.30%
 artist:meion,絵師: meion風,Style,60,2.30%
 sunset,夕日,Others,60,2.30%
 string bikini,ストリングビキニ,Clothing,60,2.30%
-commentary_request,解説リクエスト,Others,60,2.30%
 day,昼,Background,59,2.26%
 contrapposto,コントラポスト,Others,59,2.26%
 arms up,腕を上げる,Pose,59,2.26%
@@ -537,6 +537,7 @@ skin tight,肌がきつく,Character,37,1.42%
 taught clothes,,Clothing,37,1.42%
 dark skinned female,,Character,37,1.42%
 tan skin female,,Character,37,1.42%
+vaginal,膣,Others,37,1.42%
 highly finished,,Others,37,1.42%
 elaborated,,Others,37,1.42%
 detailed,,Others,37,1.42%
@@ -565,7 +566,6 @@ nimble fabric,ニンブルファブリック,Others,36,1.38%
 covered breasts,,Character,36,1.38%
 bedroom,寝室,Background,36,1.38%
 room,部屋,Background,36,1.38%
-vaginal,膣,Others,36,1.38%
 bouncing breasts,胸を跳ねます,Character,36,1.38%
 indoor,,Others,36,1.38%
 bob cut,ボブ・カット,Others,36,1.38%
@@ -620,6 +620,7 @@ black shorts,黒いショートパンツ,Others,32,1.23%
 scathach skadi swimsuit ruler first ascension fate,,Clothing,32,1.23%
 underwear,下着,Clothing,32,1.23%
 simple_background,単色背景,Background,32,1.23%
+blue_archive,ブルーアーカイブ,Others,32,1.23%
 very close distance,,Others,31,1.19%
 tongue focus,,Others,31,1.19%
 echosaber,,Others,31,1.19%
@@ -633,7 +634,6 @@ push-up frill lowleg bikini,,Clothing,31,1.19%
 red_eyes,赤目,Character,31,1.19%
 multiple_girls,複数人の女の子,Character,31,1.19%
 grey_hair,灰髪,Character,31,1.19%
-blue_archive,ブルーアーカイブ,Others,31,1.19%
 gigantic breasts,巨大な胸,Character,30,1.15%
 love live! nijigasaki high school idol club,ライブが大好き！ Nijigasaki High School Idol Club,Others,30,1.15%
 asaka karin,浅田カリン,Others,30,1.15%
@@ -689,6 +689,7 @@ demon_horns,悪魔の角,Others,28,1.07%
 dark,暗い,Others,28,1.07%
 halterneck,ホルターネック,Others,28,1.07%
 white_background,白色背景,Background,28,1.07%
+solo_focus,一人だけ強調,Character,28,1.07%
 on back,仰向け,Others,27,1.03%
 adult,,Others,27,1.03%
 bike shorts,自転車ショーツ,Others,27,1.03%
@@ -786,7 +787,6 @@ waving afterimage body,,Others,27,1.03%
 posing,,Others,27,1.03%
 playful,,Others,27,1.03%
 amused,,Others,27,1.03%
-solo_focus,一人だけ強調,Character,27,1.03%
 trembling,震え,Others,26,1.00%
 perspective,視点,Others,26,1.00%
 ayanokouji kiyotaka,アヤノコウジ清川,Others,26,1.00%
@@ -814,6 +814,7 @@ black thighhighs,黒ニーソ,Others,26,1.00%
 blue and green theme,,Others,26,1.00%
 sexually teasing,,Others,26,1.00%
 sexually aroused,,Others,26,1.00%
+completely_nude,全裸,Others,26,1.00%
 artist:jacknife,絵師: jacknife風,Style,25,0.96%
 artist:min_120716,絵師: min_120716風,Style,25,0.96%
 artist:rurudo,絵師: rurudo風,Style,25,0.96%
@@ -855,7 +856,6 @@ glossy black pantyhose,,Clothing,25,0.96%
 big thighs,,Character,25,0.96%
 zenless_zone_zero,ゼンレスゾーンゼロ,Others,25,0.96%
 pink_hair,ピンク髪,Character,25,0.96%
-completely_nude,全裸,Others,25,0.96%
 petite,小柄,Others,24,0.92%
 metallic blue bikini,,Clothing,24,0.92%
 artist:ningen mame,絵師: ningen mame風,Style,24,0.92%
@@ -1084,6 +1084,7 @@ blushing face,,Character,21,0.80%
 motion lines around belly,,Others,21,0.80%
 hu tao genshin impact,,Others,21,0.80%
 shyny skin,,Character,21,0.80%
+erection,勃起,Others,21,0.80%
 artist:deadnooodles,絵師: deadnooodles風,Style,21,0.80%
 artist:marushin denwa0214,絵師: marushin denwa0214風,Style,21,0.80%
 3d background indoor foggy room,,Background,21,0.80%
@@ -1115,6 +1116,7 @@ characteristic Crimson illustration,,Others,21,0.80%
 blue_hair,青髪,Character,21,0.80%
 closed_mouth,閉まった口,Character,21,0.80%
 purple_eyes,紫目,Character,21,0.80%
+dark_skin,黒人,Character,21,0.80%
 hair_ornament,髪飾り,Character,21,0.80%
 no text solo,,Character,20,0.77%
 sitting on bed,,Pose,20,0.77%
@@ -1135,7 +1137,6 @@ smug,独善的,Others,20,0.77%
 horse_ears,馬の耳,Others,20,0.77%
 steaming body,蒸し体,Others,20,0.77%
 black sports bra,ブラックスポーツブラ,Clothing,20,0.77%
-erection,勃起,Others,20,0.77%
 high detail,,Others,20,0.77%
 red leotard,赤いレオタード,Others,20,0.77%
 sarong,サロン,Others,20,0.77%
@@ -1157,6 +1158,7 @@ artist:jack dempa,絵師: jack dempa風,Style,20,0.77%
 painted sketch,,Others,20,0.77%
 soft lines,,Others,20,0.77%
 soft blending,,Others,20,0.77%
+animated,アニメーション,Others,20,0.77%
 soil,土壌,Others,20,0.77%
 chibi only,,Others,20,0.77%
 da capo ii,Da Capo II,Others,20,0.77%
@@ -1197,8 +1199,8 @@ flat color,平らな色,Style,20,0.77%
 mochizuki honami project sekai,,Others,20,0.77%
 white and red volleyball uniform,,Clothing,20,0.77%
 holding,物を持ってる,Pose,20,0.77%
-dark_skin,黒人,Character,20,0.77%
 white_hair,白髪,Character,20,0.77%
+brown_eyes,茶目,Character,20,0.77%
 sitting on bench,ベンチに座っています,Pose,19,0.73%
 kneeling,膝立ち,Pose,19,0.73%
 -2.0::dark-skinned male,,Character,19,0.73%
@@ -1209,7 +1211,6 @@ futanari,futanari,Others,19,0.73%
 black background,黒背景,Background,19,0.73%
 -3::artist collaboration,,Others,19,0.73%
 love hotel,大好きなホテル,Others,19,0.73%
-animated,アニメーション,Others,19,0.73%
 shirt lift,シャツリフト,Clothing,19,0.73%
 choker,チョーカー,Others,19,0.73%
 no bra,ノーブラ,Clothing,19,0.73%
@@ -1226,7 +1227,7 @@ plants,,Others,19,0.73%
 flowers,,Others,19,0.73%
 one knee softly bent,,Others,19,0.73%
 white_thighhighs,白ニーソ,Others,19,0.73%
-brown_eyes,茶目,Character,19,0.73%
+small_breasts,貧乳,Character,19,0.73%
 expressionless,無表情,Others,18,0.69%
 large penis,大きなペニス,Others,18,0.69%
 saliva trail,唾液トレイル,Others,18,0.69%
@@ -1271,7 +1272,6 @@ round eyes,,Character,18,0.69%
 outlines,,Others,18,0.69%
 lace trimmed panties,,Clothing,18,0.69%
 sex_from_behind,後ろからのセックス,Others,18,0.69%
-small_breasts,貧乳,Character,18,0.69%
 leaning back,後ろに傾いています,Pose,17,0.65%
 focus face,,Character,17,0.65%
 half updo,半分,Others,17,0.65%
@@ -1423,6 +1423,7 @@ midair,中空,Others,15,0.57%
 -5::wide shot,,Others,15,0.57%
 Fold hands behind own back,,Pose,15,0.57%
 bending forward,,Others,15,0.57%
+green_eyes,翠眼,Character,15,0.57%
 black_panties,黒パン,Clothing,15,0.57%
 alternate_costume,別のコスチューム,Others,15,0.57%
 clothes_lift,たくしあげ,Clothing,15,0.57%
@@ -1498,7 +1499,6 @@ eyelashes,まつ毛,Others,14,0.54%
 on black  round mesh trampoline with black legs,,Pose,14,0.54%
 jumping,ジャンピング,Others,14,0.54%
 artist_name,作者名付き,Others,14,0.54%
-green_eyes,翠眼,Character,14,0.54%
 long_sleeves,長袖,Others,14,0.54%
 pussy_juice,愛液,Others,14,0.54%
 horns,角,Others,14,0.54%
@@ -1565,6 +1565,7 @@ hay,干し草,Others,13,0.50%
 -2::skies,,Others,13,0.50%
 -,,Others,13,0.50%
 from_behind,後ろ姿,Others,13,0.50%
+pubic_hair,陰毛,Character,13,0.50%
 mole,ほくろ,Others,13,0.50%
 cat_girl,猫娘,Character,13,0.50%
 hairband,ヘアバンド,Character,13,0.50%
@@ -1691,8 +1692,8 @@ very sexy,,Others,12,0.46%
 bara,BL ( 薔薇 ),Others,12,0.46%
 seductive_smile,魅惑的な笑顔,Character,12,0.46%
 english_text,英語,Others,12,0.46%
+spread_legs,開脚,Pose,12,0.46%
 white_panties,白パンツ,Clothing,12,0.46%
-pubic_hair,陰毛,Character,12,0.46%
 video,ビデオ,Others,12,0.46%
 penguin_costume,ペンギンの衣装,Others,12,0.46%
 asui tsuyu,asui tsuyu,Others,11,0.42%
@@ -1804,7 +1805,6 @@ in water,水中で,Others,11,0.42%
 cow print thigh-highs,,Others,11,0.42%
 3girls,三人の女の子,Character,11,0.42%
 thigh_strap,太ももストラップ,Others,11,0.42%
-spread_legs,開脚,Pose,11,0.42%
 clothing_aside,服はさておき,Clothing,11,0.42%
 on_bed,ベッドで,Background,11,0.42%
 streaked_hair,メッシュ,Character,11,0.42%
@@ -1933,4 +1933,5 @@ red_hair,赤髪,Character,10,0.38%
 piercing,ピアス,Others,10,0.38%
 eyewear_on_head,頭のアイウェア,Others,10,0.38%
 from_side,横から,Others,10,0.38%
+hair_over_one_eye,片目隠れ,Character,10,0.38%
 black_choker,ブラックチョーカー,Others,10,0.38%

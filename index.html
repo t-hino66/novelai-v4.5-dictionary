@@ -113,12 +113,6 @@
             box-shadow: 0 0 10px var(--accent-glow);
         }
 
-        .form-group-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
         .btn {
             display: block;
             width: 100%;
@@ -239,7 +233,7 @@
         .works-list {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.2rem;
         }
 
         .work-card {
@@ -247,7 +241,9 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 1.2rem;
-            transition: transform 0.2s;
+            transition: transform 0.2s, border-color 0.2s;
+            display: flex;
+            gap: 1.5rem;
         }
 
         .work-card:hover {
@@ -255,11 +251,54 @@
             border-color: var(--accent-color);
         }
 
+        @media (max-width: 640px) {
+            .work-card {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .work-image-container {
+                width: 100% !important;
+                height: 250px !important;
+            }
+        }
+
+        .work-image-container {
+            width: 140px;
+            height: 180px;
+            flex-shrink: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #171b22;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .work-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .work-image:hover {
+            transform: scale(1.08);
+        }
+
+        .work-details {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
         .work-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.6rem;
         }
 
         .work-title {
@@ -279,6 +318,7 @@
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
+            margin-bottom: 0.8rem;
         }
 
         .work-tags {
@@ -288,7 +328,7 @@
             background-color: rgba(255,255,255,0.02);
             padding: 0.8rem;
             border-radius: 8px;
-            margin-top: 0.8rem;
+            margin-top: auto;
         }
 
         .source-badge {
@@ -316,7 +356,7 @@
 
     <header>
         <h1>NovelAI & Danbooru Prompt Search</h1>
-        <p>構図や衣装、サンプラーから最適なコピペ呪文と共起タグを探索</p>
+        <p>構図や衣装、サンプラーから最適なコピペ呪文と共起タグを探索 <span id="db-count" style="font-size: 0.9rem; font-weight: normal; color: var(--text-muted);"></span></p>
     </header>
 
     <div class="container">
@@ -335,9 +375,6 @@
                 <h3>サンプラー</h3>
                 <select id="filter-sampler" class="form-control">
                     <option value="all">すべて (All)</option>
-                    <option value="k_euler_ancestral">k_euler_ancestral</option>
-                    <option value="k_euler">k_euler</option>
-                    <option value="native">native</option>
                 </select>
             </div>
 
@@ -394,7 +431,7 @@
             <!-- Works References -->
             <div class="results-panel" id="works-section" style="display: none;">
                 <div class="section-title">
-                    <span>🔗 参考作品URL・パラメータ (最新15件)</span>
+                    <span>🔗 参考作品イラスト・パラメータ (最新15件)</span>
                 </div>
                 <div class="works-list" id="works-container">
                     <!-- Dynamic Cards -->
@@ -416,6 +453,12 @@
                 loader.style.display = 'none';
                 console.log(`Loaded ${db.length} records.`);
                 
+                // Update total count in header
+                document.getElementById('db-count').textContent = `(収録画像数: ${db.length}件)`;
+                
+                // Populate samplers dynamically
+                populateSamplers();
+                
                 // Trigger initial search
                 performSearch();
             } catch (e) {
@@ -425,6 +468,25 @@
         });
 
         document.getElementById('search-btn').addEventListener('click', performSearch);
+
+        function populateSamplers() {
+            const samplerSelect = document.getElementById('filter-sampler');
+            const samplers = new Set();
+            db.forEach(item => {
+                if (item.sampler) {
+                    samplers.add(item.sampler);
+                }
+            });
+            
+            // Clear existing except "All"
+            samplerSelect.innerHTML = '<option value="all">すべて (All)</option>';
+            Array.from(samplers).sort().forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s;
+                opt.textContent = s;
+                samplerSelect.appendChild(opt);
+            });
+        }
 
         function performSearch() {
             const source = document.getElementById('filter-source').value;
@@ -549,19 +611,42 @@
                 const badgeClass = item.source === 'aitag.win' ? 'src-aitag' : 'src-danbooru';
                 const sourceName = item.source === 'aitag.win' ? 'NovelAI 4.5' : 'Danbooru';
 
+                // Construct Image Element
+                let imgHtml = '';
+                if (item.image_url) {
+                    imgHtml = `
+                        <div class="work-image-container">
+                            <a href="${item.image_url}" target="_blank" title="画像ファイルを別タブで直接開く">
+                                <img class="work-image" src="${item.image_url}" loading="lazy" alt="Preview Image" onerror="this.onerror=null; this.parentNode.innerHTML='<span style='font-size: 0.8rem; color: var(--text-muted);'>No Image</span>';">
+                            </a>
+                        </div>
+                    `;
+                } else {
+                    imgHtml = `
+                        <div class="work-image-container">
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">No Image</span>
+                        </div>
+                    `;
+                }
+
                 card.innerHTML = `
-                    <div class="work-header">
-                        <a href="${url}" target="_blank" class="work-title">${item.title || '無題'}</a>
-                        <span class="source-badge ${badgeClass}">${sourceName}</span>
-                    </div>
-                    <div class="work-meta">
-                        <span>ID: ${item.work_id}</span>
-                        ${item.sampler ? `<span>Sampler: ${item.sampler}</span>` : ''}
-                        ${item.scale ? `<span>Scale: ${item.scale}</span>` : ''}
-                        ${item.width ? `<span>Size: ${item.width}x${item.height}</span>` : ''}
-                    </div>
-                    <div class="work-tags">
-                        ${item.prompt}
+                    ${imgHtml}
+                    <div class="work-details">
+                        <div>
+                            <div class="work-header">
+                                <a href="${url}" target="_blank" class="work-title" title="作品詳細ページを開く">${item.title || '無題'}</a>
+                                <span class="source-badge ${badgeClass}">${sourceName}</span>
+                            </div>
+                            <div class="work-meta">
+                                <span>ID: ${item.work_id}</span>
+                                ${item.sampler ? `<span>Sampler: ${item.sampler}</span>` : ''}
+                                ${item.scale ? `<span>Scale/Score: ${item.scale}</span>` : ''}
+                                ${item.width ? `<span>Size: ${item.width}x${item.height}</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="work-tags">
+                            ${item.prompt}
+                        </div>
                     </div>
                 `;
                 worksContainer.appendChild(card);

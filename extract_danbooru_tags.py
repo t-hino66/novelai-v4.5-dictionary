@@ -57,7 +57,9 @@ def fetch_posts(tags, target_count):
                     "tag_string_artist": item.get("tag_string_artist"),
                     "file_ext": item.get("file_ext"),
                     "width": item.get("image_width"),
-                    "height": item.get("image_height")
+                    "height": item.get("image_height"),
+                    "large_file_url": item.get("large_file_url"),
+                    "preview_file_url": item.get("preview_file_url")
                 })
                 if len(posts) >= target_count:
                     break

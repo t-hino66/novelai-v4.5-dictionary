@@ -272,6 +272,11 @@ def process_data():
                 clean_neg_list = [clean_tag(t) for t in neg_prompt.split(",") if t.strip()]
                 all_tags.extend(clean_prompt_list)
                 
+                image_path = img.get("image_path", "")
+                image_url = ""
+                if image_path:
+                    image_url = f"https://ai-img.10118899.xyz/{image_path}"
+
                 flat_records.append({
                     "source": "aitag.win",
                     "work_id": str(work_id),
@@ -283,7 +288,8 @@ def process_data():
                     "scale": img.get("scale"),
                     "sampler": img.get("sampler"),
                     "width": img.get("width"),
-                    "height": img.get("height")
+                    "height": img.get("height"),
+                    "image_url": image_url
                 })
     else:
         print(f"Skipping {INPUT_AITAG} (not found).")
@@ -305,6 +311,8 @@ def process_data():
             rating_map = {"e": "Explicit / NSFW", "q": "Questionable", "s": "Sensitive", "g": "General"}
             rating_str = rating_map.get(post.get("rating", ""), "Unknown")
             
+            image_url = post.get("large_file_url") or post.get("preview_file_url") or ""
+            
             flat_records.append({
                 "source": "danbooru",
                 "work_id": str(post.get("id")),
@@ -316,7 +324,8 @@ def process_data():
                 "scale": post.get("score"), # Use score as scaling parameter equivalent in database
                 "sampler": "",
                 "width": post.get("width"),
-                "height": post.get("height")
+                "height": post.get("height"),
+                "image_url": image_url
             })
     else:
         print(f"Skipping {INPUT_DANBOORU} (not found).")
