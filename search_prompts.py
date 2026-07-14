@@ -116,7 +116,7 @@ def main():
     # 3. References List
     print(f"🔗 [参考作品URL・パラメータ (最新 {args.limit} 件)]")
     for idx, item in enumerate(filtered[:args.limit], 1):
-        url = f"https://aitag.win/work/{item['work_id']}" if item["source"] == "aitag.win" else f"https://danbooru.donmai.us/posts/{item['work_id']}"
+        url = f"https://aitag.win/i/{item['work_id']}" if item["source"] == "aitag.win" else f"https://danbooru.donmai.us/posts/{item['work_id']}"
         source_name = "NovelAI 4.5" if item["source"] == "aitag.win" else "Danbooru"
         
         print(f"  {idx}. [{source_name}] {item.get('title') or '無題'} (ID: {item['work_id']})")
