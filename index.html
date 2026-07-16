@@ -394,6 +394,21 @@
                 <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">カンマ区切りで複数指定（AND検索）</p>
             </div>
 
+            <!-- New: Data file select & CSV upload -->
+            <div class="filter-section">
+                <h3>データファイルを選択</h3>
+                <select id="data-file-select" class="form-control">
+                    <option value="novelai_v4_5_database.json">novelai_v4_5_database.json (JSON)</option>
+                    <option value="novelai_v4_5_tag_dictionary.csv">novelai_v4_5_tag_dictionary.csv (CSV)</option>
+                    <option value="novelai_v4_5_github_friendly.csv">novelai_v4_5_github_friendly.csv (CSV)</option>
+                    <option value="novelai_v4_5_database.csv">novelai_v4_5_database.csv (CSV)</option>
+                    <option value="upload_csv">ローカルCSVをアップロード</option>
+                </select>
+
+                <input type="file" id="csv-upload" accept=".csv" style="margin-top:0.6rem; display:none;">
+                <p id="data-hint" style="font-size:0.8rem; color:var(--text-muted); margin-top:0.4rem;">ファイル選択後、自動で読み込み・表示します。</p>
+            </div>
+
             <button id="search-btn" class="btn">探索を実行</button>
         </div>
 
@@ -443,30 +458,156 @@
     <script>
         let db = [];
         
-        // Auto-load database
-        window.addEventListener('DOMContentLoaded', async () => {
+        // CSV helper: split line (handles quoted fields and escaped quotes)
+        function splitCSVLine(line) {
+            const res = [];
+            let cur = '';
+            let inQuotes = false;
+            for (let i = 0; i < line.length; i++) {
+                const ch = line[i];
+                if (ch === '"') {
+                    if (inQuotes && line[i + 1] === '"') {
+                        cur += '"'; i++; // escaped quote
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (ch === ',' && !inQuotes) {
+                    res.push(cur);
+                    cur = '';
+                } else {
+                    cur += ch;
+                }
+            }
+            res.push(cur);
+            return res.map(s => s.trim());
+        }
+
+        function parseCSV(text) {
+            const lines = text.split(/\r?\n/).filter(l => l.trim() !== '');
+            if (lines.length === 0) return { headers: [], rows: [] };
+            const headers = splitCSVLine(lines[0]);
+            const rows = lines.slice(1).map(line => {
+                const vals = splitCSVLine(line);
+                const obj = {};
+                for (let i = 0; i < headers.length; i++) {
+                    obj[headers[i]] = vals[i] !== undefined ? vals[i] : '';
+                }
+                return obj;
+            });
+            return { headers, rows };
+        }
+
+        function csvToDb(parsed) {
+            const { headers, rows } = parsed;
+            if (!rows || rows.length === 0) return [];
+            // prefer a clear 'prompt' header
+            let primary = headers.find(h => h && h.toLowerCase() === 'prompt');
+            if (!primary) {
+                primary = headers.find(h => rows.some(r => r[h] && r[h].trim() !== '')) || headers[0];
+            }
+            return rows.map(r => ({
+                prompt: (r[primary] || '').toString(),
+                negative_prompt: r['negative_prompt'] || r['neg'] || '',
+                sampler: r['sampler'] || '',
+                width: r['width'] || r['w'] || '',
+                height: r['height'] || r['h'] || '',
+                source: 'csv',
+                __row: r
+            }));
+        }
+
+        function countOccurrences(arr) {
+            return arr.reduce((acc, val) => {
+                if (val && val !== '') {
+                    acc[val] = (acc[val] || 0) + 1;
+                }
+                return acc;
+            }, {});
+        }
+
+        // Load helpers
+        function loadDbFromJsonUrl(url) {
             const loader = document.getElementById('loader');
             loader.style.display = 'block';
-            try {
-                const response = await fetch('novelai_v4_5_database.json');
-                db = await response.json();
+            return fetch(url).then(r => r.json()).then(data => {
+                db = data;
                 loader.style.display = 'none';
-                console.log(`Loaded ${db.length} records.`);
-                
-                // Update total count in header
-                document.getElementById('db-count').textContent = `(収録画像数: ${db.length}件)`;
-                
-                // Populate samplers dynamically
+                document.getElementById('db-count').textContent = `(収録件数: ${db.length}件)`;
                 populateSamplers();
-                
-                // Trigger initial search
                 performSearch();
-            } catch (e) {
-                loader.textContent = 'データベースの読み込みに失敗しました。ローカル環境で実行する場合は、HTTPサーバー（例: python -m http.server）を起動してブラウザでアクセスしてください。';
+            }).catch(e => {
+                loader.textContent = 'データの読み込みに失敗しました。コンソールを確認してください。';
                 console.error(e);
+            });
+        }
+
+        function loadDbFromCsvUrl(url) {
+            const loader = document.getElementById('loader');
+            loader.style.display = 'block';
+            return fetch(url).then(r => r.text()).then(text => {
+                const parsed = parseCSV(text);
+                db = csvToDb(parsed);
+                loader.style.display = 'none';
+                document.getElementById('db-count').textContent = `(読み込んだCSV行数: ${db.length}件)`;
+                populateSamplers();
+                performSearch();
+            }).catch(e => {
+                loader.textContent = 'CSV読み込みに失敗しました。';
+                console.error(e);
+            });
+        }
+
+        // Event wiring for data-file select and csv upload
+        document.addEventListener('DOMContentLoaded', () => {
+            const select = document.getElementById('data-file-select');
+            const uploadInput = document.getElementById('csv-upload');
+
+            select.addEventListener('change', (ev) => {
+                const val = ev.target.value;
+                if (val === 'upload_csv') {
+                    uploadInput.style.display = 'block';
+                } else {
+                    uploadInput.style.display = 'none';
+                    if (val.endsWith('.json')) {
+                        loadDbFromJsonUrl(val);
+                    } else if (val.endsWith('.csv')) {
+                        loadDbFromCsvUrl(val);
+                    }
+                }
+            });
+
+            uploadInput.addEventListener('change', (ev) => {
+                const file = ev.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const text = e.target.result;
+                        const parsed = parseCSV(text);
+                        db = csvToDb(parsed);
+                        document.getElementById('db-count').textContent = `(アップロードCSV行数: ${db.length}件)`;
+                        populateSamplers();
+                        performSearch();
+                    } catch (err) {
+                        alert('CSV解析に失敗しました。');
+                        console.error(err);
+                    }
+                };
+                reader.readAsText(file, 'utf-8');
+            });
+
+            // 初期読み込み: select の初期値に従う
+            const initial = select.value;
+            if (initial.endsWith('.json')) {
+                loadDbFromJsonUrl(initial);
+            } else if (initial.endsWith('.csv')) {
+                loadDbFromCsvUrl(initial);
+            } else {
+                document.getElementById('loader').style.display = 'none';
             }
         });
 
+        // Existing functions (populateSamplers, performSearch, etc.) kept as before but without re-defining countOccurrences
         document.getElementById('search-btn').addEventListener('click', performSearch);
 
         function populateSamplers() {
@@ -475,6 +616,8 @@
             db.forEach(item => {
                 if (item.sampler) {
                     samplers.add(item.sampler);
+                } else if (item.__row && item.__row['sampler']) {
+                    samplers.add(item.__row['sampler']);
                 }
             });
             
@@ -552,6 +695,11 @@
                 if (item.negative_prompt) {
                     allNegTags.push(...item.negative_prompt.split(',').map(t => t.trim()));
                 }
+                // fallback: if original CSV row had a different column for prompt
+                if ((!item.prompt || item.prompt === '') && item.__row) {
+                    const maybe = Object.values(item.__row).find(v => typeof v === 'string' && v.includes(',') && v.length > 10);
+                    if (maybe) allPromptTags.push(...maybe.split(',').map(t => t.trim()));
+                }
             });
 
             const tagCounts = countOccurrences(allPromptTags);
@@ -593,7 +741,7 @@
                 .sort((a, b) => b[1] - a[1])
                 .slice(0, 12)
                 .map(n => n[0]);
-            document.getElementById('neg-prompt').textContent = sortedNegs.length > 0 ? sortedNegs.join(', ') : 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry';
+            document.getElementById('neg-prompt').textContent = sortedNegs.length > 0 ? sortedNegs.join(', ') : 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, blurry';
 
             // 5. Render Works References (Limit to latest 15)
             const worksContainer = document.getElementById('works-container');
@@ -617,7 +765,7 @@
                     imgHtml = `
                         <div class="work-image-container">
                             <a href="${item.image_url}" target="_blank" title="画像ファイルを別タブで直接開く">
-                                <img class="work-image" src="${item.image_url}" loading="lazy" alt="Preview Image" onerror="this.onerror=null; this.parentNode.innerHTML='<span style='font-size: 0.8rem; color: var(--text-muted);'>No Image</span>';">
+                                <img class="work-image" src="${item.image_url}" loading="lazy" alt="Preview Image" onerror="this.onerror=null; this.parentNode.innerHTML='<span style=\'font-size: 0.8rem; color: var(--text-muted);\'>No Image</span>'">
                             </a>
                         </div>
                     `;
@@ -651,15 +799,6 @@
                 `;
                 worksContainer.appendChild(card);
             });
-        }
-
-        function countOccurrences(arr) {
-            return arr.reduce((acc, val) => {
-                if (val && val !== '') {
-                    acc[val] = (acc[val] || 0) + 1;
-                }
-                return acc;
-            }, {});
         }
 
         function addTagFilter(tag) {
