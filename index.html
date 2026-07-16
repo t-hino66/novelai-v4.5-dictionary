@@ -350,6 +350,29 @@
             font-size: 1.2rem;
             color: var(--accent-color);
         }
+
+        /* Dictionary table styling */
+        .dict-table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: auto;
+            max-height: 500px;
+            display: block;
+        }
+        .dict-table th, .dict-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 0.6rem;
+            text-align: left;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            background: rgba(255,255,255,0.02);
+        }
+        .dict-table thead th {
+            position: sticky;
+            top: 0;
+            background: rgba(23,27,34,0.95);
+            color: var(--text-color);
+        }
     </style>
 </head>
 <body>
@@ -402,6 +425,7 @@
                     <option value="novelai_v4_5_tag_dictionary.csv">novelai_v4_5_tag_dictionary.csv (CSV)</option>
                     <option value="novelai_v4_5_github_friendly.csv">novelai_v4_5_github_friendly.csv (CSV)</option>
                     <option value="novelai_v4_5_database.csv">novelai_v4_5_database.csv (CSV)</option>
+                    <option value="dictionary.csv">dictionary.csv (CSV)</option>
                     <option value="upload_csv">ローカルCSVをアップロード</option>
                 </select>
 
@@ -450,6 +474,20 @@
                 </div>
                 <div class="works-list" id="works-container">
                     <!-- Dynamic Cards -->
+                </div>
+            </div>
+
+            <!-- Dictionary CSV Table -->
+            <div class="results-panel" id="dictionary-section" style="display: none;">
+                <div class="section-title">
+                    <span>📚 dictionary.csv 表示</span>
+                </div>
+                <div id="dictionary-container">
+                    <!-- Table will be injected here -->
+                    <div id="dictionary-warning" style="color: var(--text-muted); font-size:0.95rem; margin-bottom:0.8rem;">dictionary.csv を読み込むとこの表に表示されます（行数が多い場合は先頭 1000 行のみ表示）。</div>
+                    <div style="overflow:auto; max-height:520px;">
+                        <table class="dict-table" id="dictionary-table"></table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -547,6 +585,10 @@
             return fetch(url).then(r => r.text()).then(text => {
                 const parsed = parseCSV(text);
                 db = csvToDb(parsed);
+                // If this CSV is dictionary.csv, render table view as well
+                if (url.endsWith('dictionary.csv')) {
+                    renderDictionaryTable(parsed);
+                }
                 loader.style.display = 'none';
                 document.getElementById('db-count').textContent = `(読み込んだCSV行数: ${db.length}件)`;
                 populateSamplers();
@@ -585,6 +627,10 @@
                         const text = e.target.result;
                         const parsed = parseCSV(text);
                         db = csvToDb(parsed);
+                        // If uploaded file name is dictionary.csv, render table view
+                        if (file.name === 'dictionary.csv') {
+                            renderDictionaryTable(parsed);
+                        }
                         document.getElementById('db-count').textContent = `(アップロードCSV行数: ${db.length}件)`;
                         populateSamplers();
                         performSearch();
@@ -741,7 +787,7 @@
                 .sort((a, b) => b[1] - a[1])
                 .slice(0, 12)
                 .map(n => n[0]);
-            document.getElementById('neg-prompt').textContent = sortedNegs.length > 0 ? sortedNegs.join(', ') : 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, blurry';
+            document.getElementById('neg-prompt').textContent = sortedNegs.length > 0 ? sortedNegs.join(', ') : 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits';
 
             // 5. Render Works References (Limit to latest 15)
             const worksContainer = document.getElementById('works-container');
@@ -765,7 +811,7 @@
                     imgHtml = `
                         <div class="work-image-container">
                             <a href="${item.image_url}" target="_blank" title="画像ファイルを別タブで直接開く">
-                                <img class="work-image" src="${item.image_url}" loading="lazy" alt="Preview Image" onerror="this.onerror=null; this.parentNode.innerHTML='<span style=\'font-size: 0.8rem; color: var(--text-muted);\'>No Image</span>'">
+                                <img class="work-image" src="${item.image_url}" loading="lazy" alt="Preview Image" onerror="this.onerror=null; this.parentNode.innerHTML='<span style=\'font-size: 0.8rem; color: var(--text-muted);\'>No Image</span>'" />
                             </a>
                         </div>
                     `;
@@ -816,6 +862,51 @@
             navigator.clipboard.writeText(text).then(() => {
                 alert('コピーしました！');
             });
+        }
+
+        // Render dictionary.csv parsed CSV as a table
+        function renderDictionaryTable(parsed) {
+            try {
+                const table = document.getElementById('dictionary-table');
+                table.innerHTML = '';
+                if (!parsed || !parsed.headers) {
+                    table.innerHTML = '<tr><td>CSV のヘッダが見つかりません</td></tr>';
+                    document.getElementById('dictionary-section').style.display = 'block';
+                    return;
+                }
+                const headers = parsed.headers;
+                const rows = parsed.rows || [];
+
+                // Build thead
+                const thead = document.createElement('thead');
+                const thr = document.createElement('tr');
+                headers.forEach(h => {
+                    const th = document.createElement('th');
+                    th.textContent = h;
+                    thr.appendChild(th);
+                });
+                thead.appendChild(thr);
+                table.appendChild(thead);
+
+                // Build tbody (limit rows for performance)
+                const tbody = document.createElement('tbody');
+                const maxRows = 1000;
+                for (let i = 0; i < Math.min(rows.length, maxRows); i++) {
+                    const r = rows[i];
+                    const tr = document.createElement('tr');
+                    headers.forEach(h => {
+                        const td = document.createElement('td');
+                        td.textContent = r[h] !== undefined ? r[h] : '';
+                        tr.appendChild(td);
+                    });
+                    tbody.appendChild(tr);
+                }
+                table.appendChild(tbody);
+
+                document.getElementById('dictionary-section').style.display = 'block';
+            } catch (e) {
+                console.error('renderDictionaryTable error', e);
+            }
         }
     </script>
 </body>
