@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NovelAI & Danbooru Prompt Search System</title>
+    <title>NovelAI & Danbooru Prompt System</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -16,6 +16,14 @@
             --border-color: #2d3748;
             --badge-bg: #1e293b;
             --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+            
+            --tag-quality: #ef4444;
+            --tag-clothing: #3b82f6;
+            --tag-pose: #10b981;
+            --tag-background: #f59e0b;
+            --tag-character: #8b5cf6;
+            --tag-style: #ec4899;
+            --tag-others: #6b7280;
         }
 
         * {
@@ -39,7 +47,7 @@
         }
 
         header {
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             text-align: center;
         }
 
@@ -55,6 +63,47 @@
         header p {
             color: var(--text-muted);
             font-size: 1.1rem;
+        }
+
+        /* Navigation Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 0.6rem 1.5rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-color);
+            background-color: rgba(255,255,255,0.05);
+        }
+
+        .tab-btn.active {
+            color: #fff;
+            background-color: var(--accent-color);
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
 
         .container {
@@ -351,309 +400,364 @@
             color: var(--accent-color);
         }
 
-        /* Dictionary table styling */
+        /* --------------------------------- */
+        /* Dictionary Tab Styles */
+        /* --------------------------------- */
+        .dict-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: var(--panel-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .dict-controls {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .dict-controls {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        /* Table Design */
+        .dict-table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background-color: #0b0d10;
+        }
+
         .dict-table {
             width: 100%;
             border-collapse: collapse;
-            overflow: auto;
-            max-height: 500px;
-            display: block;
-        }
-        .dict-table th, .dict-table td {
-            border: 1px solid var(--border-color);
-            padding: 0.5rem 0.6rem;
             text-align: left;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            background: rgba(255,255,255,0.02);
+            font-size: 0.95rem;
         }
-        .dict-table thead th {
-            position: sticky;
-            top: 0;
-            background: rgba(23,27,34,0.95);
+
+        .dict-table th, .dict-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .dict-table th {
+            background-color: rgba(255,255,255,0.02);
+            font-weight: 700;
             color: var(--text-color);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .dict-table th:hover {
+            background-color: rgba(255,255,255,0.05);
+        }
+
+        .dict-table tr:hover {
+            background-color: rgba(255,255,255,0.02);
+        }
+
+        .cat-badge {
+            display: inline-block;
+            padding: 0.25rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .cat-quality { background-color: var(--tag-quality); }
+        .cat-clothing { background-color: var(--tag-clothing); }
+        .cat-pose { background-color: var(--tag-pose); }
+        .cat-background { background-color: var(--tag-background); }
+        .cat-character { background-color: var(--tag-character); }
+        .cat-style { background-color: var(--tag-style); }
+        .cat-others { background-color: var(--tag-others); }
+
+        .btn-copy-tag {
+            background-color: var(--badge-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+            margin-right: 0.5rem;
+        }
+
+        .btn-copy-tag:hover {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .dict-tag-link {
+            color: #60a5fa;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .dict-tag-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .page-btn {
+            background-color: var(--badge-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background-color: var(--accent-color);
+        }
+
+        .page-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        #page-info {
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>NovelAI & Danbooru Prompt Search</h1>
-        <p>構図や衣装、サンプラーから最適なコピペ呪文と共起タグを探索 <span id="db-count" style="font-size: 0.9rem; font-weight: normal; color: var(--text-muted);"></span></p>
+        <h1>NovelAI & Danbooru Prompt System</h1>
+        <p>画像検索・共起タグ解析・タグ日本語図鑑データベース <span id="db-count" style="font-size: 0.9rem; font-weight: normal; color: var(--text-muted);"></span></p>
     </header>
 
-    <div class="container">
-        <!-- Filter Panel -->
-        <div class="sidebar">
-            <div class="filter-section">
-                <h3>データソース</h3>
-                <select id="filter-source" class="form-control">
-                    <option value="all">すべて (All)</option>
-                    <option value="aitag.win">NovelAI V4.5 (aitag.win)</option>
-                    <option value="danbooru">Danbooru (本家スコア画像)</option>
-                </select>
+    <!-- Tab Buttons -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('search-tab')">🔮 構図・呪文検索</button>
+        <button class="tab-btn" onclick="switchTab('dict-tab')">📖 タグ日本語図鑑</button>
+    </div>
+
+    <!-- Tab 1: Search Module -->
+    <div id="search-tab" class="tab-content active">
+        <div class="container">
+            <!-- Filter Panel -->
+            <div class="sidebar">
+                <div class="filter-section">
+                    <h3>データソース</h3>
+                    <select id="filter-source" class="form-control">
+                        <option value="all">すべて (All)</option>
+                        <option value="aitag.win">NovelAI V4.5 (aitag.win)</option>
+                        <option value="danbooru">Danbooru (本家スコア画像)</option>
+                    </select>
+                </div>
+
+                <div class="filter-section">
+                    <h3>サンプラー</h3>
+                    <select id="filter-sampler" class="form-control">
+                        <option value="all">すべて (All)</option>
+                    </select>
+                </div>
+
+                <div class="filter-section">
+                    <h3>縦横比</h3>
+                    <select id="filter-aspect" class="form-control">
+                        <option value="all">すべて (All)</option>
+                        <option value="portrait">縦長 (Portrait)</option>
+                        <option value="landscape">横長 (Landscape)</option>
+                        <option value="square">正方形 (Square)</option>
+                    </select>
+                </div>
+
+                <div class="filter-section">
+                    <h3>特徴・要素 (タグ検索)</h3>
+                    <input type="text" id="filter-tags" class="form-control" placeholder="例: 1girl, bedroom, suit">
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">カンマ区切りで複数指定（AND検索）</p>
+                </div>
+
+                <button id="search-btn" class="btn">探索を実行</button>
             </div>
 
-            <div class="filter-section">
-                <h3>サンプラー</h3>
-                <select id="filter-sampler" class="form-control">
-                    <option value="all">すべて (All)</option>
-                </select>
-            </div>
+            <!-- Result Panels -->
+            <div class="main-content">
+                <div id="loader" class="loader">データベースの読込中...</div>
 
-            <div class="filter-section">
-                <h3>縦横比</h3>
-                <select id="filter-aspect" class="form-control">
-                    <option value="all">すべて (All)</option>
-                    <option value="portrait">縦長 (Portrait)</option>
-                    <option value="landscape">横長 (Landscape)</option>
-                    <option value="square">正方形 (Square)</option>
-                </select>
-            </div>
-
-            <div class="filter-section">
-                <h3>特徴・要素 (タグ検索)</h3>
-                <input type="text" id="filter-tags" class="form-control" placeholder="例: 1girl, bedroom, suit">
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">カンマ区切りで複数指定（AND検索）</p>
-            </div>
-
-            <!-- New: Data file select & CSV upload -->
-            <div class="filter-section">
-                <h3>データファイルを選択</h3>
-                <select id="data-file-select" class="form-control">
-                    <option value="novelai_v4_5_database.json">novelai_v4_5_database.json (JSON)</option>
-                    <option value="novelai_v4_5_tag_dictionary.csv">novelai_v4_5_tag_dictionary.csv (CSV)</option>
-                    <option value="novelai_v4_5_github_friendly.csv">novelai_v4_5_github_friendly.csv (CSV)</option>
-                    <option value="novelai_v4_5_database.csv">novelai_v4_5_database.csv (CSV)</option>
-                    <option value="dictionary.csv">dictionary.csv (CSV)</option>
-                    <option value="upload_csv">ローカルCSVをアップロード</option>
-                </select>
-
-                <input type="file" id="csv-upload" accept=".csv" style="margin-top:0.6rem; display:none;">
-                <p id="data-hint" style="font-size:0.8rem; color:var(--text-muted); margin-top:0.4rem;">ファイル選択後、自動で読み込み・表示します。</p>
-            </div>
-
-            <button id="search-btn" class="btn">探索を実行</button>
-        </div>
-
-        <!-- Result Panels -->
-        <div class="main-content">
-            <div id="loader" class="loader">データベースの読込中...</div>
-
-            <!-- Copypasta Prompts -->
-            <div class="results-panel" id="prompt-section" style="display: none;">
-                <div class="section-title">
-                    <span>📋 おすすめコピペ用呪文</span>
+                <!-- Copypasta Prompts -->
+                <div class="results-panel" id="prompt-section" style="display: none;">
+                    <div class="section-title">
+                        <span>📋 おすすめコピペ用呪文</span>
+                    </div>
+                    <h3>ポジティブプロンプト</h3>
+                    <div class="prompt-box">
+                        <button class="copy-btn" onclick="copyText('pos-prompt')">コピー</button>
+                        <span id="pos-prompt">ここにポジティブ呪文が出力されます</span>
+                    </div>
+                    <h3>ネガティブプロンプト</h3>
+                    <div class="prompt-box">
+                        <button class="copy-btn" onclick="copyText('neg-prompt')">コピー</button>
+                        <span id="neg-prompt" class="neg-prompt">ここにネガティブ呪文が出力されます</span>
+                    </div>
                 </div>
-                <h3>ポジティブプロンプト</h3>
-                <div class="prompt-box">
-                    <button class="copy-btn" onclick="copyText('pos-prompt')">コピー</button>
-                    <span id="pos-prompt">ここにポジティブ呪文が出力されます</span>
-                </div>
-                <h3>ネガティブプロンプト</h3>
-                <div class="prompt-box">
-                    <button class="copy-btn" onclick="copyText('neg-prompt')">コピー</button>
-                    <span id="neg-prompt" class="neg-prompt">ここにネガティブ呪文が出力されます</span>
-                </div>
-            </div>
 
-            <!-- Co-occurrence Tags -->
-            <div class="results-panel" id="tags-section" style="display: none;">
-                <div class="section-title">
-                    <span>🤝 同時によく使われるタグ（共起関係）</span>
+                <!-- Co-occurrence Tags -->
+                <div class="results-panel" id="tags-section" style="display: none;">
+                    <div class="section-title">
+                        <span>🤝 同時によく使われるタグ（共起関係）</span>
+                    </div>
+                    <div class="tags-grid" id="co-tags-container">
+                        <!-- Dynamic Badges -->
+                    </div>
                 </div>
-                <div class="tags-grid" id="co-tags-container">
-                    <!-- Dynamic Badges -->
-                </div>
-            </div>
 
-            <!-- Works References -->
-            <div class="results-panel" id="works-section" style="display: none;">
-                <div class="section-title">
-                    <span>🔗 参考作品イラスト・パラメータ (最新15件)</span>
-                </div>
-                <div class="works-list" id="works-container">
-                    <!-- Dynamic Cards -->
-                </div>
-            </div>
-
-            <!-- Dictionary CSV Table -->
-            <div class="results-panel" id="dictionary-section" style="display: none;">
-                <div class="section-title">
-                    <span>📚 dictionary.csv 表示</span>
-                </div>
-                <div id="dictionary-container">
-                    <!-- Table will be injected here -->
-                    <div id="dictionary-warning" style="color: var(--text-muted); font-size:0.95rem; margin-bottom:0.8rem;">dictionary.csv を読み込むとこの表に表示されます（行数が多い場合は先頭 1000 行のみ表示）。</div>
-                    <div style="overflow:auto; max-height:520px;">
-                        <table class="dict-table" id="dictionary-table"></table>
+                <!-- Works References -->
+                <div class="results-panel" id="works-section" style="display: none;">
+                    <div class="section-title">
+                        <span>🔗 参考作品イラスト・パラメータ (最新15件)</span>
+                    </div>
+                    <div class="works-list" id="works-container">
+                        <!-- Dynamic Cards -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Tab 2: Tag Dictionary Module -->
+    <div id="dict-tab" class="tab-content">
+        <div class="dict-container">
+            <div class="section-title">
+                <span>📖 頻出プロンプト日本語図鑑テーブル</span>
+                <span id="dict-count" style="font-size: 0.9rem; font-weight: normal; color: var(--text-muted);"></span>
+            </div>
+            
+            <div class="dict-controls">
+                <div>
+                    <input type="text" id="dict-search" class="form-control" placeholder="タグ名、または意味（日本語）で検索...">
+                </div>
+                <div>
+                    <select id="dict-filter-category" class="form-control">
+                        <option value="all">すべてのカテゴリ</option>
+                        <option value="Quality">Quality (品質)</option>
+                        <option value="Clothing">Clothing (衣装)</option>
+                        <option value="Pose">Pose (ポーズ/構図)</option>
+                        <option value="Background">Background (背景/照明)</option>
+                        <option value="Character">Character (キャラクター特徴)</option>
+                        <option value="Style">Style (画風)</option>
+                        <option value="Others">Others (その他)</option>
+                    </select>
+                </div>
+                <div>
+                    <select id="dict-sort-key" class="form-control">
+                        <option value="count-desc">出現回数が多い順</option>
+                        <option value="count-asc">出現回数が少ない順</option>
+                        <option value="tag-asc">アルファベット順 (A-Z)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="dict-table-container">
+                <table class="dict-table">
+                    <thead>
+                        <tr>
+                            <th>タグ名</th>
+                            <th>日本語の意味</th>
+                            <th>カテゴリ</th>
+                            <th>出現数</th>
+                            <th>使用率</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dict-table-body">
+                        <!-- Dynamic Table Rows -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button id="btn-prev-page" class="page-btn" onclick="changePage(-1)">前へ</button>
+                <span id="page-info">1 / 1 ページ</span>
+                <button id="btn-next-page" class="page-btn" onclick="changePage(1)">次へ</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let db = [];
+        let dictionary = [];
         
-        // CSV helper: split line (handles quoted fields and escaped quotes)
-        function splitCSVLine(line) {
-            const res = [];
-            let cur = '';
-            let inQuotes = false;
-            for (let i = 0; i < line.length; i++) {
-                const ch = line[i];
-                if (ch === '"') {
-                    if (inQuotes && line[i + 1] === '"') {
-                        cur += '"'; i++; // escaped quote
-                    } else {
-                        inQuotes = !inQuotes;
-                    }
-                } else if (ch === ',' && !inQuotes) {
-                    res.push(cur);
-                    cur = '';
-                } else {
-                    cur += ch;
-                }
-            }
-            res.push(cur);
-            return res.map(s => s.trim());
-        }
+        // Dictionary Pagination and Filters
+        let dictFiltered = [];
+        let currentPage = 1;
+        const pageSize = 50;
 
-        function parseCSV(text) {
-            const lines = text.split(/\r?\n/).filter(l => l.trim() !== '');
-            if (lines.length === 0) return { headers: [], rows: [] };
-            const headers = splitCSVLine(lines[0]);
-            const rows = lines.slice(1).map(line => {
-                const vals = splitCSVLine(line);
-                const obj = {};
-                for (let i = 0; i < headers.length; i++) {
-                    obj[headers[i]] = vals[i] !== undefined ? vals[i] : '';
-                }
-                return obj;
-            });
-            return { headers, rows };
-        }
-
-        function csvToDb(parsed) {
-            const { headers, rows } = parsed;
-            if (!rows || rows.length === 0) return [];
-            // prefer a clear 'prompt' header
-            let primary = headers.find(h => h && h.toLowerCase() === 'prompt');
-            if (!primary) {
-                primary = headers.find(h => rows.some(r => r[h] && r[h].trim() !== '')) || headers[0];
-            }
-            return rows.map(r => ({
-                prompt: (r[primary] || '').toString(),
-                negative_prompt: r['negative_prompt'] || r['neg'] || '',
-                sampler: r['sampler'] || '',
-                width: r['width'] || r['w'] || '',
-                height: r['height'] || r['h'] || '',
-                source: 'csv',
-                __row: r
-            }));
-        }
-
-        function countOccurrences(arr) {
-            return arr.reduce((acc, val) => {
-                if (val && val !== '') {
-                    acc[val] = (acc[val] || 0) + 1;
-                }
-                return acc;
-            }, {});
-        }
-
-        // Load helpers
-        function loadDbFromJsonUrl(url) {
+        // Auto-load databases
+        window.addEventListener('DOMContentLoaded', async () => {
             const loader = document.getElementById('loader');
             loader.style.display = 'block';
-            return fetch(url).then(r => r.json()).then(data => {
-                db = data;
+            try {
+                // 1. Fetch search database
+                const responseDb = await fetch('novelai_v4_5_database.json');
+                db = await responseDb.json();
+                
+                // 2. Fetch dictionary database
+                const responseDict = await fetch('novelai_v4_5_tag_dictionary.json');
+                dictionary = await responseDict.json();
+                
                 loader.style.display = 'none';
-                document.getElementById('db-count').textContent = `(収録件数: ${db.length}件)`;
+                
+                // Update total count in header
+                document.getElementById('db-count').textContent = `(収録画像: ${db.length}件 | 辞書タグ: ${dictionary.length}件)`;
+                document.getElementById('dict-count').textContent = `全 ${dictionary.length} 件の統計辞書`;
+                
+                // Populate samplers dynamically
                 populateSamplers();
+                
+                // Initialize Dictionary display
+                resetDictionaryFilters();
+                
+                // Trigger initial search
                 performSearch();
-            }).catch(e => {
-                loader.textContent = 'データの読み込みに失敗しました。コンソールを確認してください。';
+            } catch (e) {
+                loader.textContent = 'データベースの読み込みに失敗しました。ローカル環境で実行する場合は、HTTPサーバー（例: python -m http.server）を起動してブラウザでアクセスしてください。';
                 console.error(e);
-            });
-        }
-
-        function loadDbFromCsvUrl(url) {
-            const loader = document.getElementById('loader');
-            loader.style.display = 'block';
-            return fetch(url).then(r => r.text()).then(text => {
-                const parsed = parseCSV(text);
-                db = csvToDb(parsed);
-                // If this CSV is dictionary.csv, render table view as well
-                if (url.endsWith('dictionary.csv')) {
-                    renderDictionaryTable(parsed);
-                }
-                loader.style.display = 'none';
-                document.getElementById('db-count').textContent = `(読み込んだCSV行数: ${db.length}件)`;
-                populateSamplers();
-                performSearch();
-            }).catch(e => {
-                loader.textContent = 'CSV読み込みに失敗しました。';
-                console.error(e);
-            });
-        }
-
-        // Event wiring for data-file select and csv upload
-        document.addEventListener('DOMContentLoaded', () => {
-            const select = document.getElementById('data-file-select');
-            const uploadInput = document.getElementById('csv-upload');
-
-            select.addEventListener('change', (ev) => {
-                const val = ev.target.value;
-                if (val === 'upload_csv') {
-                    uploadInput.style.display = 'block';
-                } else {
-                    uploadInput.style.display = 'none';
-                    if (val.endsWith('.json')) {
-                        loadDbFromJsonUrl(val);
-                    } else if (val.endsWith('.csv')) {
-                        loadDbFromCsvUrl(val);
-                    }
-                }
-            });
-
-            uploadInput.addEventListener('change', (ev) => {
-                const file = ev.target.files[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    try {
-                        const text = e.target.result;
-                        const parsed = parseCSV(text);
-                        db = csvToDb(parsed);
-                        // If uploaded file name is dictionary.csv, render table view
-                        if (file.name === 'dictionary.csv') {
-                            renderDictionaryTable(parsed);
-                        }
-                        document.getElementById('db-count').textContent = `(アップロードCSV行数: ${db.length}件)`;
-                        populateSamplers();
-                        performSearch();
-                    } catch (err) {
-                        alert('CSV解析に失敗しました。');
-                        console.error(err);
-                    }
-                };
-                reader.readAsText(file, 'utf-8');
-            });
-
-            // 初期読み込み: select の初期値に従う
-            const initial = select.value;
-            if (initial.endsWith('.json')) {
-                loadDbFromJsonUrl(initial);
-            } else if (initial.endsWith('.csv')) {
-                loadDbFromCsvUrl(initial);
-            } else {
-                document.getElementById('loader').style.display = 'none';
             }
         });
 
-        // Existing functions (populateSamplers, performSearch, etc.) kept as before but without re-defining countOccurrences
+        // Tab Switcher
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            if (tabId === 'search-tab') {
+                document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
+                document.getElementById('search-tab').classList.add('active');
+            } else {
+                document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
+                document.getElementById('dict-tab').classList.add('active');
+                renderDictionaryTable();
+            }
+        }
+
+        // ---------------------------------
+        // Prompt Search logic
+        // ---------------------------------
         document.getElementById('search-btn').addEventListener('click', performSearch);
 
         function populateSamplers() {
@@ -662,12 +766,9 @@
             db.forEach(item => {
                 if (item.sampler) {
                     samplers.add(item.sampler);
-                } else if (item.__row && item.__row['sampler']) {
-                    samplers.add(item.__row['sampler']);
                 }
             });
             
-            // Clear existing except "All"
             samplerSelect.innerHTML = '<option value="all">すべて (All)</option>';
             Array.from(samplers).sort().forEach(s => {
                 const opt = document.createElement('option');
@@ -683,20 +784,14 @@
             const aspect = document.getElementById('filter-aspect').value;
             const tagsInput = document.getElementById('filter-tags').value;
 
-            // Parse filter tags
             const searchTags = tagsInput.split(',')
                 .map(t => t.trim().toLowerCase())
                 .filter(t => t);
 
-            // 1. Filter database
             const filtered = db.filter(item => {
-                // Source filter
                 if (source !== 'all' && item.source !== source) return false;
-                
-                // Sampler filter
                 if (sampler !== 'all' && item.sampler !== sampler) return false;
                 
-                // Aspect Ratio filter
                 if (aspect !== 'all') {
                     const w = parseInt(item.width || 0);
                     const h = parseInt(item.height || 0);
@@ -705,18 +800,16 @@
                         if (aspect === 'landscape' && w <= h) return false;
                         if (aspect === 'square' && w !== h) return false;
                     } else {
-                        return false; // Skip if resolution is missing
+                        return false;
                     }
                 }
                 
-                // Tag filters (AND match)
                 if (searchTags.length > 0) {
                     const itemTags = (item.prompt || '').toLowerCase().split(',').map(t => t.trim());
                     for (const sTag of searchTags) {
                         if (!itemTags.some(it => it.includes(sTag) || it === sTag)) return false;
                     }
                 }
-
                 return true;
             });
 
@@ -725,12 +818,10 @@
                 return;
             }
 
-            // Show sections
             document.getElementById('prompt-section').style.display = 'block';
             document.getElementById('tags-section').style.display = 'block';
             document.getElementById('works-section').style.display = 'block';
 
-            // 2. Calculate co-occurrence tags
             const allPromptTags = [];
             const allNegTags = [];
             
@@ -741,30 +832,18 @@
                 if (item.negative_prompt) {
                     allNegTags.push(...item.negative_prompt.split(',').map(t => t.trim()));
                 }
-                // fallback: if original CSV row had a different column for prompt
-                if ((!item.prompt || item.prompt === '') && item.__row) {
-                    const maybe = Object.values(item.__row).find(v => typeof v === 'string' && v.includes(',') && v.length > 10);
-                    if (maybe) allPromptTags.push(...maybe.split(',').map(t => t.trim()));
-                }
             });
 
             const tagCounts = countOccurrences(allPromptTags);
             const negCounts = countOccurrences(allNegTags);
 
-            // Filter out search input tags from co-occurrence results
-            searchTags.forEach(st => {
-                delete tagCounts[st];
-            });
-            // Common quality boilerplate filters
+            searchTags.forEach(st => { delete tagCounts[st]; });
             const commonQuality = ['masterpiece', 'very aesthetic', 'best quality', 'absurdres', 'highres'];
-            commonQuality.forEach(cq => {
-                delete tagCounts[cq];
-            });
+            commonQuality.forEach(cq => { delete tagCounts[cq]; });
 
-            // 3. Render Co-occurrence Tags
             const sortedTags = Object.entries(tagCounts)
                 .sort((a, b) => b[1] - a[1])
-                .slice(0, 25); // Top 25
+                .slice(0, 25);
 
             const tagsContainer = document.getElementById('co-tags-container');
             tagsContainer.innerHTML = '';
@@ -776,20 +855,16 @@
                 tagsContainer.appendChild(badge);
             });
 
-            // 4. Generate Copypasta Prompts
-            // Add user input tags + top co-occurrence tags to prompt generator
             const topCoTags = sortedTags.slice(0, 10).map(t => t[0]);
             const finalPosTags = [...commonQuality, ...searchTags, ...topCoTags];
             document.getElementById('pos-prompt').textContent = finalPosTags.join(', ');
 
-            // Negative prompt generator (top negatives)
             const sortedNegs = Object.entries(negCounts)
                 .sort((a, b) => b[1] - a[1])
                 .slice(0, 12)
                 .map(n => n[0]);
-            document.getElementById('neg-prompt').textContent = sortedNegs.length > 0 ? sortedNegs.join(', ') : 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits';
+            document.getElementById('neg-prompt').textContent = sortedNegs.length > 0 ? sortedNegs.join(', ') : 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry';
 
-            // 5. Render Works References (Limit to latest 15)
             const worksContainer = document.getElementById('works-container');
             worksContainer.innerHTML = '';
             
@@ -805,13 +880,12 @@
                 const badgeClass = item.source === 'aitag.win' ? 'src-aitag' : 'src-danbooru';
                 const sourceName = item.source === 'aitag.win' ? 'NovelAI 4.5' : 'Danbooru';
 
-                // Construct Image Element
                 let imgHtml = '';
                 if (item.image_url) {
                     imgHtml = `
                         <div class="work-image-container">
                             <a href="${item.image_url}" target="_blank" title="画像ファイルを別タブで直接開く">
-                                <img class="work-image" src="${item.image_url}" loading="lazy" alt="Preview Image" onerror="this.onerror=null; this.parentNode.innerHTML='<span style=\'font-size: 0.8rem; color: var(--text-muted);\'>No Image</span>'" />
+                                <img class="work-image" src="${item.image_url}" loading="lazy" alt="Preview Image" onerror="this.onerror=null; this.parentNode.innerHTML='<span style='font-size: 0.8rem; color: var(--text-muted);'>No Image</span>';">
                             </a>
                         </div>
                     `;
@@ -847,6 +921,15 @@
             });
         }
 
+        function countOccurrences(arr) {
+            return arr.reduce((acc, val) => {
+                if (val && val !== '') {
+                    acc[val] = (acc[val] || 0) + 1;
+                }
+                return acc;
+            }, {});
+        }
+
         function addTagFilter(tag) {
             const input = document.getElementById('filter-tags');
             const current = input.value.split(',').map(t => t.trim()).filter(t => t);
@@ -864,49 +947,113 @@
             });
         }
 
-        // Render dictionary.csv parsed CSV as a table
-        function renderDictionaryTable(parsed) {
-            try {
-                const table = document.getElementById('dictionary-table');
-                table.innerHTML = '';
-                if (!parsed || !parsed.headers) {
-                    table.innerHTML = '<tr><td>CSV のヘッダが見つかりません</td></tr>';
-                    document.getElementById('dictionary-section').style.display = 'block';
-                    return;
+        // ---------------------------------
+        // Tag Dictionary Tab logic
+        // ---------------------------------
+        document.getElementById('dict-search').addEventListener('input', applyDictionaryFilters);
+        document.getElementById('dict-filter-category').addEventListener('change', applyDictionaryFilters);
+        document.getElementById('dict-sort-key').addEventListener('change', applyDictionaryFilters);
+
+        function resetDictionaryFilters() {
+            dictFiltered = [...dictionary];
+            currentPage = 1;
+        }
+
+        function applyDictionaryFilters() {
+            const query = document.getElementById('dict-search').value.toLowerCase().trim();
+            const category = document.getElementById('dict-filter-category').value;
+            const sortKey = document.getElementById('dict-sort-key').value;
+
+            // 1. Filter
+            dictFiltered = dictionary.filter(item => {
+                // Category Filter
+                if (category !== 'all' && item.category !== category) return false;
+                
+                // Text Search Filter (Tag or Meaning)
+                if (query) {
+                    const tagMatch = item.tag.toLowerCase().includes(query);
+                    const meaningMatch = item.meaning.toLowerCase().includes(query);
+                    if (!tagMatch && !meaningMatch) return false;
                 }
-                const headers = parsed.headers;
-                const rows = parsed.rows || [];
+                
+                return true;
+            });
 
-                // Build thead
-                const thead = document.createElement('thead');
-                const thr = document.createElement('tr');
-                headers.forEach(h => {
-                    const th = document.createElement('th');
-                    th.textContent = h;
-                    thr.appendChild(th);
-                });
-                thead.appendChild(thr);
-                table.appendChild(thead);
-
-                // Build tbody (limit rows for performance)
-                const tbody = document.createElement('tbody');
-                const maxRows = 1000;
-                for (let i = 0; i < Math.min(rows.length, maxRows); i++) {
-                    const r = rows[i];
-                    const tr = document.createElement('tr');
-                    headers.forEach(h => {
-                        const td = document.createElement('td');
-                        td.textContent = r[h] !== undefined ? r[h] : '';
-                        tr.appendChild(td);
-                    });
-                    tbody.appendChild(tr);
-                }
-                table.appendChild(tbody);
-
-                document.getElementById('dictionary-section').style.display = 'block';
-            } catch (e) {
-                console.error('renderDictionaryTable error', e);
+            // 2. Sort
+            if (sortKey === 'count-desc') {
+                dictFiltered.sort((a, b) => b.count - a.count);
+            } else if (sortKey === 'count-asc') {
+                dictFiltered.sort((a, b) => a.count - b.count);
+            } else if (sortKey === 'tag-asc') {
+                dictFiltered.sort((a, b) => a.tag.localeCompare(b.tag));
             }
+
+            currentPage = 1;
+            renderDictionaryTable();
+        }
+
+        function renderDictionaryTable() {
+            const tbody = document.getElementById('dict-table-body');
+            tbody.innerHTML = '';
+
+            const totalPages = Math.ceil(dictFiltered.length / pageSize) || 1;
+            
+            // Boundary validation
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            // Update page info
+            document.getElementById('page-info').textContent = `${currentPage} / ${totalPages} ページ (該当: ${dictFiltered.length}件)`;
+            document.getElementById('btn-prev-page').disabled = currentPage === 1;
+            document.getElementById('btn-next-page').disabled = currentPage === totalPages;
+
+            const startIndex = (currentPage - 1) * pageSize;
+            const pageData = dictFiltered.slice(startIndex, startIndex + pageSize);
+
+            pageData.forEach(item => {
+                const tr = document.createElement('tr');
+                
+                // Color badges mapping
+                const catClass = `cat-${item.category.toLowerCase()}`;
+                
+                tr.innerHTML = `
+                    <td>
+                        <button class="btn-copy-tag" onclick="copyDictionaryTag('${item.tag}')" title="タグをクリップボードにコピー">コピー</button>
+                        <a class="dict-tag-link" onclick="searchTagInMainTab('${item.tag}')" title="このタグを呪文検索で調べる">${item.tag}</a>
+                    </td>
+                    <td>${item.meaning || '<span style="color:var(--text-muted)">-</span>'}</td>
+                    <td><span class="cat-badge ${catClass}">${item.category}</span></td>
+                    <td style="font-weight:600; color:#fff;">${item.count}</td>
+                    <td>${item.usage_rate}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function changePage(direction) {
+            currentPage += direction;
+            renderDictionaryTable();
+            // Scroll back to table top
+            document.querySelector('.dict-table-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function copyDictionaryTag(tag) {
+            navigator.clipboard.writeText(tag).then(() => {
+                // Temporary status update on button if needed, but alert is simplest
+                alert(`タグ「${tag}」をコピーしました！`);
+            });
+        }
+
+        function searchTagInMainTab(tag) {
+            // Fill tag filter in search tab
+            const input = document.getElementById('filter-tags');
+            input.value = tag;
+            
+            // Switch back to search tab
+            switchTab('search-tab');
+            
+            // Execute search automatically
+            performSearch();
         }
     </script>
 </body>

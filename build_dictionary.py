@@ -376,6 +376,12 @@ def process_data():
         for r in tag_dict_rows:
             writer.writerow(r)
 
+    # Output tag dictionary JSON for Web UI
+    TAG_DICT_JSON = "novelai_v4_5_tag_dictionary.json"
+    print(f"Saving tag dictionary JSON: {TAG_DICT_JSON}")
+    with open(TAG_DICT_JSON, 'w', encoding='utf-8') as f:
+        json.dump(tag_dict_rows, f, ensure_ascii=False, indent=2)
+
     # Build Markdown Dictionary Guide
     print(f"Generating markdown dictionary guide: {MD_DICT_FILE}...")
     generate_markdown_guide(flat_records, tag_dict_rows, total_images)
