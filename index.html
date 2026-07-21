@@ -715,12 +715,13 @@
             const loader = document.getElementById('loader');
             loader.style.display = 'block';
             try {
+                const cacheBuster = new Date().getTime();
                 // 1. Fetch search database
-                const responseDb = await fetch('novelai_v4_5_database.json');
+                const responseDb = await fetch(`novelai_v4_5_database.json?v=${cacheBuster}`);
                 db = await responseDb.json();
                 
                 // 2. Fetch dictionary database
-                const responseDict = await fetch('novelai_v4_5_tag_dictionary.json');
+                const responseDict = await fetch(`novelai_v4_5_tag_dictionary.json?v=${cacheBuster}`);
                 dictionary = await responseDict.json();
                 
                 loader.style.display = 'none';

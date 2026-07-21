@@ -269,6 +269,7 @@ def process_data():
     all_tags = []
     total_images = 0
     tag_to_category = {}
+    danbooru_tag_counts = Counter()
 
     # 1. Parse AITAG (NovelAI 4.5) data if exists
     if os.path.exists(INPUT_AITAG):
@@ -326,11 +327,13 @@ def process_data():
             danbooru_posts = json.load(f)
             
         for post in danbooru_posts:
-            total_images += 1
             tag_string = post.get("tag_string", "")
             # Convert space separated tag string to comma separated NAI style prompt
             clean_prompt_list = [clean_tag(t) for t in tag_string.split(" ") if t.strip()]
-            all_tags.extend(clean_prompt_list)
+            
+            # Count Danbooru tags
+            for t in clean_prompt_list:
+                danbooru_tag_counts[t.lower()] += 1
             
             # Map categories based on Danbooru tag fields
             chars = post.get("tag_string_character", "")
@@ -398,18 +401,32 @@ def process_data():
     tag_counts = Counter(all_tags)
     trans_dict = load_translation_dict()
     
+    # AITAGとDanbooruの両方のユニークタグの和集合を走査対象とする
+    all_unique_tags = set(tag_counts.keys()).union(set(danbooru_tag_counts.keys()))
+    
+    # AITAG出現数 + Danbooru出現数 の合計が多い順にソート
+    sorted_tags = sorted(all_unique_tags, key=lambda t: (tag_counts.get(t, 0) + danbooru_tag_counts.get(t, 0)), reverse=True)
+    
     tag_dict_rows = []
-    for tag, count in tag_counts.most_common():
+    for tag in sorted_tags:
+        count = tag_counts.get(tag, 0)  # AITAGでの出現数
+        dan_count = danbooru_tag_counts.get(tag, 0)  # Danbooruでの出現数
+        
         category = get_category_enhanced(tag, tag_to_category)
         
-        # しきい値の適用（一般3回以上、キャラクター・作品・アーティスト2回以上）
+        # しきい値の適用
         if category in ("Character", "Style", "Copyright"):
-            min_count = 2
+            # キャラクター・作品・絵師は、AITAGで1回以上、またはDanbooruで3回以上出現していれば採用
+            if count >= 1 or dan_count >= 3:
+                pass
+            else:
+                continue
         else:
-            min_count = 3
-            
-        if count < min_count:
-            continue
+            # 一般タグはAITAGで3回以上出現しているもののみ
+            if count >= 3:
+                pass
+            else:
+                continue
         
         meaning = get_meaning(tag, trans_dict)
         if not meaning:
@@ -421,7 +438,7 @@ def process_data():
             "tag": tag,
             "meaning": meaning,
             "category": category,
-            "count": count,
+            "count": count,  # AITAGでの出現数を表示（実用頻度）
             "usage_rate": f"{usage_rate:.2f}%"
         })
 
