@@ -148,6 +148,30 @@ def get_category(tag):
     else:
         return "Others"
 
+def get_category_enhanced(tag, tag_to_category):
+    tag_lower = tag.lower().strip()
+    if tag_lower in tag_to_category:
+        return tag_to_category[tag_lower]
+    return get_category(tag)
+
+def format_english_tag(tag, category):
+    clean_name = tag.replace("artist:", "")
+    clean_name = clean_name.replace("_", " ").strip()
+    
+    # Capitalize words
+    formatted = " ".join([word.capitalize() for word in clean_name.split(" ") if word])
+    
+    if category == "Style" and tag.startswith("artist:"):
+        return f"絵師: {formatted}風の絵柄"
+    elif category == "Style":
+        return f"{formatted}風の絵柄"
+    elif category == "Copyright":
+        return f"作品: {formatted}"
+    elif category == "Character":
+        return f"キャラ: {formatted}"
+        
+    return formatted
+
 def clean_tag(tag):
     tag = tag.strip()
     tag = re.sub(r'^\d+(\.\d+)?::', '', tag)
@@ -244,6 +268,7 @@ def process_data():
     flat_records = []
     all_tags = []
     total_images = 0
+    tag_to_category = {}
 
     # 1. Parse AITAG (NovelAI 4.5) data if exists
     if os.path.exists(INPUT_AITAG):
@@ -307,6 +332,28 @@ def process_data():
             clean_prompt_list = [clean_tag(t) for t in tag_string.split(" ") if t.strip()]
             all_tags.extend(clean_prompt_list)
             
+            # Map categories based on Danbooru tag fields
+            chars = post.get("tag_string_character", "")
+            if chars:
+                for t in chars.split(" "):
+                    t_clean = clean_tag(t)
+                    if t_clean:
+                        tag_to_category[t_clean.lower()] = "Character"
+            
+            artists = post.get("tag_string_artist", "")
+            if artists:
+                for t in artists.split(" "):
+                    t_clean = clean_tag(t)
+                    if t_clean:
+                        tag_to_category[t_clean.lower()] = "Style"
+
+            copyrights = post.get("tag_string_copyright", "")
+            if copyrights:
+                for t in copyrights.split(" "):
+                    t_clean = clean_tag(t)
+                    if t_clean:
+                        tag_to_category[t_clean.lower()] = "Copyright"
+            
             # Danbooru rating mapping: e -> explicit, q -> questionable, s -> sensitive, g -> general
             rating_map = {"e": "Explicit / NSFW", "q": "Questionable", "s": "Sensitive", "g": "General"}
             rating_str = rating_map.get(post.get("rating", ""), "Unknown")
@@ -353,11 +400,21 @@ def process_data():
     
     tag_dict_rows = []
     for tag, count in tag_counts.most_common():
-        if count < 10:  # Size threshold for GitHub table preview (count >= 10)
+        category = get_category_enhanced(tag, tag_to_category)
+        
+        # しきい値の適用（一般3回以上、キャラクター・作品・アーティスト2回以上）
+        if category in ("Character", "Style", "Copyright"):
+            min_count = 2
+        else:
+            min_count = 3
+            
+        if count < min_count:
             continue
         
         meaning = get_meaning(tag, trans_dict)
-        category = get_category(tag)
+        if not meaning:
+            meaning = format_english_tag(tag, category)
+            
         usage_rate = (count / total_images) * 100 if total_images else 0
         
         tag_dict_rows.append({

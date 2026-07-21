@@ -55,6 +55,7 @@ def fetch_posts(tags, target_count):
                     "tag_string": item.get("tag_string"),
                     "tag_string_character": item.get("tag_string_character"),
                     "tag_string_artist": item.get("tag_string_artist"),
+                    "tag_string_copyright": item.get("tag_string_copyright"),
                     "file_ext": item.get("file_ext"),
                     "width": item.get("image_width"),
                     "height": item.get("image_height"),

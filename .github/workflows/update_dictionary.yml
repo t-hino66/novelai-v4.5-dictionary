@@ -22,13 +22,13 @@ jobs:
 
       - name: Run AITAG Scraping Script
         run: |
-          # Fetch incremental updates (200 works)
-          python extract_tags.py 200
+          # Fetch incremental updates (1000 works)
+          python extract_tags.py 1000
 
       - name: Run Danbooru Scraping Script
         run: |
-          # Fetch incremental high score posts from Danbooru (200 posts)
-          python extract_danbooru_tags.py 200 "score:>=50"
+          # Fetch incremental high score posts from Danbooru (1000 posts)
+          python extract_danbooru_tags.py 1000 "score:>=50"
 
       - name: Run Build Dictionary Script
         run: |
