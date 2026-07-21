@@ -20,7 +20,7 @@ aitag.winおよび Danbooru API から抽出した統計データに基づく、
 ## 🔑 クオリティタグ鉄板セット
 | タグ | 意味 | 出現回数 | 使用率 |
 |---|---|---|---|
-| `masterpiece` | 倪作 (基本クオリティタグ) | 5472 | 137.90% |
+| `masterpiece` | 傑作 (基本クオリティタグ) | 5472 | 137.90% |
 | `very aesthetic` | 非常に美しい (美的タグ) | 4764 | 120.06% |
 | `best quality` | Best Quality | 2259 | 56.93% |
 | `highres` | 高画質 | 878 | 22.13% |
@@ -36,7 +36,7 @@ aitag.winおよび Danbooru API から抽出した統計データに基づく、
 |---|---|---|---|
 | `bikini` | ビキニ | 161 | 4.06% |
 | `lvibrant colors` | Lvibrant Colors | 315 | 7.94% |
-| `swimsuit` | 氰着 | 14 | 0.35% |
+| `swimsuit` | 水着 | 14 | 0.35% |
 | `skirt` | スカート | 101 | 2.55% |
 | `school uniform` | 制服 | 166 | 4.18% |
 | `shirt` | シャツ | 10 | 0.25% |
@@ -55,16 +55,16 @@ aitag.winおよび Danbooru API から抽出した統計データに基づく、
 |---|---|---|---|
 | `high contrast lighting` | High Contrast Lighting | 560 | 14.11% |
 | `volumetric lighting` | 空気感のある光 (光の筋) | 549 | 13.84% |
-| `rim lighting` | 輪郭を際立せる光 (リムライト) | 513 | 12.93% |
+| `rim lighting` | 輪郭を際立たせる光 (リムライト) | 513 | 12.93% |
 | `dramatic lighting` | Dramatic Lighting | 425 | 10.71% |
 | `cinematic lighting` | 映画風のドラマチックな照明 | 410 | 10.33% |
 | `soft shadows` | Soft Shadows | 390 | 9.83% |
 | `white background` | 白背景 | 377 | 9.50% |
 | `hard shadows` | Hard Shadows | 358 | 9.02% |
 | `specular highlights` | Specular Highlights | 355 | 8.95% |
-| `unity 8k wallpaper` | Unity 8k Wallpaper | 328 | 8.27% |
-| `glossy hair highlights` | Glossy Hair Highlights | 328 | 8.27% |
 | `key lighting` | Key Lighting | 328 | 8.27% |
+| `glossy hair highlights` | Glossy Hair Highlights | 328 | 8.27% |
+| `unity 8k wallpaper` | Unity 8k Wallpaper | 328 | 8.27% |
 | `outdoors` | 屋外 | 208 | 5.24% |
 | `photorealistic lighting` | Photorealistic Lighting | 311 | 7.84% |
 | `indoors` | 室内 | 201 | 5.07% |
