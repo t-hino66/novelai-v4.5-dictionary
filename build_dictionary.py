@@ -8,10 +8,12 @@ from collections import Counter
 # Inputs/Outputs
 INPUT_AITAG = "extracted_works.json"
 INPUT_DANBOORU = "danbooru_raw_works.json"
+INPUT_BOORU_EXTRA = "booru_extra_raw_works.json"
 DATABASE_JSON = "novelai_v4_5_database.json"
 DATABASE_CSV = "novelai_v4_5_database.csv"
 TAG_DICT_CSV = "novelai_v4_5_tag_dictionary.csv"
 MD_DICT_FILE = "novelai_v4_5_dictionary.md"
+NEG_DICT_JSON = "novelai_v4_5_neg_dictionary.json"
 
 MANUAL_JP_URL = "https://raw.githubusercontent.com/boorutan/booru-japanese-tag/master/danbooru-jp.csv"
 MACHINE_JP_URL = "https://raw.githubusercontent.com/boorutan/booru-japanese-tag/master/danbooru-machine-jp.csv"
@@ -135,6 +137,46 @@ AI_OVERRIDES = {
     "fate/grand_order": "Fate/Grand Order",
     "fgo": "Fate/Grand Order",
     "virtual_youtuber": "バーチャルYouTuber",
+
+    # ネガティブプロンプト専用用語
+    "worst quality": "最低品質 (作画崩壊防止)",
+    "low quality": "低品質 (品質維持)",
+    "normal quality": "標準品質 (高品質化のため除外)",
+    "bad quality": "悪品質 (粗い描画防止)",
+    "poorly drawn": "下手なデッサン・崩れた描き込み",
+    "bad anatomy": "破綻した解剖学 (身体構造崩れ防止)",
+    "bad hands": "破綻した手・崩れた指",
+    "missing fingers": "指の欠損",
+    "extra digit": "指の増殖 (指多発防止)",
+    "extra fingers": "指の増殖 (指多発防止)",
+    "fused fingers": "融合した指 (指くっつき防止)",
+    "too many fingers": "多すぎる指",
+    "bad feet": "破綻した足・崩れたつま先",
+    "missing arms": "腕の欠損",
+    "missing legs": "脚の欠損",
+    "extra arms": "余分な腕 (腕の増殖防止)",
+    "extra legs": "余分な脚 (脚の増殖防止)",
+    "mutated hands": "変異した手",
+    "mutation": "変異・作画崩壊",
+    "deformed": "変形・歪み",
+    "disfigured": "醜い変形・顔体の崩れ",
+    "malformed limbs": "不自然な形の四肢",
+    "long neck": "不自然に長い首",
+    "cross-eyed": "寄り目・ロンパリ",
+    "watermark": "ウォーターマーク (透かし文字除去)",
+    "signature": "絵師のサイン (署名ロゴ除去)",
+    "username": "ユーザー名・テキストロゴ除去",
+    "text": "余計な文字・ロゴテキスト除去",
+    "error": "エラー文字・ノイズ",
+    "cropped": "画面からはみ出たフレーミング",
+    "out of frame": "画面外への見切れ",
+    "jpeg artifacts": "JPEG圧縮ノイズ・画質劣化",
+    "blurry": "ぼやけた画像・ピント外れ",
+    "bad proportions": "不自然な頭身バランス",
+    "gross proportions": "極端に崩れたプロポーション",
+    "cloned face": "複製された同じ顔 (コピペ顔)",
+    "duplicate": "要素の重複・二重化",
+    "ugly": "醜い作画",
 }
 
 QUALITY_KEYWORDS = {'masterpiece', 'best quality', 'very aesthetic', 'absurdres', 'newest', 'highres', 'normal quality', 'low quality', 'worst quality', 'artistic error', 'aesthetic'}
@@ -286,6 +328,7 @@ def get_meaning(tag, trans_dict):
 def process_data():
     flat_records = []
     all_tags = []
+    all_neg_tags = []
     total_images = 0
     tag_to_category = {}
     danbooru_tag_counts = Counter()
@@ -313,9 +356,29 @@ def process_data():
                 prompt = img.get("prompt_text", "")
                 neg_prompt = img.get("negative_prompt", "")
                 
+                ai_json_str = img.get("ai_json")
+                if ai_json_str and not neg_prompt:
+                    try:
+                        ai_data = json.loads(ai_json_str)
+                        comment = ai_data.get("Comment", {})
+                        if isinstance(comment, str):
+                            try:
+                                comment = json.loads(comment)
+                            except:
+                                comment = {}
+                        if isinstance(comment, dict):
+                            neg_prompt = comment.get("uc") or ""
+                        if not neg_prompt:
+                            v4_neg = ai_data.get("v4_negative_prompt", {})
+                            if isinstance(v4_neg, dict):
+                                neg_prompt = v4_neg.get("caption", {}).get("base_caption", "")
+                    except Exception as e:
+                        pass
+                
                 clean_prompt_list = [clean_tag(t) for t in prompt.split(",") if t.strip()]
                 clean_neg_list = [clean_tag(t) for t in neg_prompt.split(",") if t.strip()]
                 all_tags.extend(clean_prompt_list)
+                all_neg_tags.extend(clean_neg_list)
                 
                 image_path = img.get("image_path", "")
                 image_url = ""
@@ -399,7 +462,37 @@ def process_data():
     else:
         print(f"Skipping {INPUT_DANBOORU} (not found).")
 
-    if not flat_records:
+    # 3. Parse Safebooru & Yande.re raw posts data if exists
+    if os.path.exists(INPUT_BOORU_EXTRA):
+        print(f"Parsing Safebooru & Yande.re posts data: {INPUT_BOORU_EXTRA}...")
+        with open(INPUT_BOORU_EXTRA, 'r', encoding='utf-8') as f:
+            booru_posts = json.load(f)
+            
+        for post in booru_posts:
+            tag_string = post.get("tag_string", "")
+            clean_prompt_list = [clean_tag(t) for t in tag_string.split(" ") if t.strip()]
+            
+            for t in clean_prompt_list:
+                danbooru_tag_counts[t.lower()] += 1
+
+            src = post.get("source", "booru")
+            work_id = str(post.get("id"))
+            flat_records.append({
+                "source": src,
+                "work_id": work_id,
+                "title": f"{src.capitalize()} Post {work_id}",
+                "model": f"{src.capitalize()} Base",
+                "prompt": ",".join(clean_prompt_list),
+                "negative_prompt": "",
+                "steps": "",
+                "scale": "",
+                "sampler": "",
+                "width": post.get("width"),
+                "height": post.get("height"),
+                "image_url": post.get("image_url", "")
+            })
+    else:
+        print(f"Skipping {INPUT_BOORU_EXTRA} (not found).")
         print("No source database found to build dictionary. Please run extract_tags.py or extract_danbooru_tags.py.")
         return
 
@@ -474,6 +567,28 @@ def process_data():
     print(f"Saving tag dictionary JSON: {TAG_DICT_JSON}")
     with open(TAG_DICT_JSON, 'w', encoding='utf-8') as f:
         json.dump(tag_dict_rows, f, ensure_ascii=False, indent=2)
+
+    # Build & Output Negative Tag Dictionary JSON for Web UI
+    neg_tag_counts = Counter(all_neg_tags)
+    neg_dict_rows = []
+    for neg_tag, c in neg_tag_counts.most_common():
+        if c < 2:
+            continue
+        meaning = get_meaning(neg_tag, trans_dict)
+        if not meaning:
+            meaning = format_english_tag(neg_tag, "Negative Prompt")
+        usage_rate = (c / total_images) * 100 if total_images else 0
+        neg_dict_rows.append({
+            "tag": neg_tag,
+            "meaning": meaning,
+            "category": "Negative",
+            "count": c,
+            "usage_rate": f"{usage_rate:.2f}%"
+        })
+
+    print(f"Saving negative tag dictionary JSON: {NEG_DICT_JSON} ({len(neg_dict_rows)} neg tags)")
+    with open(NEG_DICT_JSON, 'w', encoding='utf-8') as f:
+        json.dump(neg_dict_rows, f, ensure_ascii=False, indent=2)
 
     # Build Markdown Dictionary Guide
     print(f"Generating markdown dictionary guide: {MD_DICT_FILE}...")

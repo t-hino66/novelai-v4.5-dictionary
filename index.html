@@ -416,8 +416,8 @@
 
         .dict-controls {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 1.5rem;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 1rem;
             margin-bottom: 1.5rem;
         }
 
@@ -616,6 +616,28 @@
                         <button class="copy-btn" onclick="copyText('neg-prompt')">コピー</button>
                         <span id="neg-prompt" class="neg-prompt">ここにネガティブ呪文が出力されます</span>
                     </div>
+
+                    <div style="margin-top: 1.5rem;">
+                        <h3 style="color: #f43f5e; margin-bottom: 0.8rem;">🛡️ 鉄板ネガティブプロンプト プリセット (ワンクリックコピー)</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+                            <div class="preset-card" onclick="copyPreset('standard')" style="background:#0b0d10; border:1px solid var(--border-color); border-radius:10px; padding:1rem; cursor:pointer; transition:all 0.2s;">
+                                <div style="font-weight:bold; color:#60a5fa; margin-bottom:0.4rem;">🛡️ 基本・品質維持セット</div>
+                                <div style="font-size:0.8rem; color:var(--text-muted);">nsfw, lowres, worst quality, low quality, normal quality, bad quality, jpeg artifacts, blurry</div>
+                            </div>
+                            <div class="preset-card" onclick="copyPreset('hands')" style="background:#0b0d10; border:1px solid var(--border-color); border-radius:10px; padding:1rem; cursor:pointer; transition:all 0.2s;">
+                                <div style="font-weight:bold; color:#10b981; margin-bottom:0.4rem;">🤚 手足・作画崩れ防止セット</div>
+                                <div style="font-size:0.8rem; color:var(--text-muted);">bad anatomy, bad hands, missing fingers, extra digit, fewer digits, extra arms, extra legs, mutated hands, deformed</div>
+                            </div>
+                            <div class="preset-card" onclick="copyPreset('clean')" style="background:#0b0d10; border:1px solid var(--border-color); border-radius:10px; padding:1rem; cursor:pointer; transition:all 0.2s;">
+                                <div style="font-weight:bold; color:#f59e0b; margin-bottom:0.4rem;">✍️ 文字・ロゴ・切れ防止セット</div>
+                                <div style="font-size:0.8rem; color:var(--text-muted);">watermark, signature, username, text, error, logo, cropped, out of frame</div>
+                            </div>
+                            <div class="preset-card" onclick="copyPreset('full')" style="background:#0b0d10; border:1px solid var(--border-color); border-radius:10px; padding:1rem; cursor:pointer; transition:all 0.2s;">
+                                <div style="font-weight:bold; color:#ec4899; margin-bottom:0.4rem;">⭐ 完全版・鉄板フル装備 (推奨)</div>
+                                <div style="font-size:0.8rem; color:var(--text-muted);">worst quality, low quality, bad quality, bad anatomy, bad hands, missing fingers, extra digit, extra arms, extra legs, deformed, disfigured, watermark, signature, text, cropped, blurry, jpeg artifacts</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Co-occurrence Tags -->
@@ -650,6 +672,12 @@
             </div>
             
             <div class="dict-controls">
+                <div>
+                    <select id="dict-mode-select" class="form-control" style="background:#1e293b; color:#60a5fa; font-weight:bold;">
+                        <option value="pos">📖 ポジティブタグ図鑑</option>
+                        <option value="neg">🛡️ ネガティブプロンプト図鑑</option>
+                    </select>
+                </div>
                 <div>
                     <input type="text" id="dict-search" class="form-control" placeholder="タグ名、または意味（日本語）で検索...">
                 </div>
@@ -704,11 +732,29 @@
     <script>
         let db = [];
         let dictionary = [];
+        let negDictionary = [];
         
         // Dictionary Pagination and Filters
         let dictFiltered = [];
         let currentPage = 1;
         const pageSize = 50;
+
+        const presets = {
+            standard: "nsfw, lowres, worst quality, low quality, normal quality, bad quality, jpeg artifacts, blurry",
+            hands: "bad anatomy, bad hands, missing fingers, extra digit, fewer digits, extra arms, extra legs, mutated hands, deformed",
+            clean: "watermark, signature, username, text, error, logo, cropped, out of frame",
+            full: "worst quality, low quality, bad quality, bad anatomy, bad hands, missing fingers, extra digit, extra arms, extra legs, deformed, disfigured, watermark, signature, text, cropped, blurry, jpeg artifacts"
+        };
+
+        function copyPreset(key) {
+            if (presets[key]) {
+                navigator.clipboard.writeText(presets[key]).then(() => {
+                    alert("コピーしました:\n" + presets[key]);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+            }
+        }
 
         // Auto-load databases
         window.addEventListener('DOMContentLoaded', async () => {
@@ -723,11 +769,19 @@
                 // 2. Fetch dictionary database
                 const responseDict = await fetch(`novelai_v4_5_tag_dictionary.json?v=${cacheBuster}`);
                 dictionary = await responseDict.json();
+
+                // 3. Fetch negative dictionary database
+                try {
+                    const responseNegDict = await fetch(`novelai_v4_5_neg_dictionary.json?v=${cacheBuster}`);
+                    negDictionary = await responseNegDict.json();
+                } catch(ne) {
+                    console.warn("Negative dictionary loading skipped:", ne);
+                }
                 
                 loader.style.display = 'none';
                 
                 // Update total count in header
-                document.getElementById('db-count').textContent = `(収録画像: ${db.length}件 | 辞書タグ: ${dictionary.length}件)`;
+                document.getElementById('db-count').textContent = `(収録画像: ${db.length}件 | ポジティブ辞書: ${dictionary.length}件 | ネガティブ辞書: ${negDictionary.length}件)`;
                 document.getElementById('dict-count').textContent = `全 ${dictionary.length} 件の統計辞書`;
                 
                 // Populate samplers dynamically
@@ -954,6 +1008,18 @@
         // ---------------------------------
         // Tag Dictionary Tab logic
         // ---------------------------------
+        document.getElementById('dict-mode-select').addEventListener('change', () => {
+            const mode = document.getElementById('dict-mode-select').value;
+            const categorySelect = document.getElementById('dict-filter-category');
+            if (mode === 'neg') {
+                categorySelect.disabled = true;
+                document.getElementById('dict-count').textContent = `全 ${negDictionary.length} 件のネガティブ辞書`;
+            } else {
+                categorySelect.disabled = false;
+                document.getElementById('dict-count').textContent = `全 ${dictionary.length} 件のポジティブ辞書`;
+            }
+            applyDictionaryFilters();
+        });
         document.getElementById('dict-search').addEventListener('input', applyDictionaryFilters);
         document.getElementById('dict-filter-category').addEventListener('change', applyDictionaryFilters);
         document.getElementById('dict-sort-key').addEventListener('change', applyDictionaryFilters);
@@ -964,14 +1030,17 @@
         }
 
         function applyDictionaryFilters() {
+            const mode = document.getElementById('dict-mode-select').value;
+            const targetDict = mode === 'neg' ? negDictionary : dictionary;
+
             const query = document.getElementById('dict-search').value.toLowerCase().trim();
             const category = document.getElementById('dict-filter-category').value;
             const sortKey = document.getElementById('dict-sort-key').value;
 
             // 1. Filter
-            dictFiltered = dictionary.filter(item => {
-                // Category Filter
-                if (category !== 'all' && item.category !== category) return false;
+            dictFiltered = targetDict.filter(item => {
+                // Category Filter (only for positive dictionary)
+                if (mode === 'pos' && category !== 'all' && item.category !== category) return false;
                 
                 // Text Search Filter (Tag or Meaning)
                 if (query) {

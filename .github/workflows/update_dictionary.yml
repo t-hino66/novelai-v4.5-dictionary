@@ -30,6 +30,11 @@ jobs:
           # Fetch incremental high score posts from Danbooru (1000 posts)
           python extract_danbooru_tags.py 1000 "score:>=50"
 
+      - name: Run Extra Booru (Safebooru / Yandere) Scraping Script
+        run: |
+          # Fetch incremental extra posts (500 posts)
+          python extract_booru_extra.py 500
+
       - name: Run Build Dictionary Script
         run: |
           python build_dictionary.py
