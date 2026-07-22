@@ -626,6 +626,7 @@
         <button id="nav-search-btn" class="tab-btn active" onclick="switchTab('search-tab')">🔮 構図・呪文検索</button>
         <button id="nav-builder-btn" class="tab-btn" onclick="switchTab('builder-tab')">🧙‍♂️ 呪文ビルダー & NAI重み付け</button>
         <button id="nav-dict-btn" class="tab-btn" onclick="switchTab('dict-tab')">📖 タグ日本語図鑑</button>
+        <button id="nav-guide-btn" class="tab-btn" onclick="switchTab('guide-tab')">💡 NAI攻略ノウハウ & データ分析</button>
     </div>
 
     <!-- Tab 1: Search Module -->
@@ -912,6 +913,131 @@
         </div>
     </div>
 
+    <!-- Tab 4: NAI V4.5 Knowledge & Data Analytics Module -->
+    <div id="guide-tab" class="tab-content">
+        <div class="dict-container" style="display:flex; flex-direction:column; gap:1.5rem;">
+            <div class="section-title">
+                <span>💡 NovelAI V4.5 攻略ノウハウ & 5,000件データ分析レポート</span>
+            </div>
+
+            <!-- Section 1: Base Parameters -->
+            <div style="background:#0b0d10; border:1px solid var(--border-color); border-radius:12px; padding:1.2rem;">
+                <h3 style="color:#60a5fa; margin-top:0; margin-bottom:0.8rem; font-size:1.1rem; display:flex; align-items:center; gap:0.5rem;">
+                    <span>📘 1. NAI V4.5 基本生成パラメータ攻略</span>
+                </h3>
+                <div style="color:#cbd5e1; font-size:0.9rem; line-height:1.6; display:flex; flex-direction:column; gap:0.6rem;">
+                    <div>
+                        <strong style="color:#f59e0b;">&bull; Prompt Guidance (CPG / ガイダンス度合い): 推奨 5.0 〜 7.0</strong><br>
+                        AIがプロンプト命令にどれだけ従うかの数値。<strong>低め(3〜4)</strong>だと柔らかく幻想的でAIの自主的な描き込みが増えます。<strong>高すぎ(8〜10+)</strong>にするとコントラストが過剰になり「揚げ物感」と呼ばれる画質劣化が発生します。
+                    </div>
+                    <div>
+                        <strong style="color:#f59e0b;">&bull; Prompt Guidance Rescale: 推奨 0.0 〜 0.5</strong><br>
+                        CPGを高く設定した際、画像の色飽和や破綻を抑え込む「セーフティブレーキ」機能です。画面のコントラストがキツいと感じたらRescaleを上げるかCPGを下げましょう。
+                    </div>
+                    <div>
+                        <strong style="color:#f59e0b;">&bull; Steps (生成ステップ数): 28 (標準)</strong><br>
+                        描き込み精緻化の回数。28で最もバランス良く仕上がります。高すぎると色が飽和するため注意が必要です。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Recommended Tag Order -->
+            <div style="background:#0b0d10; border:1px solid var(--border-color); border-radius:12px; padding:1.2rem;">
+                <h3 style="color:#10b981; margin-top:0; margin-bottom:0.8rem; font-size:1.1rem; display:flex; align-items:center; gap:0.5rem;">
+                    <span>📐 2. NovelAI 公式推奨の「プロンプト5段構造」</span>
+                </h3>
+                <p style="color:#cbd5e1; font-size:0.85rem; margin-top:0; margin-bottom:0.8rem;">
+                    プロンプトは上から下（左から右）へレイヤー状に評価されます。全体構図を決定づけるタグを前半に置き、細部の指定を後半に配置するのが黄金パターンです。
+                </p>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:0.8rem;">
+                    <div style="background:#1e293b; padding:0.8rem; border-radius:8px; border:1px solid #334155;">
+                        <div style="font-weight:bold; color:#60a5fa;">1. [Frame] 構図・頭身</div>
+                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:0.3rem;">1girl, cowboy shot, from above</div>
+                    </div>
+                    <div style="background:#1e293b; padding:0.8rem; border-radius:8px; border:1px solid #334155;">
+                        <div style="font-weight:bold; color:#10b981;">2. [Setting] 背景・光効果</div>
+                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:0.3rem;">classroom, sunlight, depth of field</div>
+                    </div>
+                    <div style="background:#1e293b; padding:0.8rem; border-radius:8px; border:1px solid #334155;">
+                        <div style="font-weight:bold; color:#f59e0b;">3. [Creator] 絵師・年代</div>
+                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:0.3rem;">artist:yoneyama_mai, year 2024</div>
+                    </div>
+                    <div style="background:#1e293b; padding:0.8rem; border-radius:8px; border:1px solid #334155;">
+                        <div style="font-weight:bold; color:#ec4899;">4. [Style/Render] 画風・品質</div>
+                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:0.3rem;">anime coloring, masterpiece, highres</div>
+                    </div>
+                    <div style="background:#1e293b; padding:0.8rem; border-radius:8px; border:1px solid #334155;">
+                        <div style="font-weight:bold; color:#a7f3d0;">5. [Character] キャラ詳細</div>
+                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:0.3rem;">blue eyes, smile, standing, dress</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: Data Analytics & Trends -->
+            <div style="background:#0b0d10; border:1px solid var(--border-color); border-radius:12px; padding:1.2rem;">
+                <h3 style="color:#f59e0b; margin-top:0; margin-bottom:0.8rem; font-size:1.1rem; display:flex; align-items:center; gap:0.5rem;">
+                    <span>📊 3. 5,000件のデータから判明した実証トレンド ＆ 黄金法則</span>
+                </h3>
+                <div style="display:flex; flex-direction:column; gap:0.8rem; color:#cbd5e1; font-size:0.9rem; line-height:1.6;">
+                    <div style="background:#1e293b; padding:0.9rem; border-radius:8px;">
+                        <strong style="color:#60a5fa; font-size:0.95rem;">👑 【クオリティタグの黄金比率】: 単なる盛るだけはNG</strong><br>
+                        当データベース（5,168件）の分析結果、<code>masterpiece</code> (137.9%) と <code>very aesthetic</code> (120.0%) が突出した2大人気タグでした。タグを20個も30個も過剰に盛り込むよりも、<code>masterpiece, very aesthetic, absurdres</code> の3つをベースにする方が、V4.5本来の繊細な線画とクリアな発色が最大限に発揮されます。
+                    </div>
+                    <div style="background:#1e293b; padding:0.9rem; border-radius:8px;">
+                        <strong style="color:#10b981; font-size:0.95rem;">💡 【ライティング（光効果）によるクオリティの劇的向上】</strong><br>
+                        上位統計において <code>high contrast lighting</code> (14.1%), <code>volumetric lighting</code> (13.8%), <code>rim lighting</code> (12.9%), <code>dramatic lighting</code> (10.7%) が集中しています。キャラクター単体指定だけでなく「光の差し込み（リムライトや被写界深度）」をプロンプトに入れることが、イラストに圧倒的なプロっぽさを与える最大の秘密です。
+                    </div>
+                    <div style="background:#1e293b; padding:0.9rem; border-radius:8px;">
+                        <strong style="color:#ec4899; font-size:0.95rem;">🎨 【絵師3段ブレンド法 (Artist Vector Blending)】</strong><br>
+                        高スコア画像では、1人の絵師指定ではなく <code>0.8::artist:絵師A::, 2.0::artist:絵師B::</code> のように複数の絵師を数値重みで組み合わせる手法が主流です。
+                        <br>&bull; <strong>前半</strong>: デッサン・頭身・ポーズが安定した絵師
+                        <br>&bull; <strong>中盤</strong>: 塗りの質感や背景の空気が綺麗な絵師
+                        <br>&bull; <strong>後半</strong>: 瞳の描き込みや表情が繊細な絵師
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4: Advanced Weighting -->
+            <div style="background:#0b0d10; border:1px solid var(--border-color); border-radius:12px; padding:1.2rem;">
+                <h3 style="color:#ec4899; margin-top:0; margin-bottom:0.8rem; font-size:1.1rem; display:flex; align-items:center; gap:0.5rem;">
+                    <span>⚡ 4. 最新ベクトル重み付け ＆ マイナス重みの裏技</span>
+                </h3>
+                <div style="color:#cbd5e1; font-size:0.9rem; line-height:1.6; display:flex; flex-direction:column; gap:0.6rem;">
+                    <div>
+                        <strong style="color:#60a5fa;">&bull; 最新ベクトル重み: 数値::tag::</strong><br>
+                        <code>1.2::masterpiece::</code> や <code>2.0::artist:yoneyama_mai::</code> のように記述。NAI V4/V4.5 の埋め込みベクトルに最も正確に重みを反映できます。※数字で終わるタグ（例: <code>1girl</code>）は <code>1.2::1girl ::</code> のようにスペースを挟んで誤作動を防ぎます。
+                    </div>
+                    <div>
+                        <strong style="color:#f43f5e;">&bull; マイナス重み指定: -数値::tag:: (V4.5の超強力テクニック)</strong><br>
+                        ネガティブプロンプト枠に入れるのではなく、プロンプト内で <code>-1::hat::</code> と指定することで<strong>帽子要素のみピンポイント除去</strong>できます。また <code>-1::monochrome::</code> とすることで白黒の逆（＝鮮やかな色彩追加）効果が得られます。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 5: Negative Prompt Design -->
+            <div style="background:#0b0d10; border:1px solid var(--border-color); border-radius:12px; padding:1.2rem;">
+                <h3 style="color:#f43f5e; margin-top:0; margin-bottom:0.8rem; font-size:1.1rem; display:flex; align-items:center; gap:0.5rem;">
+                    <span>🛡️ 5. ネガティブプロンプトの設計原則</span>
+                </h3>
+                <div style="color:#cbd5e1; font-size:0.9rem; line-height:1.6;">
+                    当データベース抽出の1,335件のネガティブプロンプトの分析より、ネガティブ枠には以下の2大系統をセットで投入するのが最も効果的です：
+                    <br>1. <strong>画質低下・ノイズ防止</strong>: <code>worst quality, low quality, jpeg artifacts, blurry</code>
+                    <br>2. <strong>人体破綻・指くっつき防止</strong>: <code>bad anatomy, bad hands, missing fingers, extra digit, deformed</code>
+                </div>
+            </div>
+
+            <!-- Section 6: Vibe Transfer -->
+            <div style="background:#0b0d10; border:1px solid var(--border-color); border-radius:12px; padding:1.2rem;">
+                <h3 style="color:#a7f3d0; margin-top:0; margin-bottom:0.8rem; font-size:1.1rem; display:flex; align-items:center; gap:0.5rem;">
+                    <span>🖼️ 6. Vibe Transfer & References (参照イラスト) 活用のコツ</span>
+                </h3>
+                <div style="color:#cbd5e1; font-size:0.9rem; line-height:1.6;">
+                    参考画像をアップロードして絵柄を一致させるVibe機能は、<strong>Information Extracted: 0.7 前後</strong>、<strong>Strength: 1.0 〜 1.2</strong> が最も安定します。画風ブレを防ぎたい場合は、前述の「絵師タグ」とVibeを少量だけ重ねがけすると、プロ級の絵柄再現が可能になります。
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         let db = [];
         let dictionary = [];
@@ -1003,6 +1129,9 @@
                 const btn = document.getElementById('nav-dict-btn');
                 if (btn) btn.classList.add('active');
                 applyDictionaryFilters();
+            } else if (tabId === 'guide-tab') {
+                const btn = document.getElementById('nav-guide-btn');
+                if (btn) btn.classList.add('active');
             }
         }
 
