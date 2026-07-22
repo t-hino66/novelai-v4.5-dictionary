@@ -623,9 +623,9 @@
 
     <!-- Tab Buttons -->
     <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('search-tab')">🔮 構図・呪文検索</button>
-        <button class="tab-btn" onclick="switchTab('builder-tab')">🧙‍♂️ 呪文ビルダー & NAI重み付け</button>
-        <button class="tab-btn" onclick="switchTab('dict-tab')">📖 タグ日本語図鑑</button>
+        <button id="nav-search-btn" class="tab-btn active" onclick="switchTab('search-tab')">🔮 構図・呪文検索</button>
+        <button id="nav-builder-btn" class="tab-btn" onclick="switchTab('builder-tab')">🧙‍♂️ 呪文ビルダー & NAI重み付け</button>
+        <button id="nav-dict-btn" class="tab-btn" onclick="switchTab('dict-tab')">📖 タグ日本語図鑑</button>
     </div>
 
     <!-- Tab 1: Search Module -->
@@ -980,16 +980,26 @@
 
         // Tab Switcher
         function switchTab(tabId) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // Remove active class from main navigation buttons and all tab contents
+            document.querySelectorAll('.tabs > .tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             
+            const targetContent = document.getElementById(tabId);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+
             if (tabId === 'search-tab') {
-                document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
-                document.getElementById('search-tab').classList.add('active');
-            } else {
-                document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
-                document.getElementById('dict-tab').classList.add('active');
-                renderDictionaryTable();
+                const btn = document.getElementById('nav-search-btn');
+                if (btn) btn.classList.add('active');
+            } else if (tabId === 'builder-tab') {
+                const btn = document.getElementById('nav-builder-btn');
+                if (btn) btn.classList.add('active');
+                renderBuilderExploreList();
+            } else if (tabId === 'dict-tab') {
+                const btn = document.getElementById('nav-dict-btn');
+                if (btn) btn.classList.add('active');
+                applyDictionaryFilters();
             }
         }
 
