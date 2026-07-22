@@ -513,6 +513,16 @@ def process_data():
     tag_counts = Counter(all_tags)
     trans_dict = load_translation_dict()
     
+    # Build tag sample image lookup
+    tag_sample_images = {}
+    for r in flat_records:
+        img_url = r.get("image_url")
+        if img_url:
+            for t in r.get("prompt", "").split(","):
+                t_clean = t.strip().lower()
+                if t_clean and t_clean not in tag_sample_images:
+                    tag_sample_images[t_clean] = img_url
+
     # AITAGとDanbooruの両方のユニークタグの和集合を走査対象とする
     all_unique_tags = set(tag_counts.keys()).union(set(danbooru_tag_counts.keys()))
     
@@ -545,19 +555,21 @@ def process_data():
             meaning = format_english_tag(tag, category)
             
         usage_rate = (count / total_images) * 100 if total_images else 0
+        sample_img = tag_sample_images.get(tag.lower(), "")
         
         tag_dict_rows.append({
             "tag": tag,
             "meaning": meaning,
             "category": category,
             "count": count,  # AITAGでの出現数を表示（実用頻度）
-            "usage_rate": f"{usage_rate:.2f}%"
+            "usage_rate": f"{usage_rate:.2f}%",
+            "sample_image": sample_img
         })
 
     # Output tag dictionary CSV
     print(f"Saving tag dictionary: {TAG_DICT_CSV} ({len(tag_dict_rows)} tags)")
     with open(TAG_DICT_CSV, 'w', encoding='utf-8', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=["tag", "meaning", "category", "count", "usage_rate"])
+        writer = csv.DictWriter(f, fieldnames=["tag", "meaning", "category", "count", "usage_rate", "sample_image"])
         writer.writeheader()
         for r in tag_dict_rows:
             writer.writerow(r)
