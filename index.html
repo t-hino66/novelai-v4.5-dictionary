@@ -1035,6 +1035,27 @@
                     参考画像をアップロードして絵柄を一致させるVibe機能は、<strong>Information Extracted: 0.7 前後</strong>、<strong>Strength: 1.0 〜 1.2</strong> が最も安定します。画風ブレを防ぎたい場合は、前述の「絵師タグ」とVibeを少量だけ重ねがけすると、プロ級の絵柄再現が可能になります。
                 </div>
             </div>
+
+            <!-- Section 7: Negative Vibe Research -->
+            <div style="background:#0b0d10; border:1px solid var(--border-color); border-radius:12px; padding:1.2rem;">
+                <h3 style="color:#c084fc; margin-top:0; margin-bottom:0.8rem; font-size:1.1rem; display:flex; align-items:center; gap:0.5rem;">
+                    <span>🧪 7. 徹底検証: Vibe & Reference のマイナス参照 (Negative Vibe)</span>
+                </h3>
+                <div style="color:#cbd5e1; font-size:0.9rem; line-height:1.6; display:flex; flex-direction:column; gap:0.6rem;">
+                    <div>
+                        <strong style="color:#c084fc;">&bull; 数値の手入力による「負の参照」が可能</strong><br>
+                        Vibe Transfer / Reference の Strength（強度）スライダーの数値ラベルを直接入力で <code>-0.5</code> 〜 <code>-1.0</code> などの<strong>負の数値</strong>に設定できます。これにより、アップロードした画像が持つ「嫌な背景ノイズ・不快な色調・画風のしつこい癖」を生成結果から直接引き算（減算）できます。
+                    </div>
+                    <div>
+                        <strong style="color:#f59e0b;">&bull; マイナス設定時の推奨パラメータ</strong><br>
+                        マイナス参照を使う場合は、<strong>Information Extracted (情報抽出量): 0.1 〜 0.2 前後</strong>に留めるのがコツです（抽出量を高めすぎると全体が崩壊するため）。
+                    </div>
+                    <div>
+                        <strong style="color:#60a5fa;">&bull; 正＋負のペアリング技 (Positive + Negative Pair)</strong><br>
+                        欲しい絵柄の画像を Positive (例: <code>+0.8</code>) で入れつつ、除去したい背景や不要要素だけを持つ画像を Minus (例: <code>-0.5</code>) で同時指定することで、キャラ特性を残したままノイズだけを相殺できます。
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
