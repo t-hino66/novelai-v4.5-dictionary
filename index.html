@@ -428,6 +428,76 @@
             }
         }
 
+        /* 2-Column Split Builder Layout */
+        .builder-workspace {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 992px) {
+            .builder-workspace {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .builder-panel {
+            background-color: #0b0d10;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .builder-tag-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.35rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid #334155;
+            background: #1e293b;
+            color: #f8fafc;
+        }
+
+        .builder-tag-item:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        /* Weight Modifiers Colors */
+        .weight-strong { background: #1e3a8a !important; border-color: #3b82f6 !important; color: #93c5fd !important; }
+        .weight-super { background: #312e81 !important; border-color: #6366f1 !important; color: #c7d2fe !important; }
+        .weight-curly { background: #064e3b !important; border-color: #10b981 !important; color: #a7f3d0 !important; }
+        .weight-weak { background: #713f12 !important; border-color: #f59e0b !important; color: #fde68a !important; }
+
+        /* Weight Popover Modal */
+        .weight-popover-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .weight-popover {
+            background: #1e293b;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            width: 360px;
+            max-width: 90%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
         /* Table Design */
         .dict-table-container {
             overflow-x: auto;
@@ -664,60 +734,111 @@
         </div>
     </div>
 
-    <!-- Tab 2: NAI V4.5 Prompt Builder & Weighting Module -->
+    <!-- Tab 2: NAI V4.5 2-Column Split Prompt Studio -->
     <div id="builder-tab" class="tab-content">
         <div class="dict-container">
-            <div class="section-title">
-                <span>🧙‍♂️ NovelAI V4.5 呪文組み立てビルダー & 最新重み付けコントローラー</span>
-            </div>
-
-            <!-- Quality Booster & Quick Actions -->
-            <div style="background:#0b0d10; border:1px solid var(--border-color); border-radius:12px; padding:1.2rem; margin-bottom:1.5rem;">
-                <div style="font-weight:bold; color:#60a5fa; margin-bottom:0.8rem; display:flex; justify-content:space-between; align-items:center;">
-                    <span>✨ ワンクリック推奨アタッチメント</span>
-                </div>
-                <div style="display:flex; gap:0.8rem; flex-wrap:wrap;">
-                    <button class="btn" onclick="addQualityBooster()" style="background:#2563eb; font-size:0.85rem; padding:0.4rem 1rem;">✨ NAI V4.5 推奨品質タグ構文を追加</button>
-                    <button class="btn" onclick="cleanBuilderPrompts()" style="background:#059669; font-size:0.85rem; padding:0.4rem 1rem;">🧹 プロンプトクレンジング (重複除外・カンマ整形)</button>
-                    <button class="btn" onclick="clearBuilder()" style="background:#dc2626; font-size:0.85rem; padding:0.4rem 1rem;">🗑️ すべてクリア</button>
+            <div class="section-title" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+                <span>🧙‍♂️ NovelAI V4.5 プロンプトスタジオ (左右2分割ワークスペース)</span>
+                <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                    <button class="btn" onclick="addQualityBooster()" style="background:#2563eb; font-size:0.8rem; padding:0.3rem 0.8rem;">✨ 推奨品質</button>
+                    <button class="btn" onclick="addPresetNegatives()" style="background:#f43f5e; font-size:0.8rem; padding:0.3rem 0.8rem;">🛡️ 鉄板ネガセット</button>
+                    <button class="btn" onclick="cleanBuilderPrompts()" style="background:#059669; font-size:0.8rem; padding:0.3rem 0.8rem;">🧹 重複削除・整頓</button>
+                    <button class="btn" onclick="clearBuilder()" style="background:#dc2626; font-size:0.8rem; padding:0.3rem 0.8rem;">🗑️ クリア</button>
                 </div>
             </div>
 
-            <!-- Preset Category Selection Chips -->
-            <div style="background:#0b0d10; border:1px solid var(--border-color); border-radius:12px; padding:1.2rem; margin-bottom:1.5rem;">
-                <div style="font-weight:bold; color:var(--text-color); margin-bottom:0.8rem;">🏷️ クイックタグ追加 (タップで追加)</div>
-                
-                <div style="display:flex; gap:0.5rem; margin-bottom:0.8rem; flex-wrap:wrap;">
-                    <button class="tab-btn active" style="font-size:0.85rem; padding:0.3rem 0.8rem;" onclick="showCategoryTags('quality')">✨ クオリティ</button>
-                    <button class="tab-btn" style="font-size:0.85rem; padding:0.3rem 0.8rem;" onclick="showCategoryTags('character')">👧 キャラ・頭身</button>
-                    <button class="tab-btn" style="font-size:0.85rem; padding:0.3rem 0.8rem;" onclick="showCategoryTags('clothing')">👗 衣装・服飾</button>
-                    <button class="tab-btn" style="font-size:0.85rem; padding:0.3rem 0.8rem;" onclick="showCategoryTags('pose')">💃 構図・ポーズ</button>
-                    <button class="tab-btn" style="font-size:0.85rem; padding:0.3rem 0.8rem;" onclick="showCategoryTags('bg')">🌄 背景・ライティング</button>
-                    <button class="tab-btn" style="font-size:0.85rem; padding:0.3rem 0.8rem;" onclick="showCategoryTags('style')">🎨 絵師・画風</button>
+            <div class="builder-workspace">
+                <!-- Left Panel: Tag Explorer & Search -->
+                <div class="builder-panel">
+                    <div style="font-weight:bold; color:#60a5fa;">👈 1. タグを探す・選ぶ (タップで追加)</div>
+                    
+                    <div>
+                        <input type="text" id="builder-tag-search" class="form-control" placeholder="タグ名、日本語の意味で検索..." oninput="filterBuilderExploreTags()">
+                    </div>
+
+                    <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+                        <button class="tab-btn active" id="bcat-quality" style="font-size:0.75rem; padding:0.25rem 0.6rem;" onclick="setBuilderExploreCat('quality')">✨品質</button>
+                        <button class="tab-btn" id="bcat-character" style="font-size:0.75rem; padding:0.25rem 0.6rem;" onclick="setBuilderExploreCat('character')">👧キャラ</button>
+                        <button class="tab-btn" id="bcat-clothing" style="font-size:0.75rem; padding:0.25rem 0.6rem;" onclick="setBuilderExploreCat('clothing')">👗衣装</button>
+                        <button class="tab-btn" id="bcat-pose" style="font-size:0.75rem; padding:0.25rem 0.6rem;" onclick="setBuilderExploreCat('pose')">💃構図</button>
+                        <button class="tab-btn" id="bcat-bg" style="font-size:0.75rem; padding:0.25rem 0.6rem;" onclick="setBuilderExploreCat('bg')">🌄背景</button>
+                        <button class="tab-btn" id="bcat-style" style="font-size:0.75rem; padding:0.25rem 0.6rem;" onclick="setBuilderExploreCat('style')">🎨画風</button>
+                        <button class="tab-btn" id="bcat-neg" style="font-size:0.75rem; padding:0.25rem 0.6rem;" onclick="setBuilderExploreCat('neg')">🛡️ネガ</button>
+                    </div>
+
+                    <div id="builder-explore-list" style="display:flex; flex-direction:column; gap:0.5rem; max-height:480px; overflow-y:auto; padding-right:0.4rem;">
+                        <!-- Dynamic Explore List -->
+                    </div>
                 </div>
 
-                <div id="quick-tags-container" style="display:flex; gap:0.5rem; flex-wrap:wrap; max-height:160px; overflow-y:auto; padding:0.5rem; background:rgba(255,255,255,0.02); border-radius:8px;">
-                    <!-- Dynamic quick tags -->
+                <!-- Right Panel: Active Canvas Workspace -->
+                <div class="builder-panel">
+                    <div style="font-weight:bold; color:#f59e0b;">👉 2. 呪文構築キャンバス (タップで重み調整)</div>
+                    
+                    <!-- Positive Canvas -->
+                    <div>
+                        <div style="font-weight:600; color:#3b82f6; font-size:0.9rem; margin-bottom:0.4rem; display:flex; justify-content:space-between; align-items:center;">
+                            <span>🟦 ポジティブプロンプト</span>
+                            <button class="copy-btn" onclick="copyText('builder-pos-output')" style="font-size:0.75rem; padding:0.2rem 0.5rem;">コピー</button>
+                        </div>
+                        <div id="builder-pos-chips" style="display:flex; gap:0.5rem; flex-wrap:wrap; min-height:80px; padding:0.6rem; background:rgba(255,255,255,0.02); border:1px solid #334155; border-radius:8px; align-items:flex-start; align-content:flex-start;">
+                            <span style="color:var(--text-muted); font-size:0.85rem;">左のタグリストから「+ ポジ」をタップして追加</span>
+                        </div>
+                        <textarea id="builder-pos-output" class="form-control" style="margin-top:0.5rem; height:70px; font-family:monospace; font-size:0.85rem;" placeholder="ポジティブ呪文テキスト..."></textarea>
+                    </div>
+
+                    <!-- Negative Canvas -->
+                    <div style="margin-top:0.5rem;">
+                        <div style="font-weight:600; color:#f43f5e; font-size:0.9rem; margin-bottom:0.4rem; display:flex; justify-content:space-between; align-items:center;">
+                            <span>🟥 ネガティブプロンプト</span>
+                            <button class="copy-btn" onclick="copyText('builder-neg-output')" style="font-size:0.75rem; padding:0.2rem 0.5rem;">コピー</button>
+                        </div>
+                        <div id="builder-neg-chips" style="display:flex; gap:0.5rem; flex-wrap:wrap; min-height:80px; padding:0.6rem; background:rgba(255,255,255,0.02); border:1px solid #334155; border-radius:8px; align-items:flex-start; align-content:flex-start;">
+                            <span style="color:var(--text-muted); font-size:0.85rem;">左のタグリストから「+ ネガ」をタップして追加</span>
+                        </div>
+                        <textarea id="builder-neg-output" class="form-control" style="margin-top:0.5rem; height:70px; font-family:monospace; font-size:0.85rem;" placeholder="ネガティブ呪文テキスト..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Weight Popover Modal Container -->
+    <div id="weight-popover-modal" class="weight-popover-overlay" style="display:none;">
+        <div class="weight-popover">
+            <div style="font-weight:bold; color:#60a5fa; margin-bottom:0.8rem; display:flex; justify-content:space-between; align-items:center;">
+                <span>🎛️ NAI 最新重み調整</span>
+                <button onclick="closeWeightPopover()" style="background:transparent; border:none; color:#94a3b8; font-size:1.2rem; cursor:pointer;">✕</button>
+            </div>
+            <div id="popover-tag-name" style="font-weight:bold; color:#fff; font-size:1.1rem; margin-bottom:1rem; word-break:break-all;">tag</div>
+            
+            <div style="margin-bottom:1rem;">
+                <label style="font-size:0.85rem; color:var(--text-muted); display:block; margin-bottom:0.4rem;">重み付け形式 (Weight Mode)</label>
+                <select id="popover-mode-select" class="form-control" onchange="onWeightModeChange()">
+                    <option value="vector">⚡ NAI V4/V4.5 最新ベクトル重み (数値::tag::)</option>
+                    <option value="curly">波括弧強め ({tag})</option>
+                    <option value="bracket">角括弧弱め ([tag])</option>
+                    <option value="normal">標準 (1.0)</option>
+                </select>
+            </div>
+
+            <div id="popover-slider-box" style="margin-bottom:1.5rem;">
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:0.4rem;">
+                    <span>重み倍率:</span>
+                    <span id="popover-weight-val-display" style="font-weight:bold; color:#3b82f6;">1.2</span>
+                </div>
+                <input type="range" id="popover-weight-slider" min="0.3" max="2.5" step="0.1" value="1.2" style="width:100%; cursor:pointer;" oninput="onWeightSliderChange(this.value)">
+                <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-muted); margin-top:0.2rem;">
+                    <span>0.3 (弱)</span>
+                    <span>1.0 (標準)</span>
+                    <span>1.5 (強)</span>
+                    <span>2.5 (超強)</span>
                 </div>
             </div>
 
-            <!-- Active Builder Tags List with Weighting Controls -->
-            <div style="background:#0b0d10; border:1px solid var(--border-color); border-radius:12px; padding:1.2rem; margin-bottom:1.5rem;">
-                <div style="font-weight:bold; color:#f59e0b; margin-bottom:0.8rem;">⚡ 組み立て中のプロンプトタグ (個別に NAI V4.5 最新重み付け `数値::tag::` や `{}` を変更可能)</div>
-                <div id="builder-chips-container" style="display:flex; gap:0.6rem; flex-wrap:wrap; min-height:60px; align-items:center;">
-                    <span style="color:var(--text-muted); font-size:0.9rem;">上のクイックタグをタップするか、プロンプトを入力して追加してください</span>
-                </div>
-            </div>
-
-            <!-- Final Output Box -->
-            <div style="background:#0b0d10; border:1px solid var(--border-color); border-radius:12px; padding:1.2rem;">
-                <div style="font-weight:bold; color:#3b82f6; margin-bottom:0.8rem; display:flex; justify-content:space-between; align-items:center;">
-                    <span>📜 完成プロンプト文 (NovelAI 推奨タグ順)</span>
-                    <button class="copy-btn" onclick="copyText('builder-output-text')">プロンプトをコピー</button>
-                </div>
-                <div class="prompt-box">
-                    <textarea id="builder-output-text" class="form-control" style="width:100%; height:100px; background:transparent; border:none; color:#fff; font-family:monospace; font-size:0.95rem; resize:vertical;" placeholder="組み立てられたプロンプトがここにリアルタイム反映されます..."></textarea>
-                </div>
+            <div style="display:flex; justify-content:space-between; gap:0.5rem;">
+                <button class="btn" onclick="saveWeightPopover()" style="flex:1; background:#2563eb; font-weight:bold;">適用</button>
+                <button class="btn" onclick="removeCurrentBuilderTag()" style="background:#dc2626;">削除</button>
             </div>
         </div>
     </div>
@@ -1195,156 +1316,278 @@
         }
 
         // ---------------------------------
-        // NovelAI V4.5 Prompt Builder & Weighting Logic
+        // NovelAI V4.5 Prompt Studio & Weight Popover Logic
         // ---------------------------------
-        let builderTags = [];
-        const presetCategoryTags = {
-            quality: [
-                "masterpiece", "best quality", "very aesthetic", "absurdres", "highres", "newest", "anime coloring", "highly detailed face", "beautiful eyes", "detailed lighting"
-            ],
-            character: [
-                "1girl", "1boy", "solo", "looking at viewer", "smile", "blush", "long hair", "short hair", "twintails", "blue eyes", "brown hair", "blonde hair"
-            ],
-            clothing: [
-                "school uniform", "dress", "swimsuit", "skirt", "jacket", "shirt", "pantihose", "thighhighs", "ribbon", "boots", "bare shoulders"
-            ],
-            pose: [
-                "standing", "sitting", "lying", "upper body", "full body", "cowboy shot", "portrait", "from side", "from below", "from above", "arms behind back"
-            ],
-            bg: [
-                "simple background", "white background", "outdoors", "indoors", "sky", "cloudy sky", "sunset", "cityscape", "classroom", "night", "depth of field", "sunlight"
-            ],
-            style: [
-                "artist:yoneyama_mai", "artist:rurudo", "artist:min_(120716)", "artist:jacknife", "anime style", "cel shading", "watercolor (medium)"
-            ]
-        };
+        let builderPosTags = [];
+        let builderNegTags = [];
+        let currentExploreCat = 'quality';
+        
+        // Active popover state
+        let currentPopoverTarget = null; // 'pos' or 'neg'
+        let currentPopoverIndex = -1;
 
-        function showCategoryTags(catKey) {
-            const container = document.getElementById('quick-tags-container');
+        function setBuilderExploreCat(cat) {
+            currentExploreCat = cat;
+            document.querySelectorAll('#builder-tab .builder-panel button.tab-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`bcat-${cat}`);
+            if (activeBtn) activeBtn.classList.add('active');
+            renderBuilderExploreList();
+        }
+
+        function filterBuilderExploreTags() {
+            renderBuilderExploreList();
+        }
+
+        function renderBuilderExploreList() {
+            const container = document.getElementById('builder-explore-list');
             if (!container) return;
             container.innerHTML = '';
-            const tags = presetCategoryTags[catKey] || [];
-            tags.forEach(tag => {
-                const btn = document.createElement('button');
-                btn.className = 'preset-card';
-                btn.style.cssText = 'padding:0.3rem 0.6rem; font-size:0.8rem; background:#1e293b; border:1px solid #334155; border-radius:6px; color:#e2e8f0; cursor:pointer;';
-                btn.textContent = `+ ${tag}`;
-                btn.onclick = () => addBuilderTag(tag, catKey);
-                container.appendChild(btn);
+
+            const query = (document.getElementById('builder-tag-search').value || '').toLowerCase().trim();
+            const sourceDict = currentExploreCat === 'neg' ? negDictionary : dictionary;
+
+            const filtered = sourceDict.filter(item => {
+                if (currentExploreCat !== 'neg' && currentExploreCat !== 'quality') {
+                    if (currentExploreCat === 'character' && item.category !== 'Character') return false;
+                    if (currentExploreCat === 'clothing' && item.category !== 'Clothing') return false;
+                    if (currentExploreCat === 'pose' && item.category !== 'Pose') return false;
+                    if (currentExploreCat === 'bg' && item.category !== 'Background') return false;
+                    if (currentExploreCat === 'style' && item.category !== 'Style') return false;
+                }
+                if (currentExploreCat === 'quality') {
+                    if (item.category !== 'Quality' && !['masterpiece', 'best quality', 'very aesthetic', 'absurdres', 'highres', 'newest'].includes(item.tag)) return false;
+                }
+                if (query) {
+                    const tagMatch = item.tag.toLowerCase().includes(query);
+                    const meaningMatch = (item.meaning || '').toLowerCase().includes(query);
+                    if (!tagMatch && !meaningMatch) return false;
+                }
+                return true;
+            }).slice(0, 50);
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<span style="color:var(--text-muted); font-size:0.85rem; padding:0.5rem;">該当するタグが見つかりません</span>';
+                return;
+            }
+
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.style.cssText = 'display:flex; justify-content:space-between; align-items:center; background:#1e293b; border:1px solid #334155; border-radius:8px; padding:0.4rem 0.7rem; font-size:0.85rem;';
+                card.innerHTML = `
+                    <div style="display:flex; flex-direction:column; gap:0.1rem; overflow:hidden;">
+                        <span style="font-weight:bold; color:#f8fafc; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item.tag}</span>
+                        <span style="font-size:0.75rem; color:var(--text-muted); text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item.meaning || '-'}</span>
+                    </div>
+                    <div style="display:flex; gap:0.3rem; flex-shrink:0;">
+                        <button class="btn" style="background:#2563eb; font-size:0.7rem; padding:0.2rem 0.5rem;" onclick="addPosTag('${item.tag}', '${item.category}')">+ ポジ</button>
+                        <button class="btn" style="background:#f43f5e; font-size:0.7rem; padding:0.2rem 0.5rem;" onclick="addNegTag('${item.tag}')">+ ネガ</button>
+                    </div>
+                `;
+                container.appendChild(card);
             });
         }
 
-        function addBuilderTag(tag, category = 'general') {
-            const exists = builderTags.find(t => t.tag.toLowerCase() === tag.toLowerCase());
-            if (!exists) {
-                builderTags.push({
-                    tag: tag,
-                    weightMode: 'normal',
-                    weightVal: 1.2,
-                    category: category
-                });
-                renderBuilderChips();
-                updateBuilderOutput();
+        function addPosTag(tag, category = 'general') {
+            if (!builderPosTags.find(t => t.tag.toLowerCase() === tag.toLowerCase())) {
+                builderPosTags.push({ tag: tag, weightMode: 'normal', weightVal: 1.0, category: category });
+                renderPosChips();
+                updatePosOutput();
+            }
+        }
+
+        function addNegTag(tag) {
+            if (!builderNegTags.find(t => t.tag.toLowerCase() === tag.toLowerCase())) {
+                builderNegTags.push({ tag: tag, weightMode: 'normal', weightVal: 1.0, category: 'Negative' });
+                renderNegChips();
+                updateNegOutput();
             }
         }
 
         function addQualityBooster() {
             const boosterTags = ["masterpiece", "best quality", "very aesthetic", "absurdres", "highres", "newest"];
             boosterTags.slice().reverse().forEach(t => {
-                if (!builderTags.find(bt => bt.tag.toLowerCase() === t)) {
-                    builderTags.unshift({ tag: t, weightMode: 'normal', weightVal: 1.0, category: 'quality' });
+                if (!builderPosTags.find(bt => bt.tag.toLowerCase() === t)) {
+                    builderPosTags.unshift({ tag: t, weightMode: 'normal', weightVal: 1.0, category: 'Quality' });
                 }
             });
-            renderBuilderChips();
-            updateBuilderOutput();
+            renderPosChips();
+            updatePosOutput();
         }
 
-        function removeBuilderTag(index) {
-            builderTags.splice(index, 1);
-            renderBuilderChips();
-            updateBuilderOutput();
+        function addPresetNegatives() {
+            const presetStr = "worst quality, low quality, bad quality, bad anatomy, bad hands, missing fingers, extra digit, extra arms, extra legs, deformed, disfigured, watermark, signature, text, cropped, blurry, jpeg artifacts";
+            presetStr.split(',').map(s => s.trim()).forEach(t => {
+                if (t && !builderNegTags.find(bt => bt.tag.toLowerCase() === t.toLowerCase())) {
+                    builderNegTags.push({ tag: t, weightMode: 'normal', weightVal: 1.0, category: 'Negative' });
+                }
+            });
+            renderNegChips();
+            updateNegOutput();
         }
 
-        function toggleWeightMode(index) {
-            const t = builderTags[index];
-            if (t.weightMode === 'normal') {
-                t.weightMode = 'vector';
-                t.weightVal = 1.2;
-            } else if (t.weightMode === 'vector') {
-                if (t.weightVal === 1.2) t.weightVal = 1.5;
-                else if (t.weightVal === 1.5) t.weightVal = 2.0;
-                else { t.weightMode = 'curly'; }
-            } else if (t.weightMode === 'curly') {
-                t.weightMode = 'bracket';
-            } else if (t.weightMode === 'bracket') {
-                t.weightMode = 'normal';
-                t.weightVal = 1.0;
-            }
-            renderBuilderChips();
-            updateBuilderOutput();
-        }
-
-        function renderBuilderChips() {
-            const container = document.getElementById('builder-chips-container');
+        function renderPosChips() {
+            const container = document.getElementById('builder-pos-chips');
             if (!container) return;
-            if (builderTags.length === 0) {
-                container.innerHTML = '<span style="color:var(--text-muted); font-size:0.9rem;">上のクイックタグをタップするか、プロンプトを入力して追加してください</span>';
+            if (builderPosTags.length === 0) {
+                container.innerHTML = '<span style="color:var(--text-muted); font-size:0.85rem;">左のタグリストから「+ ポジ」をタップして追加</span>';
                 return;
             }
             container.innerHTML = '';
-            builderTags.forEach((item, idx) => {
-                const chip = document.createElement('div');
-                chip.style.cssText = 'display:inline-flex; align-items:center; gap:0.4rem; background:#1e293b; border:1px solid #475569; padding:0.3rem 0.7rem; border-radius:20px; font-size:0.85rem;';
-                
-                let displayStr = item.tag;
-                let modeLabel = '標準';
-                let modeColor = '#94a3b8';
-                
-                if (item.weightMode === 'vector') {
-                    displayStr = `${item.weightVal}::${item.tag}::`;
-                    modeLabel = `ベクトル ${item.weightVal}`;
-                    modeColor = '#3b82f6';
-                } else if (item.weightMode === 'curly') {
-                    displayStr = `{${item.tag}}`;
-                    modeLabel = '波括弧 {}';
-                    modeColor = '#10b981';
-                } else if (item.weightMode === 'bracket') {
-                    displayStr = `[${item.tag}]`;
-                    modeLabel = '弱化 []';
-                    modeColor = '#f59e0b';
-                }
-
-                chip.innerHTML = `
-                    <span style="color:${modeColor}; font-weight:bold; font-size:0.75rem;">[${modeLabel}]</span>
-                    <span style="color:#f8fafc; font-weight:500;">${displayStr}</span>
-                    <button style="background:#334155; border:none; color:#cbd5e1; border-radius:4px; padding:0.15rem 0.4rem; cursor:pointer; font-size:0.75rem;" onclick="toggleWeightMode(${idx})" title="NAI最新重み付け形式を切り替え (1.2::tag:: -> 1.5::tag:: -> {tag} -> [tag])">重み変更</button>
-                    <button style="background:transparent; border:none; color:#f43f5e; font-weight:bold; cursor:pointer; margin-left:0.2rem;" onclick="removeBuilderTag(${idx})">✕</button>
-                `;
-                container.appendChild(chip);
+            builderPosTags.forEach((item, idx) => {
+                container.appendChild(createChipElement(item, 'pos', idx));
             });
         }
 
-        function updateBuilderOutput() {
-            const outputEl = document.getElementById('builder-output-text');
-            if (!outputEl) return;
-            const resultStr = builderTags.map(item => {
+        function renderNegChips() {
+            const container = document.getElementById('builder-neg-chips');
+            if (!container) return;
+            if (builderNegTags.length === 0) {
+                container.innerHTML = '<span style="color:var(--text-muted); font-size:0.85rem;">左のタグリストから「+ ネガ」をタップして追加</span>';
+                return;
+            }
+            container.innerHTML = '';
+            builderNegTags.forEach((item, idx) => {
+                container.appendChild(createChipElement(item, 'neg', idx));
+            });
+        }
+
+        function createChipElement(item, targetType, index) {
+            const chip = document.createElement('div');
+            let weightClass = '';
+
+            if (item.weightMode === 'vector') {
+                if (item.weightVal >= 1.5) { weightClass = 'weight-super'; }
+                else if (item.weightVal > 1.0) { weightClass = 'weight-strong'; }
+                else { weightClass = 'weight-weak'; }
+            } else if (item.weightMode === 'curly') {
+                weightClass = 'weight-curly';
+            } else if (item.weightMode === 'bracket') {
+                weightClass = 'weight-weak';
+            }
+
+            chip.className = `builder-tag-item ${weightClass}`;
+            chip.title = "タップして重みをスライダー調整";
+            
+            let displayTag = item.tag;
+            if (item.weightMode === 'vector') displayTag = `${item.weightVal}::${item.tag}::`;
+            else if (item.weightMode === 'curly') displayTag = `{${item.tag}}`;
+            else if (item.weightMode === 'bracket') displayTag = `[${item.tag}]`;
+
+            chip.innerHTML = `
+                <span onclick="openWeightPopover('${targetType}', ${index})">${displayTag}</span>
+                <span style="color:#f43f5e; font-weight:bold; margin-left:0.2rem; cursor:pointer;" onclick="event.stopPropagation(); removeTag('${targetType}', ${index})">✕</span>
+            `;
+            return chip;
+        }
+
+        function removeTag(targetType, index) {
+            if (targetType === 'pos') {
+                builderPosTags.splice(index, 1);
+                renderPosChips();
+                updatePosOutput();
+            } else {
+                builderNegTags.splice(index, 1);
+                renderNegChips();
+                updateNegOutput();
+            }
+        }
+
+        function updatePosOutput() {
+            const el = document.getElementById('builder-pos-output');
+            if (el) el.value = formatTagList(builderPosTags);
+        }
+
+        function updateNegOutput() {
+            const el = document.getElementById('builder-neg-output');
+            if (el) el.value = formatTagList(builderNegTags);
+        }
+
+        function formatTagList(tags) {
+            return tags.map(item => {
                 if (item.weightMode === 'vector') return `${item.weightVal}::${item.tag}::`;
                 if (item.weightMode === 'curly') return `{${item.tag}}`;
                 if (item.weightMode === 'bracket') return `[${item.tag}]`;
                 return item.tag;
             }).join(', ');
-            outputEl.value = resultStr;
+        }
+
+        // --- Popover Modal Logic ---
+        function openWeightPopover(targetType, index) {
+            currentPopoverTarget = targetType;
+            currentPopoverIndex = index;
+            const item = targetType === 'pos' ? builderPosTags[index] : builderNegTags[index];
+            if (!item) return;
+
+            document.getElementById('popover-tag-name').textContent = item.tag;
+            document.getElementById('popover-mode-select').value = item.weightMode || 'vector';
+            document.getElementById('popover-weight-slider').value = item.weightVal || 1.2;
+            document.getElementById('popover-weight-val-display').textContent = item.weightVal || 1.2;
+            
+            onWeightModeChange();
+            document.getElementById('weight-popover-modal').style.display = 'flex';
+        }
+
+        function closeWeightPopover() {
+            document.getElementById('weight-popover-modal').style.display = 'none';
+        }
+
+        function onWeightModeChange() {
+            const mode = document.getElementById('popover-mode-select').value;
+            const sliderBox = document.getElementById('popover-slider-box');
+            if (mode === 'vector') {
+                sliderBox.style.display = 'block';
+            } else {
+                sliderBox.style.display = 'none';
+            }
+        }
+
+        function onWeightSliderChange(val) {
+            document.getElementById('popover-weight-val-display').textContent = parseFloat(val).toFixed(1);
+        }
+
+        function saveWeightPopover() {
+            if (currentPopoverIndex < 0) return;
+            const item = currentPopoverTarget === 'pos' ? builderPosTags[currentPopoverIndex] : builderNegTags[currentPopoverIndex];
+            if (!item) return;
+
+            const mode = document.getElementById('popover-mode-select').value;
+            const val = parseFloat(document.getElementById('popover-weight-slider').value);
+
+            item.weightMode = mode;
+            item.weightVal = val;
+
+            if (currentPopoverTarget === 'pos') {
+                renderPosChips();
+                updatePosOutput();
+            } else {
+                renderNegChips();
+                updateNegOutput();
+            }
+            closeWeightPopover();
+        }
+
+        function removeCurrentBuilderTag() {
+            if (currentPopoverIndex >= 0) {
+                removeTag(currentPopoverTarget, currentPopoverIndex);
+                closeWeightPopover();
+            }
         }
 
         function cleanBuilderPrompts() {
-            const outputEl = document.getElementById('builder-output-text');
-            if (!outputEl) return;
-            const raw = outputEl.value;
+            cleanCanvas('pos');
+            cleanCanvas('neg');
+            alert("ポジティブおよびネガティブプロンプトの重複削除・整形が完了しました！");
+        }
+
+        function cleanCanvas(targetType) {
+            const el = document.getElementById(targetType === 'pos' ? 'builder-pos-output' : 'builder-neg-output');
+            if (!el) return;
+            const raw = el.value;
             if (!raw.trim()) return;
+
             const parts = raw.split(',').map(p => p.trim()).filter(p => p);
             const uniqueParts = [];
             const seen = new Set();
-            
             parts.forEach(p => {
                 const norm = p.toLowerCase();
                 if (!seen.has(norm)) {
@@ -1353,7 +1596,7 @@
                 }
             });
 
-            builderTags = uniqueParts.map(p => {
+            const parsedTags = uniqueParts.map(p => {
                 if (p.includes('::')) {
                     const match = p.match(/^([0-9.]+)::(.+)::$/);
                     if (match) return { tag: match[2], weightMode: 'vector', weightVal: parseFloat(match[1]), category: 'general' };
@@ -1367,20 +1610,31 @@
                 return { tag: p, weightMode: 'normal', weightVal: 1.0, category: 'general' };
             });
 
-            renderBuilderChips();
-            updateBuilderOutput();
-            alert("重複タグの削除およびクレンジングが完了しました！");
+            if (targetType === 'pos') {
+                builderPosTags = parsedTags;
+                renderPosChips();
+                updatePosOutput();
+            } else {
+                builderNegTags = parsedTags;
+                renderNegChips();
+                updateNegOutput();
+            }
         }
 
         function clearBuilder() {
-            builderTags = [];
-            renderBuilderChips();
-            updateBuilderOutput();
+            builderPosTags = [];
+            builderNegTags = [];
+            renderPosChips();
+            renderNegChips();
+            updatePosOutput();
+            updateNegOutput();
         }
 
-        // Initialize default category tags on load
+        // Initialize Prompt Studio list on DOMContentLoaded
         window.addEventListener('DOMContentLoaded', () => {
-            showCategoryTags('quality');
+            setTimeout(() => {
+                renderBuilderExploreList();
+            }, 300);
         });
     </script>
 </body>
