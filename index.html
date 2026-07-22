@@ -763,6 +763,9 @@
                         <button class="tab-btn" id="bcat-pose" style="font-size:0.75rem; padding:0.25rem 0.6rem;" onclick="setBuilderExploreCat('pose')">💃構図</button>
                         <button class="tab-btn" id="bcat-bg" style="font-size:0.75rem; padding:0.25rem 0.6rem;" onclick="setBuilderExploreCat('bg')">🌄背景</button>
                         <button class="tab-btn" id="bcat-style" style="font-size:0.75rem; padding:0.25rem 0.6rem;" onclick="setBuilderExploreCat('style')">🎨画風</button>
+                        <button class="tab-btn" id="bcat-media" style="font-size:0.75rem; padding:0.25rem 0.6rem;" onclick="setBuilderExploreCat('media')">🖌️画材</button>
+                        <button class="tab-btn" id="bcat-lineart" style="font-size:0.75rem; padding:0.25rem 0.6rem;" onclick="setBuilderExploreCat('lineart')">✏️線画</button>
+                        <button class="tab-btn" id="bcat-shading" style="font-size:0.75rem; padding:0.25rem 0.6rem;" onclick="setBuilderExploreCat('shading')">🎨塗り</button>
                         <button class="tab-btn" id="bcat-neg" style="font-size:0.75rem; padding:0.25rem 0.6rem;" onclick="setBuilderExploreCat('neg')">🛡️ネガ</button>
                     </div>
 
@@ -1356,7 +1359,15 @@
             const query = (document.getElementById('builder-tag-search').value || '').toLowerCase().trim();
             const sourceDict = currentExploreCat === 'neg' ? negDictionary : dictionary;
 
+            const mediaTags = ["traditional media", "faux traditional media", "mixed media", "acrylic paint", "colored pencil", "graphite", "ink", "marker", "oil painting", "pastel", "watercolor", "gouache", "digital painting", "anime screencap", "chalk", "vector", "impasto"];
+            const lineartTags = ["no lineart", "lineart", "outline", "sketch", "rough lines", "sketch lines", "thick lines", "thin lines", "clean lines", "bold outlines", "borderless", "crosshatching", "hatching shading", "delicate lineart"];
+            const shadingTags = ["flat color", "cel shading", "soft shading", "hard shading", "airbrushed", "painterly", "halftone", "soft cel shading", "anime shading", "anime coloring", "art nouveau", "art deco", "ligne claire", "nihonga", "ukiyo-e", "game cg", "official art", "oekaki", "tegaki"];
+
             const filtered = sourceDict.filter(item => {
+                if (currentExploreCat === 'media') return mediaTags.includes(item.tag);
+                if (currentExploreCat === 'lineart') return lineartTags.includes(item.tag);
+                if (currentExploreCat === 'shading') return shadingTags.includes(item.tag);
+
                 if (currentExploreCat !== 'neg' && currentExploreCat !== 'quality') {
                     if (currentExploreCat === 'character' && item.category !== 'Character') return false;
                     if (currentExploreCat === 'clothing' && item.category !== 'Clothing') return false;

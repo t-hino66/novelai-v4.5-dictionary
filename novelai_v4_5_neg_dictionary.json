@@ -99,7 +99,7 @@
   },
   {
     "tag": "halftone",
-    "meaning": "ハーフトーン",
+    "meaning": "ハーフトーン (漫画トーン・点描表現)",
     "category": "Negative",
     "count": 4290,
     "usage_rate": "108.11%"
@@ -295,7 +295,7 @@
   },
   {
     "tag": "sketch",
-    "meaning": "スケッチ",
+    "meaning": "スケッチ (下描き風の軽快な線)",
     "category": "Negative",
     "count": 908,
     "usage_rate": "22.88%"
@@ -554,7 +554,7 @@
   },
   {
     "tag": "flat color",
-    "meaning": "平らな色",
+    "meaning": "フラットカラー (アニメ塗り・ベタ塗り)",
     "category": "Negative",
     "count": 566,
     "usage_rate": "14.26%"
@@ -1765,7 +1765,7 @@
   },
   {
     "tag": "lineart",
-    "meaning": "線画",
+    "meaning": "主線あり (輪郭線強調)",
     "category": "Negative",
     "count": 161,
     "usage_rate": "4.06%"
@@ -2234,7 +2234,7 @@
   },
   {
     "tag": "outline",
-    "meaning": "概要",
+    "meaning": "アウトライン強調 (くっきり輪郭)",
     "category": "Negative",
     "count": 123,
     "usage_rate": "3.10%"
@@ -4145,7 +4145,7 @@
   },
   {
     "tag": "oekaki",
-    "meaning": "oekaki",
+    "meaning": "お絵描き掲示板風 (レトロWebお絵かき)",
     "category": "Negative",
     "count": 37,
     "usage_rate": "0.93%"
@@ -5027,7 +5027,7 @@
   },
   {
     "tag": "airbrushed",
-    "meaning": "Airbrushed",
+    "meaning": "エアブラシ塗り (ふんわり質感)",
     "category": "Negative",
     "count": 21,
     "usage_rate": "0.53%"
@@ -5671,14 +5671,14 @@
   },
   {
     "tag": "anime coloring",
-    "meaning": "アニメの着色",
+    "meaning": "アニメカラーリング (発色の良いアニメ配色)",
     "category": "Negative",
     "count": 16,
     "usage_rate": "0.40%"
   },
   {
     "tag": "cel shading",
-    "meaning": "セルシェーディング",
+    "meaning": "アニメセル画塗り (くっきりした影)",
     "category": "Negative",
     "count": 16,
     "usage_rate": "0.40%"
@@ -6469,21 +6469,21 @@
   },
   {
     "tag": "traditional media",
-    "meaning": "伝統的なメディア",
+    "meaning": "アナログ手描き媒体 (水彩/油彩/ペーパー)",
     "category": "Negative",
     "count": 10,
     "usage_rate": "0.25%"
   },
   {
     "tag": "faux traditional media",
-    "meaning": "偽の伝統的なメディア",
+    "meaning": "アナログ風デジタル描画 (絵の具質感)",
     "category": "Negative",
     "count": 10,
     "usage_rate": "0.25%"
   },
   {
     "tag": "painterly",
-    "meaning": "画家",
+    "meaning": "ペインター塗り (筆跡を残した厚塗り)",
     "category": "Negative",
     "count": 10,
     "usage_rate": "0.25%"
@@ -6546,7 +6546,7 @@
   },
   {
     "tag": "game cg",
-    "meaning": "ゲームCG",
+    "meaning": "ゲームCG風 (美少女ゲーム・RPGイベントCG)",
     "category": "Negative",
     "count": 10,
     "usage_rate": "0.25%"
@@ -6861,7 +6861,7 @@
   },
   {
     "tag": "anime screencap",
-    "meaning": "アニメスクリーンキャップ",
+    "meaning": "アニメ本編キャプチャ風 (TVアニメカット)",
     "category": "Negative",
     "count": 8,
     "usage_rate": "0.20%"
@@ -8107,7 +8107,7 @@
   },
   {
     "tag": "watercolor",
-    "meaning": "Watercolor",
+    "meaning": "水彩画 (透明感とにじみ表現)",
     "category": "Negative",
     "count": 3,
     "usage_rate": "0.08%"
@@ -8982,7 +8982,7 @@
   },
   {
     "tag": "rough lines",
-    "meaning": "Rough Lines",
+    "meaning": "ラフ線 (力強いラフスケッチ)",
     "category": "Negative",
     "count": 2,
     "usage_rate": "0.05%"
