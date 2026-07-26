@@ -81,19 +81,40 @@ def clean_detail(detail):
     for img in images:
         if not isinstance(img, dict):
             continue
+            
+        prompt = img.get("prompt_text", "") or ""
+        neg_prompt = img.get("negative_prompt", "") or ""
+        
+        ai_json_str = img.get("ai_json")
+        if ai_json_str and (not prompt or not neg_prompt):
+            try:
+                ai_data = json.loads(ai_json_str)
+                comment = ai_data.get("Comment", {})
+                if isinstance(comment, str):
+                    try:
+                        comment = json.loads(comment)
+                    except Exception:
+                        comment = {}
+                if isinstance(comment, dict):
+                    if not prompt:
+                        prompt = comment.get("prompt", "") or ""
+                    if not neg_prompt:
+                        neg_prompt = comment.get("uc", "") or ""
+            except Exception:
+                pass
+                
         cleaned_images.append({
-            "model": img.get("model"),
-            "prompt_text": img.get("prompt_text"),
-            "negative_prompt": img.get("negative_prompt"),
-            "ai_json": img.get("ai_json"),
-            "image_url": img.get("image_url") or img.get("sample_url")
+            "model": img.get("model") or "",
+            "prompt_text": prompt,
+            "negative_prompt": neg_prompt,
+            "image_url": img.get("image_url") or img.get("sample_url") or ""
         })
         
     return {
         "work": {
             "id": work.get("id"),
-            "title": work.get("title"),
-            "tags": work.get("tags")
+            "title": work.get("title") or "",
+            "tags": work.get("tags") or []
         },
         "images": cleaned_images
     }
