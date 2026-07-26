@@ -404,7 +404,7 @@ def process_data():
             pixiv_tags = work.get("tags", [])
             
             for img in images:
-                model = img.get("model", "")
+                model = img.get("model") or ""
                 if "NovelAI Diffusion V4.5" not in model:
                     continue
                     
