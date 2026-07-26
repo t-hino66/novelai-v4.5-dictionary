@@ -66,7 +66,7 @@ aitag.winおよび Danbooru API から抽出した統計データに基づく、
 | `hard shadows` | Hard Shadows | 358 | 8.75% |
 | `specular highlights` | Specular Highlights | 355 | 8.67% |
 | `key lighting` | Key Lighting | 328 | 8.01% |
-| `glossy hair highlights` | Glossy Hair Highlights | 328 | 8.01% |
 | `unity 8k wallpaper` | Unity 8k Wallpaper | 328 | 8.01% |
+| `glossy hair highlights` | Glossy Hair Highlights | 328 | 8.01% |
 | `indoors` | 室内 | 207 | 5.06% |
 | `outdoors` | 屋外 | 208 | 5.08% |

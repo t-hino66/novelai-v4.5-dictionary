@@ -71,10 +71,38 @@ def get_monthly_rank_works(target_count):
             
     return works[:target_count]
 
+def clean_detail(detail):
+    if not isinstance(detail, dict):
+        return None
+    work = detail.get("work", {})
+    images = detail.get("images", [])
+    
+    cleaned_images = []
+    for img in images:
+        if not isinstance(img, dict):
+            continue
+        cleaned_images.append({
+            "model": img.get("model"),
+            "prompt_text": img.get("prompt_text"),
+            "negative_prompt": img.get("negative_prompt"),
+            "ai_json": img.get("ai_json"),
+            "image_url": img.get("image_url") or img.get("sample_url")
+        })
+        
+    return {
+        "work": {
+            "id": work.get("id"),
+            "title": work.get("title"),
+            "tags": work.get("tags")
+        },
+        "images": cleaned_images
+    }
+
 def get_work_details(work_id):
     url = f"{BASE_URL}/api/work/{work_id}"
     try:
-        return http_get(url)
+        data = http_get(url)
+        return clean_detail(data)
     except Exception as e:
         print(f"Failed to fetch details for work ID {work_id}: {e}", flush=True)
         return None
@@ -122,7 +150,7 @@ def main():
                 
                 if new_details_count % 10 == 0:
                     with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
-                        json.dump(existing_data, f, ensure_ascii=False, indent=2)
+                        json.dump(existing_data, f, ensure_ascii=False, separators=(',', ':'))
             else:
                 consecutive_errors += 1
                 if consecutive_errors >= 5:
@@ -136,7 +164,7 @@ def main():
     finally:
         if new_details_count > 0:
             with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
-                json.dump(existing_data, f, ensure_ascii=False, indent=2)
+                json.dump(existing_data, f, ensure_ascii=False, separators=(',', ':'))
             print(f"Saved file. Total: {len(existing_data)} (New: {new_details_count})", flush=True)
         else:
             print("No new data to save.", flush=True)
