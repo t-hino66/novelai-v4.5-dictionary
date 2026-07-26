@@ -38,6 +38,11 @@ jobs:
           # Fetch incremental extra posts (500 posts)
           python -u extract_booru_extra.py 500
 
+      - name: Run Know-how Crawling Script
+        run: |
+          # Crawl and update external NovelAI V4.5 know-how database
+          python -u extract_knowhow.py
+
       - name: Run Build Dictionary Script
         run: |
           python -u build_dictionary.py

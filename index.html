@@ -917,7 +917,41 @@
     <div id="guide-tab" class="tab-content">
         <div class="dict-container" style="display:flex; flex-direction:column; gap:1.5rem;">
             <div class="section-title">
-                <span>💡 NovelAI V4.5 攻略ノウハウ & 5,000件データ分析レポート</span>
+                <span>💡 NovelAI V4.5 攻略ノウハウ & リアルタイムデータ分析レポート</span>
+            </div>
+
+            <!-- Dynamic Live Analytics Summary Card -->
+            <div style="background:linear-gradient(135deg, #0b0d10 0%, #1e1b4b 100%); border:1px solid #6366f1; border-radius:12px; padding:1.2rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem;">
+                    <h3 style="color:#a5b4fc; margin:0; font-size:1.1rem; display:flex; align-items:center; gap:0.5rem;">
+                        <span>📈 リアルタイム自動解析ダッシュボード</span>
+                        <span style="font-size:0.75rem; background:#312e81; color:#c7d2fe; padding:2px 8px; border-radius:12px;">自動同期中</span>
+                    </h3>
+                    <span style="font-size:0.8rem; color:#94a3b8;">最終解析: <strong id="live-updated-at">読み込み中...</strong></span>
+                </div>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:0.8rem;">
+                    <div style="background:rgba(15, 23, 42, 0.7); padding:0.8rem; border-radius:8px; text-align:center; border:1px solid #334155;">
+                        <div style="font-size:0.75rem; color:#94a3b8;">総解析画像データ数</div>
+                        <div id="live-total-records" style="font-size:1.4rem; font-weight:bold; color:#60a5fa; margin-top:4px;">14,756 件</div>
+                    </div>
+                    <div style="background:rgba(15, 23, 42, 0.7); padding:0.8rem; border-radius:8px; text-align:center; border:1px solid #334155;">
+                        <div style="font-size:0.75rem; color:#94a3b8;">平均プロンプトタグ数</div>
+                        <div id="live-avg-prompt" style="font-size:1.4rem; font-weight:bold; color:#34d399; margin-top:4px;">51.5 個</div>
+                    </div>
+                    <div style="background:rgba(15, 23, 42, 0.7); padding:0.8rem; border-radius:8px; text-align:center; border:1px solid #334155;">
+                        <div style="font-size:0.75rem; color:#94a3b8;">Masterpiece 使用率</div>
+                        <div id="live-masterpiece-rate" style="font-size:1.4rem; font-weight:bold; color:#f59e0b; margin-top:4px;">88.8%</div>
+                    </div>
+                    <div style="background:rgba(15, 23, 42, 0.7); padding:0.8rem; border-radius:8px; text-align:center; border:1px solid #334155;">
+                        <div style="font-size:0.75rem; color:#94a3b8;">Best Quality 使用率</div>
+                        <div id="live-quality-rate" style="font-size:1.4rem; font-weight:bold; color:#ec4899; margin-top:4px;">62.7%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Auto-crawled Know-how Cards Container -->
+            <div id="live-knowhow-container" style="display:flex; flex-direction:column; gap:1rem;">
+                <!-- Auto injected from knowhow_database.json -->
             </div>
 
             <!-- Section 1: Base Parameters -->
@@ -1801,10 +1835,69 @@
             updateNegOutput();
         }
 
-        // Initialize Prompt Studio list on DOMContentLoaded
+        // Load live dynamic analytics & crawled know-how database
+        async function loadLiveAnalyticsAndKnowhow() {
+            try {
+                const resA = await fetch('analytics_data.json');
+                if (resA.ok) {
+                    const dataA = await resA.json();
+                    if (document.getElementById('live-updated-at')) {
+                        document.getElementById('live-updated-at').textContent = dataA.updated_at || '最新';
+                    }
+                    if (document.getElementById('live-total-records')) {
+                        document.getElementById('live-total-records').textContent = (dataA.total_records || 0).toLocaleString() + ' 件';
+                    }
+                    if (dataA.metrics) {
+                        if (document.getElementById('live-avg-prompt')) {
+                            document.getElementById('live-avg-prompt').textContent = (dataA.metrics.avg_prompt_tags || 0) + ' 個';
+                        }
+                        if (document.getElementById('live-masterpiece-rate')) {
+                            document.getElementById('live-masterpiece-rate').textContent = dataA.metrics.masterpiece_usage_rate || '0%';
+                        }
+                        if (document.getElementById('live-quality-rate')) {
+                            document.getElementById('live-quality-rate').textContent = dataA.metrics.best_quality_usage_rate || '0%';
+                        }
+                    }
+                }
+            } catch (e) {
+                console.log('Analytics JSON load fallback:', e);
+            }
+
+            try {
+                const resK = await fetch('knowhow_database.json');
+                if (resK.ok) {
+                    const knowhowList = await resK.json();
+                    const container = document.getElementById('live-knowhow-container');
+                    if (container && Array.isArray(knowhowList) && knowhowList.length > 0) {
+                        let html = '';
+                        knowhowList.forEach(item => {
+                            html += `
+                            <div style="background:#0b0d10; border:1px solid #334155; border-left:4px solid #60a5fa; border-radius:10px; padding:1.1rem;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:0.5rem;">
+                                    <span style="font-size:0.75rem; background:#1e293b; color:#93c5fd; padding:2px 8px; border-radius:4px; font-weight:bold;">${item.category || '最新ノウハウ'}</span>
+                                    <span style="font-size:0.75rem; color:#64748b;">📅 ${item.updated || ''} | 出典: ${item.source || ''}</span>
+                                </div>
+                                <h4 style="color:#f8fafc; margin:0.3rem 0 0.6rem 0; font-size:1rem;">${item.title || ''}</h4>
+                                <p style="color:#cbd5e1; font-size:0.85rem; line-height:1.5; margin:0 0 0.6rem 0;">${item.summary || ''}</p>
+                                ${item.key_takeaways ? `
+                                <ul style="margin:0; padding-left:1.2rem; color:#94a3b8; font-size:0.8rem;">
+                                    ${item.key_takeaways.map(t => `<li>${t}</li>`).join('')}
+                                </ul>` : ''}
+                            </div>`;
+                        });
+                        container.innerHTML = html;
+                    }
+                }
+            } catch (e) {
+                console.log('Knowhow JSON load fallback:', e);
+            }
+        }
+
+        // Initialize Prompt Studio list & Dynamic Analytics on DOMContentLoaded
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 renderBuilderExploreList();
+                loadLiveAnalyticsAndKnowhow();
             }, 300);
         });
     </script>

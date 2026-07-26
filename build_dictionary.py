@@ -662,6 +662,58 @@ def process_data():
     print(f"Generating markdown dictionary guide: {MD_DICT_FILE}...")
     generate_markdown_guide(flat_records, tag_dict_rows, total_images)
 
+    # Build Dynamic Analytics JSON for Web UI
+    ANALYTICS_JSON = "analytics_data.json"
+    print(f"Generating live analytics JSON: {ANALYTICS_JSON}...")
+    generate_analytics_json(flat_records, tag_dict_rows, neg_dict_rows, total_images, ANALYTICS_JSON)
+
+def generate_analytics_json(records, tags, neg_tags, total_images, output_file):
+    import datetime
+    
+    prompt_lengths = [len(r["prompt"].split(",")) for r in records if r.get("prompt")]
+    neg_lengths = [len(r["negative_prompt"].split(",")) for r in records if r.get("negative_prompt")]
+    
+    avg_prompt = sum(prompt_lengths) / len(prompt_lengths) if prompt_lengths else 0
+    avg_neg = sum(neg_lengths) / len(neg_lengths) if neg_lengths else 0
+    
+    sources = Counter([r["source"] for r in records if r.get("source")]).most_common()
+    source_stats = [{"name": src, "count": c, "ratio": f"{c/total_images*100:.1f}%"} for src, c in sources]
+    
+    quality_list = [t for t in tags if t["category"] == "Quality"][:10]
+    style_list = [t for t in tags if t["category"] in ("Art Style", "Medium", "Shading", "Lineart")][:10]
+    pose_list = [t for t in tags if t["category"] in ("Pose", "Body", "Expression")][:10]
+    cloth_list = [t for t in tags if t["category"] == "Clothing"][:10]
+    bg_list = [t for t in tags if t["category"] in ("Background", "Lighting")][:10]
+    neg_list = neg_tags[:10]
+    
+    # Calculate quality tag ratio (e.g. masterpiece, best quality)
+    masterpiece_count = sum(1 for r in records if "masterpiece" in r.get("prompt", "").lower())
+    best_quality_count = sum(1 for r in records if "best quality" in r.get("prompt", "").lower())
+    
+    analytics = {
+        "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "total_records": total_images,
+        "metrics": {
+            "avg_prompt_tags": round(avg_prompt, 1),
+            "avg_neg_tags": round(avg_neg, 1),
+            "masterpiece_usage_rate": f"{masterpiece_count/total_images*100:.1f}%" if total_images else "0%",
+            "best_quality_usage_rate": f"{best_quality_count/total_images*100:.1f}%" if total_images else "0%"
+        },
+        "sources": source_stats,
+        "top_rankings": {
+            "quality": quality_list,
+            "style": style_list,
+            "pose": pose_list,
+            "clothing": cloth_list,
+            "background": bg_list,
+            "negative": neg_list
+        }
+    }
+    
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(analytics, f, ensure_ascii=False, indent=2)
+    print("Analytics JSON generated successfully.")
+
 def generate_markdown_guide(records, tags, total_images):
     samplers = Counter([r["sampler"] for r in records if r.get("sampler")]).most_common(5)
     resolutions = Counter([f"{r['width']}x{r['height']}" for r in records if r.get("width") and r.get("height")]).most_common(5)

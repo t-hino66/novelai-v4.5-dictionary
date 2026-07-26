@@ -49,8 +49,8 @@ aitag.winおよび Danbooru API から抽出した統計データに基づく、
 | `lace panties` | レースパンティー | 329 | 2.23% |
 | `lace bra` | レースブラ | 317 | 2.15% |
 | `lvibrant colors` | Lvibrant Colors | 315 | 2.13% |
-| `clothes on` | Clothes On | 305 | 2.07% |
 | `frilled plain panties` | Frilled Plain Panties | 305 | 2.07% |
+| `clothes on` | Clothes On | 305 | 2.07% |
 
 ## 🏭 背景・照明タグ
 | タグ | 意味 | 出現回数 | 使用率 |
