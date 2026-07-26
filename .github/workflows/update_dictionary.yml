@@ -11,6 +11,9 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PYTHONUNBUFFERED: "1"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,21 +26,21 @@ jobs:
       - name: Run AITAG Scraping Script
         run: |
           # Fetch incremental updates (1000 works)
-          python extract_tags.py 1000
+          python -u extract_tags.py 1000
 
       - name: Run Danbooru Scraping Script
         run: |
           # Fetch incremental high score posts from Danbooru (1000 posts)
-          python extract_danbooru_tags.py 1000 "score:>=50"
+          python -u extract_danbooru_tags.py 1000 "score:>=50"
 
       - name: Run Extra Booru (Safebooru / Yandere) Scraping Script
         run: |
           # Fetch incremental extra posts (500 posts)
-          python extract_booru_extra.py 500
+          python -u extract_booru_extra.py 500
 
       - name: Run Build Dictionary Script
         run: |
-          python build_dictionary.py
+          python -u build_dictionary.py
 
       - name: Commit and Push Changes
         run: |
@@ -50,3 +53,4 @@ jobs:
             git commit -m "chore: auto-update database from aitag.win and danbooru [skip ci]"
             git push origin master
           fi
+

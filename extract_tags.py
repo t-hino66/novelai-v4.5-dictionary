@@ -12,7 +12,7 @@ TARGET_COUNT = 1000  # Default target count
 PAGE_SIZE = 60
 DELAY = 0.5  # API call delay in seconds
 
-def http_get(url, params=None):
+def http_get(url, params=None, retries=3):
     import ssl
     if params:
         query_string = urllib.parse.urlencode(params)
@@ -24,14 +24,20 @@ def http_get(url, params=None):
     )
     
     context = ssl._create_unverified_context()
-    with urllib.request.urlopen(req, timeout=10, context=context) as response:
-        return json.loads(response.read().decode('utf-8'))
+    for attempt in range(retries):
+        try:
+            with urllib.request.urlopen(req, timeout=12, context=context) as response:
+                return json.loads(response.read().decode('utf-8'))
+        except Exception as e:
+            if attempt == retries - 1:
+                raise e
+            time.sleep(1.0 * (attempt + 1))
 
 def get_monthly_rank_works(target_count):
     works = []
     page = 1
     
-    print(f"Fetching monthly rank IDs for '{SEARCH_QUERY}'...")
+    print(f"Fetching monthly rank IDs for '{SEARCH_QUERY}'...", flush=True)
     while len(works) < target_count:
         url = f"{BASE_URL}/api/rank/monthly"
         params = {
@@ -43,7 +49,7 @@ def get_monthly_rank_works(target_count):
             data = http_get(url, params=params)
             items = data.get("items", [])
             if not items:
-                print("No more items found.")
+                print("No more items found.", flush=True)
                 break
                 
             for item in items:
@@ -56,11 +62,11 @@ def get_monthly_rank_works(target_count):
                 if len(works) >= target_count:
                     break
             
-            print(f"Page {page} fetched (Total ID count: {len(works)})")
+            print(f"Page {page} fetched (Total ID count: {len(works)})", flush=True)
             page += 1
             time.sleep(DELAY)
         except Exception as e:
-            print(f"Error fetching page {page}: {e}")
+            print(f"Error fetching page {page}: {e}", flush=True)
             break
             
     return works[:target_count]
@@ -70,7 +76,7 @@ def get_work_details(work_id):
     try:
         return http_get(url)
     except Exception as e:
-        print(f"Failed to fetch details for work ID {work_id}: {e}")
+        print(f"Failed to fetch details for work ID {work_id}: {e}", flush=True)
         return None
 
 def main():
@@ -80,9 +86,9 @@ def main():
         try:
             with open(OUTPUT_FILE, 'r', encoding='utf-8') as f:
                 existing_data = json.load(f)
-            print(f"Loaded {len(existing_data)} existing items.")
+            print(f"Loaded {len(existing_data)} existing items.", flush=True)
         except Exception:
-            print("Failed to load existing file, starting fresh.")
+            print("Failed to load existing file, starting fresh.", flush=True)
 
     existing_ids = {item["work"]["id"] for item in existing_data if "work" in item}
 
@@ -95,9 +101,10 @@ def main():
             
     # Fetch rank works up to target
     works_list = get_monthly_rank_works(target)
-    print(f"Found {len(works_list)} works to process.")
+    print(f"Found {len(works_list)} works to process.", flush=True)
 
     new_details_count = 0
+    consecutive_errors = 0
     
     try:
         for idx, work_summary in enumerate(works_list, 1):
@@ -105,28 +112,34 @@ def main():
             if work_id in existing_ids:
                 continue
                 
-            print(f"[{idx}/{len(works_list)}] Fetching detail... ID: {work_id}")
+            print(f"[{idx}/{len(works_list)}] Fetching detail... ID: {work_id}", flush=True)
             detail = get_work_details(work_id)
             if detail:
                 existing_data.append(detail)
                 existing_ids.add(work_id)
                 new_details_count += 1
+                consecutive_errors = 0
                 
                 if new_details_count % 10 == 0:
                     with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
                         json.dump(existing_data, f, ensure_ascii=False, indent=2)
+            else:
+                consecutive_errors += 1
+                if consecutive_errors >= 5:
+                    print("Too many consecutive errors. Stopping fetch gracefully to save progress.", flush=True)
+                    break
                         
             time.sleep(DELAY)
             
     except KeyboardInterrupt:
-        print("\nInterrupted by user. Saving progress...")
+        print("\nInterrupted by user. Saving progress...", flush=True)
     finally:
         if new_details_count > 0:
             with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
                 json.dump(existing_data, f, ensure_ascii=False, indent=2)
-            print(f"Saved file. Total: {len(existing_data)} (New: {new_details_count})")
+            print(f"Saved file. Total: {len(existing_data)} (New: {new_details_count})", flush=True)
         else:
-            print("No new data to save.")
+            print("No new data to save.", flush=True)
 
 if __name__ == "__main__":
     main()

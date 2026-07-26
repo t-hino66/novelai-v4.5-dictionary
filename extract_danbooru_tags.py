@@ -13,7 +13,7 @@ TARGET_COUNT = 1000  # Default count to fetch
 PAGE_SIZE = 100
 DELAY = 1.0  # Respectful delay between API calls
 
-def http_get(url, params=None):
+def http_get(url, params=None, retries=3):
     import ssl
     if params:
         query_string = urllib.parse.urlencode(params)
@@ -25,14 +25,20 @@ def http_get(url, params=None):
     )
     
     context = ssl._create_unverified_context()
-    with urllib.request.urlopen(req, timeout=15, context=context) as response:
-        return json.loads(response.read().decode('utf-8'))
+    for attempt in range(retries):
+        try:
+            with urllib.request.urlopen(req, timeout=15, context=context) as response:
+                return json.loads(response.read().decode('utf-8'))
+        except Exception as e:
+            if attempt == retries - 1:
+                raise e
+            time.sleep(1.5 * (attempt + 1))
 
 def fetch_posts(tags, target_count):
     posts = []
     page = 1
     
-    print(f"Fetching posts from Danbooru for search tags: '{tags}'...")
+    print(f"Fetching posts from Danbooru for search tags: '{tags}'...", flush=True)
     while len(posts) < target_count:
         url = f"{BASE_URL}/posts.json"
         params = {
@@ -43,7 +49,7 @@ def fetch_posts(tags, target_count):
         try:
             data = http_get(url, params=params)
             if not isinstance(data, list) or not data:
-                print("No more posts returned.")
+                print("No more posts returned.", flush=True)
                 break
                 
             for item in data:
@@ -65,11 +71,11 @@ def fetch_posts(tags, target_count):
                 if len(posts) >= target_count:
                     break
             
-            print(f"Page {page} fetched (Total posts count: {len(posts)})")
+            print(f"Page {page} fetched (Total posts count: {len(posts)})", flush=True)
             page += 1
             time.sleep(DELAY)
         except Exception as e:
-            print(f"Error fetching page {page}: {e}")
+            print(f"Error fetching page {page}: {e}", flush=True)
             break
             
     return posts[:target_count]
@@ -81,9 +87,9 @@ def main():
         try:
             with open(OUTPUT_FILE, 'r', encoding='utf-8') as f:
                 existing_data = json.load(f)
-            print(f"Loaded {len(existing_data)} existing items.")
+            print(f"Loaded {len(existing_data)} existing items.", flush=True)
         except Exception:
-            print("Failed to load existing file, starting fresh.")
+            print("Failed to load existing file, starting fresh.", flush=True)
 
     existing_ids = {item["id"] for item in existing_data if "id" in item}
 
@@ -112,9 +118,9 @@ def main():
     if new_details_count > 0:
         with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
             json.dump(existing_data, f, ensure_ascii=False, indent=2)
-        print(f"Saved database. Total posts: {len(existing_data)} (New: {new_details_count})")
+        print(f"Saved database. Total posts: {len(existing_data)} (New: {new_details_count})", flush=True)
     else:
-        print("No new data to save.")
+        print("No new data to save.", flush=True)
 
 if __name__ == "__main__":
     main()
