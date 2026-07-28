@@ -3,630 +3,630 @@
     "tag": "worst quality",
     "meaning": "最低品質 (作画崩壊防止)",
     "category": "Negative",
-    "count": 28812,
-    "usage_rate": "187.87%"
+    "count": 28893,
+    "usage_rate": "188.07%"
   },
   {
     "tag": "lowres",
     "meaning": "ローレス",
     "category": "Negative",
-    "count": 25143,
-    "usage_rate": "163.95%"
+    "count": 25197,
+    "usage_rate": "164.01%"
   },
   {
     "tag": "jpeg artifacts",
     "meaning": "JPEG圧縮ノイズ・画質劣化",
     "category": "Negative",
-    "count": 24148,
-    "usage_rate": "157.46%"
+    "count": 24202,
+    "usage_rate": "157.53%"
   },
   {
     "tag": "bad quality",
     "meaning": "悪品質 (粗い描画防止)",
     "category": "Negative",
-    "count": 22938,
-    "usage_rate": "149.57%"
+    "count": 23019,
+    "usage_rate": "149.83%"
   },
   {
     "tag": "very displeasing",
     "meaning": "Very Displeasing",
     "category": "Negative",
-    "count": 20177,
-    "usage_rate": "131.57%"
+    "count": 20258,
+    "usage_rate": "131.86%"
   },
   {
     "tag": "multiple views",
     "meaning": "マルチアングル",
     "category": "Negative",
-    "count": 19266,
-    "usage_rate": "125.63%"
+    "count": 19320,
+    "usage_rate": "125.76%"
   },
   {
     "tag": "chromatic aberration",
     "meaning": "色収差",
     "category": "Negative",
-    "count": 19214,
-    "usage_rate": "125.29%"
+    "count": 19268,
+    "usage_rate": "125.42%"
   },
   {
     "tag": "logo",
     "meaning": "ロゴ",
     "category": "Negative",
-    "count": 18500,
-    "usage_rate": "120.63%"
+    "count": 18554,
+    "usage_rate": "120.77%"
   },
   {
     "tag": "scan artifacts",
     "meaning": "アーティファクトをスキャンします",
     "category": "Negative",
-    "count": 18024,
-    "usage_rate": "117.53%"
+    "count": 18078,
+    "usage_rate": "117.67%"
   },
   {
     "tag": "artistic error",
     "meaning": "Artistic Error",
     "category": "Negative",
-    "count": 17320,
-    "usage_rate": "112.94%"
+    "count": 17347,
+    "usage_rate": "112.91%"
   },
   {
     "tag": "film grain",
     "meaning": "フィルムグレイン",
     "category": "Negative",
-    "count": 17205,
-    "usage_rate": "112.19%"
+    "count": 17259,
+    "usage_rate": "112.34%"
   },
   {
     "tag": "too many watermarks",
     "meaning": "Too Many Watermarks",
     "category": "Negative",
-    "count": 16958,
-    "usage_rate": "110.58%"
+    "count": 17012,
+    "usage_rate": "110.73%"
   },
   {
     "tag": "blank page",
     "meaning": "空白ページ",
     "category": "Negative",
-    "count": 15898,
+    "count": 15925,
     "usage_rate": "103.66%"
   },
   {
     "tag": "negative space",
     "meaning": "ネガティブスペース",
     "category": "Negative",
-    "count": 15503,
+    "count": 15530,
     "usage_rate": "101.09%"
   },
   {
     "tag": "halftone",
     "meaning": "ハーフトーン (漫画トーン・点描表現)",
     "category": "Negative",
-    "count": 15488,
+    "count": 15515,
     "usage_rate": "100.99%"
   },
   {
     "tag": "dithering",
     "meaning": "ディザリング",
     "category": "Negative",
-    "count": 14386,
-    "usage_rate": "93.81%"
+    "count": 14413,
+    "usage_rate": "93.82%"
   },
   {
     "tag": "screentone",
     "meaning": "Screentone",
     "category": "Negative",
-    "count": 13919,
-    "usage_rate": "90.76%"
+    "count": 13946,
+    "usage_rate": "90.78%"
   },
   {
     "tag": "bad anatomy",
     "meaning": "破綻した解剖学 (身体構造崩れ防止)",
     "category": "Negative",
-    "count": 11547,
-    "usage_rate": "75.29%"
+    "count": 11574,
+    "usage_rate": "75.34%"
   },
   {
     "tag": "blurry",
     "meaning": "ぼやけた画像・ピント外れ",
     "category": "Negative",
-    "count": 10987,
-    "usage_rate": "71.64%"
+    "count": 11014,
+    "usage_rate": "71.69%"
   },
   {
     "tag": "bad hands",
     "meaning": "破綻した手・崩れた指",
     "category": "Negative",
-    "count": 10419,
-    "usage_rate": "67.94%"
+    "count": 10473,
+    "usage_rate": "68.17%"
   },
   {
     "tag": "error",
     "meaning": "エラー文字・ノイズ",
     "category": "Negative",
-    "count": 9171,
-    "usage_rate": "59.80%"
+    "count": 9198,
+    "usage_rate": "59.87%"
   },
   {
     "tag": "low quality",
     "meaning": "低品質 (品質維持)",
     "category": "Negative",
     "count": 8739,
-    "usage_rate": "56.98%"
+    "usage_rate": "56.88%"
   },
   {
     "tag": "watermark",
     "meaning": "ウォーターマーク (透かし文字除去)",
     "category": "Negative",
     "count": 7833,
-    "usage_rate": "51.08%"
+    "usage_rate": "50.99%"
   },
   {
     "tag": "nsfw",
     "meaning": "Nsfw",
     "category": "Negative",
-    "count": 7658,
-    "usage_rate": "49.93%"
+    "count": 7685,
+    "usage_rate": "50.02%"
   },
   {
     "tag": "text",
     "meaning": "余計な文字・ロゴテキスト除去",
     "category": "Negative",
-    "count": 7282,
-    "usage_rate": "47.48%"
+    "count": 7309,
+    "usage_rate": "47.58%"
   },
   {
     "tag": "signature",
     "meaning": "絵師のサイン (署名ロゴ除去)",
     "category": "Negative",
     "count": 6609,
-    "usage_rate": "43.09%"
+    "usage_rate": "43.02%"
   },
   {
     "tag": "missing fingers",
     "meaning": "指の欠損",
     "category": "Negative",
     "count": 6393,
-    "usage_rate": "41.69%"
+    "usage_rate": "41.61%"
   },
   {
     "tag": "fewer digits",
     "meaning": "数桁が少ない",
     "category": "Negative",
     "count": 5822,
-    "usage_rate": "37.96%"
+    "usage_rate": "37.90%"
   },
   {
     "tag": "cropped",
     "meaning": "画面からはみ出たフレーミング",
     "category": "Negative",
     "count": 5107,
-    "usage_rate": "33.30%"
+    "usage_rate": "33.24%"
   },
   {
     "tag": "username",
     "meaning": "ユーザー名・テキストロゴ除去",
     "category": "Negative",
     "count": 4969,
-    "usage_rate": "32.40%"
+    "usage_rate": "32.34%"
   },
   {
     "tag": "normal quality",
     "meaning": "標準品質 (高品質化のため除外)",
     "category": "Negative",
     "count": 4538,
-    "usage_rate": "29.59%"
+    "usage_rate": "29.54%"
   },
   {
     "tag": "extra digits",
     "meaning": "余分な数字",
     "category": "Negative",
     "count": 3719,
-    "usage_rate": "24.25%"
+    "usage_rate": "24.21%"
   },
   {
     "tag": "deformed",
     "meaning": "変形・歪み",
     "category": "Negative",
-    "count": 3650,
-    "usage_rate": "23.80%"
+    "count": 3677,
+    "usage_rate": "23.93%"
   },
   {
     "tag": "disfigured",
     "meaning": "醜い変形・顔体の崩れ",
     "category": "Negative",
-    "count": 3608,
-    "usage_rate": "23.53%"
+    "count": 3635,
+    "usage_rate": "23.66%"
   },
   {
     "tag": "bad proportions",
     "meaning": "不自然な頭身バランス",
     "category": "Negative",
-    "count": 3601,
-    "usage_rate": "23.48%"
+    "count": 3628,
+    "usage_rate": "23.62%"
   },
   {
     "tag": "displeasing",
     "meaning": "Displeasing",
     "category": "Negative",
-    "count": 3599,
-    "usage_rate": "23.47%"
+    "count": 3626,
+    "usage_rate": "23.60%"
   },
   {
     "tag": "extra digit",
     "meaning": "指の増殖 (指多発防止)",
     "category": "Negative",
     "count": 3561,
-    "usage_rate": "23.22%"
+    "usage_rate": "23.18%"
   },
   {
     "tag": "ugly",
     "meaning": "醜い作画",
     "category": "Negative",
     "count": 3506,
-    "usage_rate": "22.86%"
+    "usage_rate": "22.82%"
   },
   {
     "tag": "unfinished",
     "meaning": "未完成",
     "category": "Negative",
     "count": 3317,
-    "usage_rate": "21.63%"
+    "usage_rate": "21.59%"
   },
   {
     "tag": "extra legs",
     "meaning": "余分な脚 (脚の増殖防止)",
     "category": "Negative",
-    "count": 3179,
-    "usage_rate": "20.73%"
+    "count": 3206,
+    "usage_rate": "20.87%"
   },
   {
     "tag": "bad feet",
     "meaning": "破綻した足・崩れたつま先",
     "category": "Negative",
-    "count": 3175,
-    "usage_rate": "20.70%"
+    "count": 3202,
+    "usage_rate": "20.84%"
   },
   {
     "tag": "extra arms",
     "meaning": "余分な腕 (腕の増殖防止)",
     "category": "Negative",
-    "count": 3136,
-    "usage_rate": "20.45%"
+    "count": 3163,
+    "usage_rate": "20.59%"
   },
   {
     "tag": "mutation",
     "meaning": "変異・作画崩壊",
     "category": "Negative",
-    "count": 3070,
-    "usage_rate": "20.02%"
+    "count": 3097,
+    "usage_rate": "20.16%"
   },
   {
     "tag": "missing arms",
     "meaning": "腕の欠損",
     "category": "Negative",
     "count": 2796,
-    "usage_rate": "18.23%"
+    "usage_rate": "18.20%"
   },
   {
     "tag": "extra fingers",
     "meaning": "指の増殖 (指多発防止)",
     "category": "Negative",
     "count": 2715,
-    "usage_rate": "17.70%"
+    "usage_rate": "17.67%"
   },
   {
     "tag": "@_@",
     "meaning": "@ @",
     "category": "Negative",
     "count": 2470,
-    "usage_rate": "16.11%"
+    "usage_rate": "16.08%"
   },
   {
     "tag": "scan",
     "meaning": "スキャン",
     "category": "Negative",
     "count": 2451,
-    "usage_rate": "15.98%"
+    "usage_rate": "15.95%"
   },
   {
     "tag": "monochrome",
     "meaning": "モノクロ",
     "category": "Negative",
     "count": 2372,
-    "usage_rate": "15.47%"
+    "usage_rate": "15.44%"
   },
   {
     "tag": "2koma",
     "meaning": "2koma",
     "category": "Negative",
     "count": 2248,
-    "usage_rate": "14.66%"
+    "usage_rate": "14.63%"
   },
   {
     "tag": "extra limbs",
     "meaning": "Extra Limbs",
     "category": "Negative",
     "count": 2219,
-    "usage_rate": "14.47%"
+    "usage_rate": "14.44%"
   },
   {
     "tag": "missing",
     "meaning": "Missing",
     "category": "Negative",
-    "count": 2156,
-    "usage_rate": "14.06%"
+    "count": 2183,
+    "usage_rate": "14.21%"
   },
   {
     "tag": "bad face",
     "meaning": "悪い顔",
     "category": "Negative",
-    "count": 2150,
-    "usage_rate": "14.02%"
+    "count": 2177,
+    "usage_rate": "14.17%"
   },
   {
     "tag": "long neck",
     "meaning": "不自然に長い首",
     "category": "Negative",
-    "count": 2137,
-    "usage_rate": "13.93%"
+    "count": 2164,
+    "usage_rate": "14.09%"
   },
   {
     "tag": "sketch",
     "meaning": "スケッチ (下描き風の軽快な線)",
     "category": "Negative",
     "count": 2045,
-    "usage_rate": "13.33%"
+    "usage_rate": "13.31%"
   },
   {
     "tag": "censor",
     "meaning": "Censor",
     "category": "Negative",
     "count": 2039,
-    "usage_rate": "13.30%"
+    "usage_rate": "13.27%"
   },
   {
     "tag": "artist name",
     "meaning": "作者名付き",
     "category": "Negative",
     "count": 2035,
-    "usage_rate": "13.27%"
+    "usage_rate": "13.25%"
   },
   {
     "tag": "fused fingers",
     "meaning": "融合した指 (指くっつき防止)",
     "category": "Negative",
     "count": 1950,
-    "usage_rate": "12.72%"
+    "usage_rate": "12.69%"
   },
   {
     "tag": "bar censor",
     "meaning": "バー検閲",
     "category": "Negative",
     "count": 1906,
-    "usage_rate": "12.43%"
+    "usage_rate": "12.41%"
   },
   {
     "tag": "out of focus",
     "meaning": "Out Of Focus",
     "category": "Negative",
     "count": 1750,
-    "usage_rate": "11.41%"
+    "usage_rate": "11.39%"
   },
   {
     "tag": "bad fingers",
     "meaning": "Bad Fingers",
     "category": "Negative",
     "count": 1749,
-    "usage_rate": "11.40%"
+    "usage_rate": "11.38%"
   },
   {
     "tag": "bokeh",
     "meaning": "背景のぼけ、玉ぼけ",
     "category": "Negative",
     "count": 1706,
-    "usage_rate": "11.12%"
+    "usage_rate": "11.10%"
   },
   {
     "tag": "abstract",
     "meaning": "抽象的な",
     "category": "Negative",
     "count": 1703,
-    "usage_rate": "11.10%"
+    "usage_rate": "11.09%"
   },
   {
     "tag": "pubic hair",
     "meaning": "陰毛",
     "category": "Negative",
     "count": 1687,
-    "usage_rate": "11.00%"
+    "usage_rate": "10.98%"
   },
   {
     "tag": "mosaic censorship",
     "meaning": "Mosaic Censorship",
     "category": "Negative",
     "count": 1672,
-    "usage_rate": "10.90%"
+    "usage_rate": "10.88%"
   },
   {
     "tag": "bad",
     "meaning": "Bad",
     "category": "Negative",
     "count": 1627,
-    "usage_rate": "10.61%"
+    "usage_rate": "10.59%"
+  },
+  {
+    "tag": "chibi",
+    "meaning": "ちびキャラ",
+    "category": "Negative",
+    "count": 1624,
+    "usage_rate": "10.57%"
   },
   {
     "tag": "glowing eyes",
     "meaning": "輝く目",
     "category": "Negative",
     "count": 1618,
-    "usage_rate": "10.55%"
+    "usage_rate": "10.53%"
   },
   {
-    "tag": "chibi",
-    "meaning": "ちびキャラ",
+    "tag": "bad eyes",
+    "meaning": "Bad Eyes",
     "category": "Negative",
-    "count": 1597,
-    "usage_rate": "10.41%"
+    "count": 1594,
+    "usage_rate": "10.38%"
   },
   {
     "tag": "poorly drawn",
     "meaning": "下手なデッサン・崩れた描き込み",
     "category": "Negative",
     "count": 1589,
-    "usage_rate": "10.36%"
+    "usage_rate": "10.34%"
   },
   {
     "tag": "lowers",
     "meaning": "Lowers",
     "category": "Negative",
     "count": 1576,
-    "usage_rate": "10.28%"
-  },
-  {
-    "tag": "bad eyes",
-    "meaning": "Bad Eyes",
-    "category": "Negative",
-    "count": 1567,
-    "usage_rate": "10.22%"
+    "usage_rate": "10.26%"
   },
   {
     "tag": "manga",
     "meaning": "Manga",
     "category": "Negative",
     "count": 1514,
-    "usage_rate": "9.87%"
+    "usage_rate": "9.85%"
   },
   {
     "tag": "3d",
     "meaning": "3D",
     "category": "Negative",
     "count": 1503,
-    "usage_rate": "9.80%"
+    "usage_rate": "9.78%"
   },
   {
     "tag": "longbody",
     "meaning": "Longbody",
     "category": "Negative",
     "count": 1450,
-    "usage_rate": "9.45%"
+    "usage_rate": "9.44%"
   },
   {
     "tag": "realistic",
     "meaning": "現実的です",
     "category": "Negative",
     "count": 1446,
-    "usage_rate": "9.43%"
+    "usage_rate": "9.41%"
   },
   {
     "tag": "dated",
     "meaning": "日付付き",
     "category": "Negative",
     "count": 1442,
-    "usage_rate": "9.40%"
+    "usage_rate": "9.39%"
   },
   {
     "tag": "extra",
     "meaning": "余分な",
     "category": "Negative",
     "count": 1424,
-    "usage_rate": "9.29%"
+    "usage_rate": "9.27%"
   },
   {
     "tag": "duplicate",
     "meaning": "要素の重複・二重化",
     "category": "Negative",
-    "count": 1372,
-    "usage_rate": "8.95%"
+    "count": 1399,
+    "usage_rate": "9.11%"
+  },
+  {
+    "tag": "censored",
+    "meaning": "修正済み",
+    "category": "Negative",
+    "count": 1356,
+    "usage_rate": "8.83%"
   },
   {
     "tag": "mismatched pupils",
     "meaning": "不一致の生徒",
     "category": "Negative",
     "count": 1341,
-    "usage_rate": "8.74%"
+    "usage_rate": "8.73%"
   },
   {
     "tag": "upscaled",
     "meaning": "Upscaled",
     "category": "Negative",
     "count": 1338,
-    "usage_rate": "8.72%"
+    "usage_rate": "8.71%"
   },
   {
     "tag": "fewer",
     "meaning": "Fewer",
     "category": "Negative",
     "count": 1329,
-    "usage_rate": "8.67%"
-  },
-  {
-    "tag": "censored",
-    "meaning": "修正済み",
-    "category": "Negative",
-    "count": 1329,
-    "usage_rate": "8.67%"
+    "usage_rate": "8.65%"
   },
   {
     "tag": "4koma",
     "meaning": "四コマ漫画",
     "category": "Negative",
     "count": 1328,
-    "usage_rate": "8.66%"
+    "usage_rate": "8.64%"
   },
   {
     "tag": "extra hands",
     "meaning": "余分な手",
     "category": "Negative",
     "count": 1290,
-    "usage_rate": "8.41%"
+    "usage_rate": "8.40%"
+  },
+  {
+    "tag": "flat color",
+    "meaning": "フラットカラー (アニメ塗り・ベタ塗り)",
+    "category": "Negative",
+    "count": 1234,
+    "usage_rate": "8.03%"
   },
   {
     "tag": "aliasing",
     "meaning": "エイリアシング",
     "category": "Negative",
     "count": 1219,
-    "usage_rate": "7.95%"
+    "usage_rate": "7.93%"
   },
   {
     "tag": "mutated hands",
     "meaning": "変異した手",
     "category": "Negative",
     "count": 1208,
-    "usage_rate": "7.88%"
+    "usage_rate": "7.86%"
   },
   {
-    "tag": "flat color",
-    "meaning": "フラットカラー (アニメ塗り・ベタ塗り)",
+    "tag": "missing finger",
+    "meaning": "指がありません",
     "category": "Negative",
-    "count": 1180,
-    "usage_rate": "7.69%"
+    "count": 1161,
+    "usage_rate": "7.56%"
   },
   {
     "tag": "fat",
     "meaning": "脂肪",
     "category": "Negative",
     "count": 1159,
-    "usage_rate": "7.56%"
+    "usage_rate": "7.54%"
   },
   {
     "tag": "bad perspective",
     "meaning": "悪い視点",
     "category": "Negative",
     "count": 1147,
-    "usage_rate": "7.48%"
+    "usage_rate": "7.47%"
   },
   {
     "tag": "poorly drawn face",
     "meaning": "Poorly Drawn Face",
     "category": "Negative",
     "count": 1136,
-    "usage_rate": "7.41%"
-  },
-  {
-    "tag": "missing finger",
-    "meaning": "指がありません",
-    "category": "Negative",
-    "count": 1134,
     "usage_rate": "7.39%"
   },
   {
@@ -634,146 +634,153 @@
     "meaning": "裸 (ヌード)",
     "category": "Negative",
     "count": 1116,
-    "usage_rate": "7.28%"
+    "usage_rate": "7.26%"
   },
   {
     "tag": "panel layout",
     "meaning": "Panel Layout",
     "category": "Negative",
     "count": 1053,
-    "usage_rate": "6.87%"
+    "usage_rate": "6.85%"
   },
   {
     "tag": "x-ray",
     "meaning": "X線",
     "category": "Negative",
     "count": 1020,
-    "usage_rate": "6.65%"
+    "usage_rate": "6.64%"
   },
   {
     "tag": "futanari",
     "meaning": "futanari",
     "category": "Negative",
     "count": 1019,
-    "usage_rate": "6.64%"
+    "usage_rate": "6.63%"
   },
   {
     "tag": "white skin",
     "meaning": "白い肌",
     "category": "Negative",
     "count": 1009,
-    "usage_rate": "6.58%"
+    "usage_rate": "6.57%"
   },
   {
     "tag": "muscular female",
     "meaning": "筋肉質の女性",
     "category": "Negative",
     "count": 966,
-    "usage_rate": "6.30%"
+    "usage_rate": "6.29%"
   },
   {
     "tag": "white background",
     "meaning": "白背景",
     "category": "Negative",
     "count": 964,
-    "usage_rate": "6.29%"
+    "usage_rate": "6.27%"
   },
   {
     "tag": "missing legs",
     "meaning": "脚の欠損",
     "category": "Negative",
     "count": 964,
-    "usage_rate": "6.29%"
+    "usage_rate": "6.27%"
   },
   {
     "tag": "poorly drawn hands",
     "meaning": "Poorly Drawn Hands",
     "category": "Negative",
     "count": 961,
-    "usage_rate": "6.27%"
+    "usage_rate": "6.26%"
   },
   {
     "tag": "",
     "meaning": "",
     "category": "Negative",
     "count": 960,
-    "usage_rate": "6.26%"
+    "usage_rate": "6.25%"
   },
   {
     "tag": "head_out_of_frame",
     "meaning": "フレームから出てください",
     "category": "Negative",
     "count": 953,
-    "usage_rate": "6.21%"
+    "usage_rate": "6.20%"
   },
   {
     "tag": "nipples",
     "meaning": "乳首",
     "category": "Negative",
     "count": 951,
-    "usage_rate": "6.20%"
+    "usage_rate": "6.19%"
   },
   {
     "tag": "incomplete",
     "meaning": "Incomplete",
     "category": "Negative",
     "count": 945,
-    "usage_rate": "6.16%"
+    "usage_rate": "6.15%"
   },
   {
     "tag": "bad leg",
     "meaning": "悪い脚",
     "category": "Negative",
     "count": 925,
-    "usage_rate": "6.03%"
+    "usage_rate": "6.02%"
   },
   {
     "tag": "extra_arms",
     "meaning": "余分な腕",
     "category": "Negative",
     "count": 914,
-    "usage_rate": "5.96%"
+    "usage_rate": "5.95%"
   },
   {
     "tag": "amputee",
     "meaning": "切断者",
     "category": "Negative",
     "count": 886,
-    "usage_rate": "5.78%"
+    "usage_rate": "5.77%"
   },
   {
     "tag": "missing limb",
     "meaning": "手足がありません",
     "category": "Negative",
     "count": 872,
-    "usage_rate": "5.69%"
+    "usage_rate": "5.68%"
+  },
+  {
+    "tag": "fat girl",
+    "meaning": "Fat Girl",
+    "category": "Negative",
+    "count": 863,
+    "usage_rate": "5.62%"
   },
   {
     "tag": "3koma",
     "meaning": "3koma",
     "category": "Negative",
     "count": 850,
-    "usage_rate": "5.54%"
+    "usage_rate": "5.53%"
+  },
+  {
+    "tag": "doll",
+    "meaning": "人形",
+    "category": "Negative",
+    "count": 847,
+    "usage_rate": "5.51%"
   },
   {
     "tag": "tan",
     "meaning": "日焼け",
     "category": "Negative",
     "count": 844,
-    "usage_rate": "5.50%"
+    "usage_rate": "5.49%"
   },
   {
     "tag": "mutated",
     "meaning": "Mutated",
     "category": "Negative",
     "count": 837,
-    "usage_rate": "5.46%"
-  },
-  {
-    "tag": "fat girl",
-    "meaning": "Fat Girl",
-    "category": "Negative",
-    "count": 836,
     "usage_rate": "5.45%"
   },
   {
@@ -784,67 +791,60 @@
     "usage_rate": "5.44%"
   },
   {
-    "tag": "doll",
-    "meaning": "人形",
-    "category": "Negative",
-    "count": 820,
-    "usage_rate": "5.35%"
-  },
-  {
     "tag": "multiple angle",
     "meaning": "Multiple Angle",
     "category": "Negative",
     "count": 813,
-    "usage_rate": "5.30%"
+    "usage_rate": "5.29%"
   },
   {
     "tag": "long body",
     "meaning": "Long Body",
     "category": "Negative",
     "count": 811,
-    "usage_rate": "5.29%"
+    "usage_rate": "5.28%"
   },
   {
     "tag": "cleavage",
     "meaning": "胸の谷間",
     "category": "Negative",
     "count": 794,
-    "usage_rate": "5.18%"
+    "usage_rate": "5.17%"
   },
   {
     "tag": "looking at viewer",
     "meaning": "カメラ目線 (こちらを見つめる)",
     "category": "Negative",
     "count": 794,
-    "usage_rate": "5.18%"
+    "usage_rate": "5.17%"
   },
   {
     "tag": "reference",
     "meaning": "Reference",
     "category": "Negative",
     "count": 793,
-    "usage_rate": "5.17%"
+    "usage_rate": "5.16%"
   },
   {
     "tag": "distorted",
     "meaning": "Distorted",
     "category": "Negative",
     "count": 779,
-    "usage_rate": "5.08%"
+    "usage_rate": "5.07%"
   },
   {
     "tag": "gigantic breasts",
     "meaning": "巨大な胸",
     "category": "Negative",
     "count": 773,
-    "usage_rate": "5.04%"
+    "usage_rate": "5.03%"
   },
   {
     "tag": "low detail",
     "meaning": "Low Detail",
     "category": "Negative",
     "count": 762,
-    "usage_rate": "4.97%"
+    "usage_rate": "4.96%"
   },
   {
     "tag": "bad anatomy disfigured",
@@ -858,7 +858,7 @@
     "meaning": "Deformed Hands",
     "category": "Negative",
     "count": 739,
-    "usage_rate": "4.82%"
+    "usage_rate": "4.81%"
   },
   {
     "tag": "extra_fingers",
@@ -872,91 +872,91 @@
     "meaning": "首輪",
     "category": "Negative",
     "count": 715,
-    "usage_rate": "4.66%"
+    "usage_rate": "4.65%"
   },
   {
     "tag": "bad arm",
     "meaning": "悪い腕",
     "category": "Negative",
     "count": 711,
-    "usage_rate": "4.64%"
+    "usage_rate": "4.63%"
   },
   {
     "tag": "comic",
     "meaning": "漫画",
     "category": "Negative",
     "count": 709,
-    "usage_rate": "4.62%"
+    "usage_rate": "4.61%"
   },
   {
     "tag": "split view",
     "meaning": "Split View",
     "category": "Negative",
     "count": 705,
-    "usage_rate": "4.60%"
+    "usage_rate": "4.59%"
   },
   {
     "tag": "deformed eyes",
     "meaning": "Deformed Eyes",
     "category": "Negative",
     "count": 701,
-    "usage_rate": "4.57%"
+    "usage_rate": "4.56%"
   },
   {
     "tag": "ugly face",
     "meaning": "Ugly Face",
     "category": "Negative",
     "count": 698,
-    "usage_rate": "4.55%"
+    "usage_rate": "4.54%"
   },
   {
     "tag": "loli",
     "meaning": "ロリ",
     "category": "Negative",
     "count": 696,
-    "usage_rate": "4.54%"
+    "usage_rate": "4.53%"
   },
   {
     "tag": "extra breasts",
     "meaning": "余分な胸",
     "category": "Negative",
     "count": 696,
-    "usage_rate": "4.54%"
+    "usage_rate": "4.53%"
   },
   {
     "tag": "liquid fingers",
     "meaning": "Liquid Fingers",
     "category": "Negative",
     "count": 695,
-    "usage_rate": "4.53%"
+    "usage_rate": "4.52%"
   },
   {
     "tag": "no human",
     "meaning": "No Human",
     "category": "Negative",
     "count": 689,
-    "usage_rate": "4.49%"
+    "usage_rate": "4.48%"
   },
   {
     "tag": "correction fluid",
     "meaning": "Correction Fluid",
     "category": "Negative",
     "count": 689,
-    "usage_rate": "4.49%"
+    "usage_rate": "4.48%"
   },
   {
     "tag": "cross",
     "meaning": "十字架",
     "category": "Negative",
     "count": 689,
-    "usage_rate": "4.49%"
+    "usage_rate": "4.48%"
   },
   {
     "tag": "restrained",
     "meaning": "抑制",
     "category": "Negative",
     "count": 689,
-    "usage_rate": "4.49%"
+    "usage_rate": "4.48%"
   },
   {
     "tag": "screentones",
@@ -970,56 +970,63 @@
     "meaning": "余分な目",
     "category": "Negative",
     "count": 678,
-    "usage_rate": "4.42%"
+    "usage_rate": "4.41%"
   },
   {
     "tag": "bad legs",
     "meaning": "Bad Legs",
     "category": "Negative",
     "count": 676,
-    "usage_rate": "4.41%"
+    "usage_rate": "4.40%"
+  },
+  {
+    "tag": "simple background",
+    "meaning": "シンプルな背景",
+    "category": "Negative",
+    "count": 665,
+    "usage_rate": "4.33%"
   },
   {
     "tag": "grid view",
     "meaning": "Grid View",
     "category": "Negative",
     "count": 647,
-    "usage_rate": "4.22%"
+    "usage_rate": "4.21%"
   },
   {
     "tag": "missing_limb",
     "meaning": "手足がありません",
     "category": "Negative",
     "count": 645,
-    "usage_rate": "4.21%"
+    "usage_rate": "4.20%"
   },
   {
     "tag": "disconnected_limbs",
     "meaning": "Disconnected Limbs",
     "category": "Negative",
     "count": 645,
-    "usage_rate": "4.21%"
+    "usage_rate": "4.20%"
   },
   {
     "tag": "bare shoulders",
     "meaning": "露出した肩",
     "category": "Negative",
     "count": 645,
-    "usage_rate": "4.21%"
+    "usage_rate": "4.20%"
   },
   {
     "tag": "artist collaboration",
     "meaning": "Artist Collaboration",
     "category": "Negative",
     "count": 644,
-    "usage_rate": "4.20%"
+    "usage_rate": "4.19%"
   },
   {
     "tag": "malformed hands",
     "meaning": "Malformed Hands",
     "category": "Negative",
     "count": 641,
-    "usage_rate": "4.18%"
+    "usage_rate": "4.17%"
   },
   {
     "tag": "open clothes",
@@ -1033,98 +1040,91 @@
     "meaning": "服を脱ぐ",
     "category": "Negative",
     "count": 639,
-    "usage_rate": "4.17%"
+    "usage_rate": "4.16%"
   },
   {
     "tag": "open shirt",
     "meaning": "オープンシャツ",
     "category": "Negative",
     "count": 639,
-    "usage_rate": "4.17%"
+    "usage_rate": "4.16%"
   },
   {
     "tag": "open pants",
     "meaning": "ズボンを開けます",
     "category": "Negative",
     "count": 639,
-    "usage_rate": "4.17%"
+    "usage_rate": "4.16%"
   },
   {
     "tag": "off shoulder",
     "meaning": "肩見せ",
     "category": "Negative",
     "count": 639,
-    "usage_rate": "4.17%"
+    "usage_rate": "4.16%"
   },
   {
     "tag": "clothes lift",
     "meaning": "たくしあげ",
     "category": "Negative",
     "count": 639,
-    "usage_rate": "4.17%"
+    "usage_rate": "4.16%"
   },
   {
     "tag": "unbuttoned",
     "meaning": "ボタンを外した",
     "category": "Negative",
     "count": 639,
-    "usage_rate": "4.17%"
+    "usage_rate": "4.16%"
   },
   {
     "tag": "skin",
     "meaning": "Skin",
     "category": "Negative",
     "count": 639,
-    "usage_rate": "4.17%"
+    "usage_rate": "4.16%"
   },
   {
     "tag": "breasts",
     "meaning": "胸",
     "category": "Negative",
     "count": 639,
-    "usage_rate": "4.17%"
+    "usage_rate": "4.16%"
   },
   {
     "tag": "grayscale",
     "meaning": "Grayscale",
     "category": "Negative",
     "count": 638,
-    "usage_rate": "4.16%"
-  },
-  {
-    "tag": "simple background",
-    "meaning": "シンプルな背景",
-    "category": "Negative",
-    "count": 638,
-    "usage_rate": "4.16%"
+    "usage_rate": "4.15%"
   },
   {
     "tag": "bad shadow",
     "meaning": "Bad Shadow",
     "category": "Negative",
     "count": 632,
-    "usage_rate": "4.12%"
+    "usage_rate": "4.11%"
   },
   {
     "tag": "flattened",
     "meaning": "平ら",
     "category": "Negative",
     "count": 630,
-    "usage_rate": "4.11%"
+    "usage_rate": "4.10%"
   },
   {
     "tag": "low contrast",
     "meaning": "Low Contrast",
     "category": "Negative",
     "count": 626,
-    "usage_rate": "4.08%"
+    "usage_rate": "4.07%"
   },
   {
     "tag": "white blank page",
     "meaning": "White Blank Page",
     "category": "Negative",
     "count": 625,
-    "usage_rate": "4.08%"
+    "usage_rate": "4.07%"
   },
   {
     "tag": "camera",
@@ -1138,21 +1138,21 @@
     "meaning": "絵師: milkpanda風",
     "category": "Negative",
     "count": 618,
-    "usage_rate": "4.03%"
+    "usage_rate": "4.02%"
   },
   {
     "tag": "long_body",
     "meaning": "Long Body",
     "category": "Negative",
     "count": 612,
-    "usage_rate": "3.99%"
+    "usage_rate": "3.98%"
   },
   {
     "tag": "old",
     "meaning": "古い",
     "category": "Negative",
     "count": 612,
-    "usage_rate": "3.99%"
+    "usage_rate": "3.98%"
   },
   {
     "tag": "3d render",
@@ -1166,35 +1166,35 @@
     "meaning": "Fewer Details",
     "category": "Negative",
     "count": 589,
-    "usage_rate": "3.84%"
+    "usage_rate": "3.83%"
   },
   {
     "tag": "unsatisfactory",
     "meaning": "Unsatisfactory",
     "category": "Negative",
     "count": 589,
-    "usage_rate": "3.84%"
+    "usage_rate": "3.83%"
   },
   {
     "tag": "inadequate",
     "meaning": "Inadequate",
     "category": "Negative",
     "count": 589,
-    "usage_rate": "3.84%"
+    "usage_rate": "3.83%"
   },
   {
     "tag": "deficient",
     "meaning": "Deficient",
     "category": "Negative",
     "count": 589,
-    "usage_rate": "3.84%"
+    "usage_rate": "3.83%"
   },
   {
     "tag": "subpar",
     "meaning": "Subpar",
     "category": "Negative",
     "count": 589,
-    "usage_rate": "3.84%"
+    "usage_rate": "3.83%"
   },
   {
     "tag": "poor",
@@ -1208,35 +1208,35 @@
     "meaning": "ピクセル化",
     "category": "Negative",
     "count": 581,
-    "usage_rate": "3.79%"
+    "usage_rate": "3.78%"
   },
   {
     "tag": "distorted composition",
     "meaning": "Distorted Composition",
     "category": "Negative",
     "count": 578,
-    "usage_rate": "3.77%"
+    "usage_rate": "3.76%"
   },
   {
     "tag": "picture frame",
     "meaning": "額縁",
     "category": "Negative",
     "count": 576,
-    "usage_rate": "3.76%"
+    "usage_rate": "3.75%"
   },
   {
     "tag": "desk",
     "meaning": "机",
     "category": "Negative",
     "count": 573,
-    "usage_rate": "3.74%"
+    "usage_rate": "3.73%"
   },
   {
     "tag": "artist:xinzoruo",
     "meaning": "絵師: xinzoruo風",
     "category": "Negative",
     "count": 567,
-    "usage_rate": "3.70%"
+    "usage_rate": "3.69%"
   },
   {
     "tag": "puffy nipples",
@@ -1250,7 +1250,7 @@
     "meaning": "間違った手",
     "category": "Negative",
     "count": 563,
-    "usage_rate": "3.67%"
+    "usage_rate": "3.66%"
   },
   {
     "tag": "blurry background",
@@ -1292,35 +1292,42 @@
     "meaning": "フォトリアリック",
     "category": "Negative",
     "count": 553,
-    "usage_rate": "3.61%"
+    "usage_rate": "3.60%"
   },
   {
     "tag": "huge penis",
     "meaning": "巨大なペニス",
     "category": "Negative",
     "count": 553,
-    "usage_rate": "3.61%"
+    "usage_rate": "3.60%"
+  },
+  {
+    "tag": "black background",
+    "meaning": "黒背景",
+    "category": "Negative",
+    "count": 549,
+    "usage_rate": "3.57%"
   },
   {
     "tag": "anatomical nonsense",
     "meaning": "解剖学的ナンセンス",
     "category": "Negative",
     "count": 549,
-    "usage_rate": "3.58%"
+    "usage_rate": "3.57%"
   },
   {
     "tag": "inaccurate limb",
     "meaning": "Inaccurate Limb",
     "category": "Negative",
     "count": 547,
-    "usage_rate": "3.57%"
+    "usage_rate": "3.56%"
   },
   {
     "tag": "6girls",
     "meaning": "6girls",
     "category": "Negative",
     "count": 544,
-    "usage_rate": "3.55%"
+    "usage_rate": "3.54%"
   },
   {
     "tag": "full mosaic",
@@ -1334,7 +1341,7 @@
     "meaning": "動物",
     "category": "Negative",
     "count": 538,
-    "usage_rate": "3.51%"
+    "usage_rate": "3.50%"
   },
   {
     "tag": "unnatural hair",
@@ -1348,20 +1355,13 @@
     "meaning": "多すぎる指",
     "category": "Negative",
     "count": 527,
-    "usage_rate": "3.44%"
+    "usage_rate": "3.43%"
   },
   {
     "tag": "clone",
     "meaning": "クローン",
     "category": "Negative",
     "count": 523,
-    "usage_rate": "3.41%"
-  },
-  {
-    "tag": "black background",
-    "meaning": "黒背景",
-    "category": "Negative",
-    "count": 522,
     "usage_rate": "3.40%"
   },
   {
@@ -1369,7 +1369,7 @@
     "meaning": "歯",
     "category": "Negative",
     "count": 521,
-    "usage_rate": "3.40%"
+    "usage_rate": "3.39%"
   },
   {
     "tag": "cubism",
@@ -1383,7 +1383,7 @@
     "meaning": "画面外への見切れ",
     "category": "Negative",
     "count": 518,
-    "usage_rate": "3.38%"
+    "usage_rate": "3.37%"
   },
   {
     "tag": "artist:bkub",
@@ -1425,28 +1425,28 @@
     "meaning": "描画",
     "category": "Negative",
     "count": 495,
-    "usage_rate": "3.23%"
+    "usage_rate": "3.22%"
   },
   {
     "tag": "bad hand structure",
     "meaning": "Bad Hand Structure",
     "category": "Negative",
     "count": 495,
-    "usage_rate": "3.23%"
+    "usage_rate": "3.22%"
   },
   {
     "tag": "disconnected limbs",
     "meaning": "Disconnected Limbs",
     "category": "Negative",
     "count": 495,
-    "usage_rate": "3.23%"
+    "usage_rate": "3.22%"
   },
   {
     "tag": "bad ass",
     "meaning": "悪いお尻",
     "category": "Negative",
     "count": 490,
-    "usage_rate": "3.20%"
+    "usage_rate": "3.19%"
   },
   {
     "tag": "malformed limbs",
@@ -1481,7 +1481,7 @@
     "meaning": "アウトライン強調 (くっきり輪郭)",
     "category": "Negative",
     "count": 478,
-    "usage_rate": "3.12%"
+    "usage_rate": "3.11%"
   },
   {
     "tag": "artifacts",
@@ -1516,42 +1516,49 @@
     "meaning": "Partial Face",
     "category": "Negative",
     "count": 469,
-    "usage_rate": "3.06%"
+    "usage_rate": "3.05%"
   },
   {
     "tag": "partial head",
     "meaning": "Partial Head",
     "category": "Negative",
     "count": 469,
-    "usage_rate": "3.06%"
+    "usage_rate": "3.05%"
   },
   {
     "tag": "angry",
     "meaning": "怒り",
     "category": "Negative",
     "count": 466,
-    "usage_rate": "3.04%"
+    "usage_rate": "3.03%"
   },
   {
     "tag": "long_neck",
     "meaning": "長い首",
     "category": "Negative",
     "count": 466,
-    "usage_rate": "3.04%"
+    "usage_rate": "3.03%"
   },
   {
     "tag": "poorly_drawn_hands",
     "meaning": "Poorly Drawn Hands",
     "category": "Negative",
     "count": 466,
-    "usage_rate": "3.04%"
+    "usage_rate": "3.03%"
   },
   {
     "tag": "big penis",
     "meaning": "Big Penis",
     "category": "Negative",
     "count": 463,
-    "usage_rate": "3.02%"
+    "usage_rate": "3.01%"
+  },
+  {
+    "tag": "sweat",
+    "meaning": "汗 (肌の描写)",
+    "category": "Negative",
+    "count": 462,
+    "usage_rate": "3.01%"
   },
   {
     "tag": "graffiti",
@@ -1586,14 +1593,14 @@
     "meaning": "Bad Teeth",
     "category": "Negative",
     "count": 452,
-    "usage_rate": "2.95%"
+    "usage_rate": "2.94%"
   },
   {
     "tag": "futa",
     "meaning": "Futa",
     "category": "Negative",
     "count": 444,
-    "usage_rate": "2.90%"
+    "usage_rate": "2.89%"
   },
   {
     "tag": "long penis",
@@ -1607,35 +1614,35 @@
     "meaning": "イライラしている",
     "category": "Negative",
     "count": 441,
-    "usage_rate": "2.88%"
+    "usage_rate": "2.87%"
   },
   {
     "tag": "2penis",
     "meaning": "2penis",
     "category": "Negative",
     "count": 441,
-    "usage_rate": "2.88%"
+    "usage_rate": "2.87%"
   },
   {
     "tag": "nose ring",
     "meaning": "鼻輪",
     "category": "Negative",
     "count": 441,
-    "usage_rate": "2.88%"
+    "usage_rate": "2.87%"
   },
   {
     "tag": "thin lips",
     "meaning": "Thin Lips",
     "category": "Negative",
     "count": 441,
-    "usage_rate": "2.88%"
+    "usage_rate": "2.87%"
   },
   {
     "tag": "pucker cheek",
     "meaning": "Pucker Cheek",
     "category": "Negative",
     "count": 441,
-    "usage_rate": "2.88%"
+    "usage_rate": "2.87%"
   },
   {
     "tag": "mosaic",
@@ -1652,39 +1659,32 @@
     "usage_rate": "2.84%"
   },
   {
-    "tag": "sweat",
-    "meaning": "汗 (肌の描写)",
-    "category": "Negative",
-    "count": 435,
-    "usage_rate": "2.84%"
-  },
-  {
     "tag": "toon style",
     "meaning": "Toon Style",
     "category": "Negative",
     "count": 434,
-    "usage_rate": "2.83%"
+    "usage_rate": "2.82%"
   },
   {
     "tag": "asymmetrical eyes",
     "meaning": "Asymmetrical Eyes",
     "category": "Negative",
     "count": 432,
-    "usage_rate": "2.82%"
+    "usage_rate": "2.81%"
   },
   {
     "tag": "expressionless",
     "meaning": "無表情",
     "category": "Negative",
     "count": 417,
-    "usage_rate": "2.72%"
+    "usage_rate": "2.71%"
   },
   {
     "tag": "clear face",
     "meaning": "Clear Face",
     "category": "Negative",
     "count": 417,
-    "usage_rate": "2.72%"
+    "usage_rate": "2.71%"
   },
   {
     "tag": "hyperrealistic",
@@ -1698,28 +1698,28 @@
     "meaning": "Mutated Hands And Fingers",
     "category": "Negative",
     "count": 415,
-    "usage_rate": "2.71%"
+    "usage_rate": "2.70%"
   },
   {
     "tag": "well groomed face",
     "meaning": "Well Groomed Face",
     "category": "Negative",
     "count": 414,
-    "usage_rate": "2.70%"
+    "usage_rate": "2.69%"
   },
   {
     "tag": "perfect face",
     "meaning": "Perfect Face",
     "category": "Negative",
     "count": 414,
-    "usage_rate": "2.70%"
+    "usage_rate": "2.69%"
   },
   {
     "tag": "beautiful face",
     "meaning": "Beautiful Face",
     "category": "Negative",
     "count": 414,
-    "usage_rate": "2.70%"
+    "usage_rate": "2.69%"
   },
   {
     "tag": "1990s style",
@@ -1733,14 +1733,14 @@
     "meaning": "Nipple",
     "category": "Negative",
     "count": 412,
-    "usage_rate": "2.69%"
+    "usage_rate": "2.68%"
   },
   {
     "tag": "gross",
     "meaning": "Gross",
     "category": "Negative",
     "count": 412,
-    "usage_rate": "2.69%"
+    "usage_rate": "2.68%"
   },
   {
     "tag": "counter",
@@ -1768,14 +1768,14 @@
     "meaning": "クロップドヘッド",
     "category": "Negative",
     "count": 403,
-    "usage_rate": "2.63%"
+    "usage_rate": "2.62%"
   },
   {
     "tag": "blur",
     "meaning": "Blur",
     "category": "Negative",
     "count": 403,
-    "usage_rate": "2.63%"
+    "usage_rate": "2.62%"
   },
   {
     "tag": "missing eye",
@@ -1796,7 +1796,7 @@
     "meaning": "Background People",
     "category": "Negative",
     "count": 398,
-    "usage_rate": "2.60%"
+    "usage_rate": "2.59%"
   },
   {
     "tag": "shota",
@@ -1806,18 +1806,25 @@
     "usage_rate": "2.58%"
   },
   {
+    "tag": "undetailed eyes",
+    "meaning": "Undetailed Eyes",
+    "category": "Negative",
+    "count": 393,
+    "usage_rate": "2.56%"
+  },
+  {
     "tag": "blurry foreground",
     "meaning": "前景ぼかし",
     "category": "Negative",
     "count": 392,
-    "usage_rate": "2.56%"
+    "usage_rate": "2.55%"
   },
   {
     "tag": "wrong feet",
     "meaning": "間違った足",
     "category": "Negative",
     "count": 392,
-    "usage_rate": "2.56%"
+    "usage_rate": "2.55%"
   },
   {
     "tag": "extra teeth",
@@ -1831,7 +1838,7 @@
     "meaning": "被写界深度 (背景のぼけ)",
     "category": "Negative",
     "count": 389,
-    "usage_rate": "2.54%"
+    "usage_rate": "2.53%"
   },
   {
     "tag": "dirty",
@@ -1880,14 +1887,14 @@
     "meaning": "Extra Eyebrows",
     "category": "Negative",
     "count": 380,
-    "usage_rate": "2.48%"
+    "usage_rate": "2.47%"
   },
   {
     "tag": "extra tongue",
     "meaning": "余分な舌",
     "category": "Negative",
     "count": 380,
-    "usage_rate": "2.48%"
+    "usage_rate": "2.47%"
   },
   {
     "tag": "twist",
@@ -1901,21 +1908,21 @@
     "meaning": "Patreonユーザー名",
     "category": "Negative",
     "count": 377,
-    "usage_rate": "2.46%"
+    "usage_rate": "2.45%"
   },
   {
     "tag": "flat colors",
     "meaning": "Flat Colors",
     "category": "Negative",
     "count": 377,
-    "usage_rate": "2.46%"
+    "usage_rate": "2.45%"
   },
   {
     "tag": "empty eyes",
     "meaning": "空の目",
     "category": "Negative",
     "count": 375,
-    "usage_rate": "2.45%"
+    "usage_rate": "2.44%"
   },
   {
     "tag": "plastic skin",
@@ -1964,42 +1971,42 @@
     "meaning": "パトレオンのロゴ",
     "category": "Negative",
     "count": 372,
-    "usage_rate": "2.43%"
+    "usage_rate": "2.42%"
   },
   {
     "tag": "dark",
     "meaning": "暗い",
     "category": "Negative",
     "count": 372,
-    "usage_rate": "2.43%"
+    "usage_rate": "2.42%"
   },
   {
     "tag": "eyeshadow",
     "meaning": "アイシャドウ",
     "category": "Negative",
     "count": 371,
-    "usage_rate": "2.42%"
+    "usage_rate": "2.41%"
   },
   {
     "tag": "bad tongue",
     "meaning": "Bad Tongue",
     "category": "Negative",
     "count": 369,
-    "usage_rate": "2.41%"
+    "usage_rate": "2.40%"
   },
   {
     "tag": "low-res",
     "meaning": "Low-res",
     "category": "Negative",
     "count": 366,
-    "usage_rate": "2.39%"
+    "usage_rate": "2.38%"
   },
   {
-    "tag": "undetailed eyes",
-    "meaning": "Undetailed Eyes",
+    "tag": "shiny skin",
+    "meaning": "光ってる肌",
     "category": "Negative",
-    "count": 366,
-    "usage_rate": "2.39%"
+    "count": 360,
+    "usage_rate": "2.34%"
   },
   {
     "tag": "shit",
@@ -2027,7 +2034,7 @@
     "meaning": "アーティストのロゴ",
     "category": "Negative",
     "count": 357,
-    "usage_rate": "2.33%"
+    "usage_rate": "2.32%"
   },
   {
     "tag": "flower",
@@ -2062,14 +2069,14 @@
     "meaning": "Floating Limbs",
     "category": "Negative",
     "count": 352,
-    "usage_rate": "2.30%"
+    "usage_rate": "2.29%"
   },
   {
     "tag": "long finger",
     "meaning": "Long Finger",
     "category": "Negative",
     "count": 351,
-    "usage_rate": "2.29%"
+    "usage_rate": "2.28%"
   },
   {
     "tag": "tears",
@@ -2128,13 +2135,6 @@
     "usage_rate": "2.22%"
   },
   {
-    "tag": "shiny skin",
-    "meaning": "光ってる肌",
-    "category": "Negative",
-    "count": 333,
-    "usage_rate": "2.17%"
-  },
-  {
     "tag": "digital dissolve",
     "meaning": "デジタル解散",
     "category": "Negative",
@@ -2160,14 +2160,14 @@
     "meaning": "Real",
     "category": "Negative",
     "count": 328,
-    "usage_rate": "2.14%"
+    "usage_rate": "2.13%"
   },
   {
     "tag": "flat lighting",
     "meaning": "Flat Lighting",
     "category": "Negative",
     "count": 328,
-    "usage_rate": "2.14%"
+    "usage_rate": "2.13%"
   },
   {
     "tag": "cgi",
@@ -2237,7 +2237,7 @@
     "meaning": "Rating:general",
     "category": "Negative",
     "count": 320,
-    "usage_rate": "2.09%"
+    "usage_rate": "2.08%"
   },
   {
     "tag": "blue skin",
@@ -2258,7 +2258,7 @@
     "meaning": "Missing Limbs",
     "category": "Negative",
     "count": 317,
-    "usage_rate": "2.07%"
+    "usage_rate": "2.06%"
   },
   {
     "tag": "resolution mismatch",
@@ -2273,6 +2273,13 @@
     "category": "Negative",
     "count": 316,
     "usage_rate": "2.06%"
+  },
+  {
+    "tag": "stuffed toy",
+    "meaning": "ぬいぐるみ",
+    "category": "Negative",
+    "count": 315,
+    "usage_rate": "2.05%"
   },
   {
     "tag": "black censor bar",
@@ -2478,18 +2485,25 @@
     "usage_rate": "2.03%"
   },
   {
+    "tag": "speech bubble",
+    "meaning": "吹き出し",
+    "category": "Negative",
+    "count": 311,
+    "usage_rate": "2.02%"
+  },
+  {
     "tag": "variant set",
     "meaning": "Variant Set",
     "category": "Negative",
     "count": 308,
-    "usage_rate": "2.01%"
+    "usage_rate": "2.00%"
   },
   {
     "tag": "large variant set",
     "meaning": "Large Variant Set",
     "category": "Negative",
     "count": 308,
-    "usage_rate": "2.01%"
+    "usage_rate": "2.00%"
   },
   {
     "tag": "turnaround",
@@ -2524,7 +2538,7 @@
     "meaning": "Extra Toes",
     "category": "Negative",
     "count": 303,
-    "usage_rate": "1.98%"
+    "usage_rate": "1.97%"
   },
   {
     "tag": "nostrils",
@@ -2538,7 +2552,7 @@
     "meaning": "割れ目・秘部",
     "category": "Negative",
     "count": 300,
-    "usage_rate": "1.96%"
+    "usage_rate": "1.95%"
   },
   {
     "tag": "animatic lighting",
@@ -2559,91 +2573,91 @@
     "meaning": "Broken Letters",
     "category": "Negative",
     "count": 297,
-    "usage_rate": "1.94%"
+    "usage_rate": "1.93%"
   },
   {
     "tag": "broken sounds effects",
     "meaning": "Broken Sounds Effects",
     "category": "Negative",
     "count": 297,
-    "usage_rate": "1.94%"
+    "usage_rate": "1.93%"
   },
   {
     "tag": "broken onomatopoeia",
     "meaning": "Broken Onomatopoeia",
     "category": "Negative",
     "count": 297,
-    "usage_rate": "1.94%"
+    "usage_rate": "1.93%"
   },
   {
     "tag": "broken words",
     "meaning": "Broken Words",
     "category": "Negative",
     "count": 297,
-    "usage_rate": "1.94%"
+    "usage_rate": "1.93%"
   },
   {
     "tag": "dirty letters",
     "meaning": "Dirty Letters",
     "category": "Negative",
     "count": 297,
-    "usage_rate": "1.94%"
+    "usage_rate": "1.93%"
   },
   {
     "tag": "dirty sounds effects",
     "meaning": "Dirty Sounds Effects",
     "category": "Negative",
     "count": 297,
-    "usage_rate": "1.94%"
+    "usage_rate": "1.93%"
   },
   {
     "tag": "dirty onomatopoeia",
     "meaning": "Dirty Onomatopoeia",
     "category": "Negative",
     "count": 297,
-    "usage_rate": "1.94%"
+    "usage_rate": "1.93%"
   },
   {
     "tag": "dirty text",
     "meaning": "Dirty Text",
     "category": "Negative",
     "count": 297,
-    "usage_rate": "1.94%"
+    "usage_rate": "1.93%"
   },
   {
     "tag": "dirty words",
     "meaning": "Dirty Words",
     "category": "Negative",
     "count": 297,
-    "usage_rate": "1.94%"
+    "usage_rate": "1.93%"
   },
   {
     "tag": "English words",
     "meaning": "English Words",
     "category": "Negative",
     "count": 297,
-    "usage_rate": "1.94%"
+    "usage_rate": "1.93%"
   },
   {
     "tag": "English text",
     "meaning": "英語",
     "category": "Negative",
     "count": 297,
-    "usage_rate": "1.94%"
+    "usage_rate": "1.93%"
   },
   {
     "tag": "English sounds effects",
     "meaning": "English Sounds Effects",
     "category": "Negative",
     "count": 297,
-    "usage_rate": "1.94%"
+    "usage_rate": "1.93%"
   },
   {
     "tag": "English onomatopoeia",
     "meaning": "English Onomatopoeia",
     "category": "Negative",
     "count": 297,
-    "usage_rate": "1.94%"
+    "usage_rate": "1.93%"
   },
   {
     "tag": "long face",
@@ -2681,25 +2695,18 @@
     "usage_rate": "1.92%"
   },
   {
-    "tag": "stuffed toy",
-    "meaning": "ぬいぐるみ",
-    "category": "Negative",
-    "count": 288,
-    "usage_rate": "1.88%"
-  },
-  {
     "tag": "bad source",
     "meaning": "悪いソース",
     "category": "Negative",
     "count": 288,
-    "usage_rate": "1.88%"
+    "usage_rate": "1.87%"
   },
   {
     "tag": "bad body",
     "meaning": "Bad Body",
     "category": "Negative",
     "count": 288,
-    "usage_rate": "1.88%"
+    "usage_rate": "1.87%"
   },
   {
     "tag": "4girls",
@@ -2707,13 +2714,6 @@
     "category": "Negative",
     "count": 287,
     "usage_rate": "1.87%"
-  },
-  {
-    "tag": "speech bubble",
-    "meaning": "吹き出し",
-    "category": "Negative",
-    "count": 284,
-    "usage_rate": "1.85%"
   },
   {
     "tag": "Squiggly",
@@ -2734,14 +2734,14 @@
     "meaning": "複数人の女の子",
     "category": "Negative",
     "count": 280,
-    "usage_rate": "1.83%"
+    "usage_rate": "1.82%"
   },
   {
     "tag": "two shot",
     "meaning": "Two Shot",
     "category": "Negative",
     "count": 280,
-    "usage_rate": "1.83%"
+    "usage_rate": "1.82%"
   },
   {
     "tag": "sequence",
@@ -2769,14 +2769,21 @@
     "meaning": "Extra Feet",
     "category": "Negative",
     "count": 271,
-    "usage_rate": "1.77%"
+    "usage_rate": "1.76%"
+  },
+  {
+    "tag": "bad pupils",
+    "meaning": "Bad Pupils",
+    "category": "Negative",
+    "count": 270,
+    "usage_rate": "1.76%"
   },
   {
     "tag": "multiple scenes",
     "meaning": "Multiple Scenes",
     "category": "Negative",
     "count": 268,
-    "usage_rate": "1.75%"
+    "usage_rate": "1.74%"
   },
   {
     "tag": "simple",
@@ -2839,14 +2846,14 @@
     "meaning": "赤色",
     "category": "Negative",
     "count": 260,
-    "usage_rate": "1.70%"
+    "usage_rate": "1.69%"
   },
   {
     "tag": "blue theme",
     "meaning": "青色",
     "category": "Negative",
     "count": 260,
-    "usage_rate": "1.70%"
+    "usage_rate": "1.69%"
   },
   {
     "tag": "blank eyes",
@@ -2867,56 +2874,63 @@
     "meaning": "Anatomical Structure Error",
     "category": "Negative",
     "count": 257,
-    "usage_rate": "1.68%"
+    "usage_rate": "1.67%"
   },
   {
     "tag": "cloudy eyes",
     "meaning": "Cloudy Eyes",
     "category": "Negative",
     "count": 257,
-    "usage_rate": "1.68%"
+    "usage_rate": "1.67%"
   },
   {
     "tag": "bad limb",
     "meaning": "Bad Limb",
     "category": "Negative",
     "count": 257,
-    "usage_rate": "1.68%"
+    "usage_rate": "1.67%"
   },
   {
     "tag": "animation error",
     "meaning": "Animation Error",
     "category": "Negative",
     "count": 257,
-    "usage_rate": "1.68%"
+    "usage_rate": "1.67%"
   },
   {
     "tag": "amateur",
     "meaning": "Amateur",
     "category": "Negative",
     "count": 257,
-    "usage_rate": "1.68%"
+    "usage_rate": "1.67%"
+  },
+  {
+    "tag": "food",
+    "meaning": "食べ物",
+    "category": "Negative",
+    "count": 257,
+    "usage_rate": "1.67%"
   },
   {
     "tag": "widescreen",
     "meaning": "Widescreen",
     "category": "Negative",
     "count": 257,
-    "usage_rate": "1.68%"
+    "usage_rate": "1.67%"
   },
   {
     "tag": "tan skin",
     "meaning": "Tan Skin",
     "category": "Negative",
     "count": 257,
-    "usage_rate": "1.68%"
+    "usage_rate": "1.67%"
   },
   {
     "tag": "multiple panels",
     "meaning": "Multiple Panels",
     "category": "Negative",
     "count": 257,
-    "usage_rate": "1.68%"
+    "usage_rate": "1.67%"
   },
   {
     "tag": "hat",
@@ -2928,6 +2942,13 @@
   {
     "tag": "Imperfect Fingers",
     "meaning": "Imperfect Fingers",
+    "category": "Negative",
+    "count": 256,
+    "usage_rate": "1.67%"
+  },
+  {
+    "tag": "yuno385",
+    "meaning": "YUNO385",
     "category": "Negative",
     "count": 256,
     "usage_rate": "1.67%"
@@ -2993,7 +3014,7 @@
     "meaning": "Grainy",
     "category": "Negative",
     "count": 254,
-    "usage_rate": "1.66%"
+    "usage_rate": "1.65%"
   },
   {
     "tag": "bad link",
@@ -3014,7 +3035,7 @@
     "meaning": "寄り目・ロンパリ",
     "category": "Negative",
     "count": 248,
-    "usage_rate": "1.62%"
+    "usage_rate": "1.61%"
   },
   {
     "tag": "text-only page",
@@ -3022,6 +3043,13 @@
     "category": "Negative",
     "count": 247,
     "usage_rate": "1.61%"
+  },
+  {
+    "tag": "cake",
+    "meaning": "ケーキ",
+    "category": "Negative",
+    "count": 246,
+    "usage_rate": "1.60%"
   },
   {
     "tag": "short legs",
@@ -3040,13 +3068,6 @@
   {
     "tag": "pregnant",
     "meaning": "妊娠中",
-    "category": "Negative",
-    "count": 243,
-    "usage_rate": "1.58%"
-  },
-  {
-    "tag": "bad pupils",
-    "meaning": "Bad Pupils",
     "category": "Negative",
     "count": 243,
     "usage_rate": "1.58%"
@@ -3108,18 +3129,25 @@
     "usage_rate": "1.56%"
   },
   {
+    "tag": "bkub",
+    "meaning": "bkub",
+    "category": "Negative",
+    "count": 239,
+    "usage_rate": "1.56%"
+  },
+  {
     "tag": "Cheesy",
     "meaning": "Cheesy",
     "category": "Negative",
     "count": 237,
-    "usage_rate": "1.55%"
+    "usage_rate": "1.54%"
   },
   {
     "tag": "Approximate",
     "meaning": "Approximate",
     "category": "Negative",
     "count": 237,
-    "usage_rate": "1.55%"
+    "usage_rate": "1.54%"
   },
   {
     "tag": "black undershirt",
@@ -3178,11 +3206,25 @@
     "usage_rate": "1.54%"
   },
   {
+    "tag": "gaoo frpjx283",
+    "meaning": "Gaoo Frpjx283",
+    "category": "Negative",
+    "count": 235,
+    "usage_rate": "1.53%"
+  },
+  {
+    "tag": "nameo judgemasterkou",
+    "meaning": "Nameo Judgemasterkou",
+    "category": "Negative",
+    "count": 234,
+    "usage_rate": "1.52%"
+  },
+  {
     "tag": "low resolution",
     "meaning": "Low Resolution",
     "category": "Negative",
     "count": 234,
-    "usage_rate": "1.53%"
+    "usage_rate": "1.52%"
   },
   {
     "tag": "border",
@@ -3196,18 +3238,18 @@
     "meaning": "お絵描き掲示板風 (レトロWebお絵かき)",
     "category": "Negative",
     "count": 231,
-    "usage_rate": "1.51%"
+    "usage_rate": "1.50%"
   },
   {
     "tag": "split screen",
     "meaning": "画面を分割",
     "category": "Negative",
     "count": 231,
-    "usage_rate": "1.51%"
+    "usage_rate": "1.50%"
   },
   {
-    "tag": "food",
-    "meaning": "食べ物",
+    "tag": "bad glabella",
+    "meaning": "Bad Glabella",
     "category": "Negative",
     "count": 230,
     "usage_rate": "1.50%"
@@ -3215,13 +3257,6 @@
   {
     "tag": "unusual anatomy",
     "meaning": "Unusual Anatomy",
-    "category": "Negative",
-    "count": 229,
-    "usage_rate": "1.49%"
-  },
-  {
-    "tag": "yuno385",
-    "meaning": "YUNO385",
     "category": "Negative",
     "count": 229,
     "usage_rate": "1.49%"
@@ -3311,8 +3346,15 @@
     "usage_rate": "1.43%"
   },
   {
-    "tag": "cake",
-    "meaning": "ケーキ",
+    "tag": "bb baalbuddy",
+    "meaning": "Bb Baalbuddy",
+    "category": "Negative",
+    "count": 220,
+    "usage_rate": "1.43%"
+  },
+  {
+    "tag": "milkpanda",
+    "meaning": "ミルクパンダ",
     "category": "Negative",
     "count": 219,
     "usage_rate": "1.43%"
@@ -3378,7 +3420,7 @@
     "meaning": "3D",
     "category": "Negative",
     "count": 214,
-    "usage_rate": "1.40%"
+    "usage_rate": "1.39%"
   },
   {
     "tag": "uncanny valley",
@@ -3402,13 +3444,6 @@
     "usage_rate": "1.39%"
   },
   {
-    "tag": "bkub",
-    "meaning": "bkub",
-    "category": "Negative",
-    "count": 212,
-    "usage_rate": "1.38%"
-  },
-  {
     "tag": "painting",
     "meaning": "Painting",
     "category": "Negative",
@@ -3423,22 +3458,8 @@
     "usage_rate": "1.36%"
   },
   {
-    "tag": "gaoo frpjx283",
-    "meaning": "Gaoo Frpjx283",
-    "category": "Negative",
-    "count": 208,
-    "usage_rate": "1.36%"
-  },
-  {
     "tag": "short fingers",
     "meaning": "Short Fingers",
-    "category": "Negative",
-    "count": 207,
-    "usage_rate": "1.35%"
-  },
-  {
-    "tag": "nameo judgemasterkou",
-    "meaning": "Nameo Judgemasterkou",
     "category": "Negative",
     "count": 207,
     "usage_rate": "1.35%"
@@ -3476,7 +3497,7 @@
     "meaning": "鼻水",
     "category": "Negative",
     "count": 205,
-    "usage_rate": "1.34%"
+    "usage_rate": "1.33%"
   },
   {
     "tag": "more than 2 legs",
@@ -3500,18 +3521,11 @@
     "usage_rate": "1.33%"
   },
   {
-    "tag": "bad glabella",
-    "meaning": "Bad Glabella",
-    "category": "Negative",
-    "count": 203,
-    "usage_rate": "1.32%"
-  },
-  {
     "tag": "extra head",
     "meaning": "Extra Head",
     "category": "Negative",
     "count": 202,
-    "usage_rate": "1.32%"
+    "usage_rate": "1.31%"
   },
   {
     "tag": "fused hand",
@@ -3605,20 +3619,6 @@
     "usage_rate": "1.26%"
   },
   {
-    "tag": "bb baalbuddy",
-    "meaning": "Bb Baalbuddy",
-    "category": "Negative",
-    "count": 193,
-    "usage_rate": "1.26%"
-  },
-  {
-    "tag": "milkpanda",
-    "meaning": "ミルクパンダ",
-    "category": "Negative",
-    "count": 192,
-    "usage_rate": "1.25%"
-  },
-  {
     "tag": "acnes",
     "meaning": "Acnes",
     "category": "Negative",
@@ -3630,7 +3630,7 @@
     "meaning": "小さな乳首",
     "category": "Negative",
     "count": 191,
-    "usage_rate": "1.25%"
+    "usage_rate": "1.24%"
   },
   {
     "tag": "fangs",
@@ -3805,7 +3805,7 @@
     "meaning": "ハート型の生徒",
     "category": "Negative",
     "count": 185,
-    "usage_rate": "1.21%"
+    "usage_rate": "1.20%"
   },
   {
     "tag": "fake video",
@@ -3896,7 +3896,7 @@
     "meaning": "三人の女の子",
     "category": "Negative",
     "count": 182,
-    "usage_rate": "1.19%"
+    "usage_rate": "1.18%"
   },
   {
     "tag": "extra finger",
@@ -4074,6 +4074,13 @@
     "usage_rate": "1.15%"
   },
   {
+    "tag": "thick thighs",
+    "meaning": "太ももの太もも",
+    "category": "Negative",
+    "count": 175,
+    "usage_rate": "1.14%"
+  },
+  {
     "tag": "fewer digit",
     "meaning": "Fewer Digit",
     "category": "Negative",
@@ -4092,14 +4099,14 @@
     "meaning": "ボクシング",
     "category": "Negative",
     "count": 171,
-    "usage_rate": "1.12%"
+    "usage_rate": "1.11%"
   },
   {
     "tag": "bad posture",
     "meaning": "Bad Posture",
     "category": "Negative",
     "count": 171,
-    "usage_rate": "1.12%"
+    "usage_rate": "1.11%"
   },
   {
     "tag": "sound effects",
@@ -4123,11 +4130,18 @@
     "usage_rate": "1.10%"
   },
   {
+    "tag": "pov",
+    "meaning": "主観",
+    "category": "Negative",
+    "count": 168,
+    "usage_rate": "1.09%"
+  },
+  {
     "tag": "short neck",
     "meaning": "Short Neck",
     "category": "Negative",
     "count": 168,
-    "usage_rate": "1.10%"
+    "usage_rate": "1.09%"
   },
   {
     "tag": "novel",
@@ -4169,21 +4183,21 @@
     "meaning": "Illustration",
     "category": "Negative",
     "count": 165,
-    "usage_rate": "1.08%"
+    "usage_rate": "1.07%"
   },
   {
     "tag": "comparison",
     "meaning": "比較",
     "category": "Negative",
     "count": 165,
-    "usage_rate": "1.08%"
+    "usage_rate": "1.07%"
   },
   {
     "tag": "mosaic pattern",
     "meaning": "Mosaic Pattern",
     "category": "Negative",
     "count": 165,
-    "usage_rate": "1.08%"
+    "usage_rate": "1.07%"
   },
   {
     "tag": "awkward pose",
@@ -4198,6 +4212,27 @@
     "category": "Negative",
     "count": 163,
     "usage_rate": "1.06%"
+  },
+  {
+    "tag": "glazed eye",
+    "meaning": "Glazed Eye",
+    "category": "Negative",
+    "count": 162,
+    "usage_rate": "1.05%"
+  },
+  {
+    "tag": "dango",
+    "meaning": "ダンゴ",
+    "category": "Negative",
+    "count": 162,
+    "usage_rate": "1.05%"
+  },
+  {
+    "tag": "candy",
+    "meaning": "あめ",
+    "category": "Negative",
+    "count": 162,
+    "usage_rate": "1.05%"
   },
   {
     "tag": "cropped shoulders",
@@ -4228,6 +4263,27 @@
     "usage_rate": "1.04%"
   },
   {
+    "tag": "solo focus",
+    "meaning": "一人だけ強調",
+    "category": "Negative",
+    "count": 160,
+    "usage_rate": "1.04%"
+  },
+  {
+    "tag": "huge areola",
+    "meaning": "Huge Areola",
+    "category": "Negative",
+    "count": 160,
+    "usage_rate": "1.04%"
+  },
+  {
+    "tag": "huge nipples",
+    "meaning": "巨大な乳首",
+    "category": "Negative",
+    "count": 160,
+    "usage_rate": "1.04%"
+  },
+  {
     "tag": "webbed fingers",
     "meaning": "Webbed Fingers",
     "category": "Negative",
@@ -4251,6 +4307,20 @@
   {
     "tag": "malformed",
     "meaning": "Malformed",
+    "category": "Negative",
+    "count": 152,
+    "usage_rate": "0.99%"
+  },
+  {
+    "tag": "thick waist",
+    "meaning": "Thick Waist",
+    "category": "Negative",
+    "count": 152,
+    "usage_rate": "0.99%"
+  },
+  {
+    "tag": "huge ass",
+    "meaning": "巨大なお尻",
     "category": "Negative",
     "count": 152,
     "usage_rate": "0.99%"
@@ -4323,21 +4393,14 @@
     "meaning": "髪飾り",
     "category": "Negative",
     "count": 148,
-    "usage_rate": "0.97%"
-  },
-  {
-    "tag": "thick thighs",
-    "meaning": "太ももの太もも",
-    "category": "Negative",
-    "count": 148,
-    "usage_rate": "0.97%"
+    "usage_rate": "0.96%"
   },
   {
     "tag": "multiple_views",
     "meaning": "マルチアングル",
     "category": "Negative",
     "count": 148,
-    "usage_rate": "0.97%"
+    "usage_rate": "0.96%"
   },
   {
     "tag": "girl",
@@ -4379,7 +4442,7 @@
     "meaning": "大きな頭",
     "category": "Negative",
     "count": 145,
-    "usage_rate": "0.95%"
+    "usage_rate": "0.94%"
   },
   {
     "tag": "messy",
@@ -4393,27 +4456,20 @@
     "meaning": "Bad Lighting",
     "category": "Negative",
     "count": 142,
-    "usage_rate": "0.93%"
+    "usage_rate": "0.92%"
   },
   {
     "tag": "duplicated body",
     "meaning": "Duplicated Body",
     "category": "Negative",
     "count": 142,
-    "usage_rate": "0.93%"
+    "usage_rate": "0.92%"
   },
   {
     "tag": "profile",
     "meaning": "プロフィール",
     "category": "Negative",
     "count": 142,
-    "usage_rate": "0.93%"
-  },
-  {
-    "tag": "pov",
-    "meaning": "主観",
-    "category": "Negative",
-    "count": 141,
     "usage_rate": "0.92%"
   },
   {
@@ -4463,14 +4519,14 @@
     "meaning": "Take Off",
     "category": "Negative",
     "count": 139,
-    "usage_rate": "0.91%"
+    "usage_rate": "0.90%"
   },
   {
     "tag": "nude skin",
     "meaning": "Nude Skin",
     "category": "Negative",
     "count": 139,
-    "usage_rate": "0.91%"
+    "usage_rate": "0.90%"
   },
   {
     "tag": "bad toes",
@@ -4508,27 +4564,6 @@
     "usage_rate": "0.89%"
   },
   {
-    "tag": "glazed eye",
-    "meaning": "Glazed Eye",
-    "category": "Negative",
-    "count": 135,
-    "usage_rate": "0.88%"
-  },
-  {
-    "tag": "dango",
-    "meaning": "ダンゴ",
-    "category": "Negative",
-    "count": 135,
-    "usage_rate": "0.88%"
-  },
-  {
-    "tag": "candy",
-    "meaning": "あめ",
-    "category": "Negative",
-    "count": 135,
-    "usage_rate": "0.88%"
-  },
-  {
     "tag": "disembodied penis",
     "meaning": "具体化されていないペニス",
     "category": "Negative",
@@ -4552,27 +4587,6 @@
   {
     "tag": "panel  layout",
     "meaning": "Panel Layout",
-    "category": "Negative",
-    "count": 133,
-    "usage_rate": "0.87%"
-  },
-  {
-    "tag": "solo focus",
-    "meaning": "一人だけ強調",
-    "category": "Negative",
-    "count": 133,
-    "usage_rate": "0.87%"
-  },
-  {
-    "tag": "huge areola",
-    "meaning": "Huge Areola",
-    "category": "Negative",
-    "count": 133,
-    "usage_rate": "0.87%"
-  },
-  {
-    "tag": "huge nipples",
-    "meaning": "巨大な乳首",
     "category": "Negative",
     "count": 133,
     "usage_rate": "0.87%"
@@ -4725,25 +4739,11 @@
     "usage_rate": "0.82%"
   },
   {
-    "tag": "thick waist",
-    "meaning": "Thick Waist",
-    "category": "Negative",
-    "count": 125,
-    "usage_rate": "0.82%"
-  },
-  {
-    "tag": "huge ass",
-    "meaning": "巨大なお尻",
-    "category": "Negative",
-    "count": 125,
-    "usage_rate": "0.82%"
-  },
-  {
     "tag": "long fingers",
     "meaning": "長い指",
     "category": "Negative",
     "count": 125,
-    "usage_rate": "0.82%"
+    "usage_rate": "0.81%"
   },
   {
     "tag": "sweaty",
@@ -4876,14 +4876,14 @@
     "meaning": "キャメル",
     "category": "Negative",
     "count": 119,
-    "usage_rate": "0.78%"
+    "usage_rate": "0.77%"
   },
   {
     "tag": "uterus",
     "meaning": "子宮",
     "category": "Negative",
     "count": 119,
-    "usage_rate": "0.78%"
+    "usage_rate": "0.77%"
   },
   {
     "tag": "rough lines",
@@ -5003,6 +5003,13 @@
     "category": "Negative",
     "count": 115,
     "usage_rate": "0.75%"
+  },
+  {
+    "tag": "sweat drop",
+    "meaning": "Sweat Drop",
+    "category": "Negative",
+    "count": 114,
+    "usage_rate": "0.74%"
   },
   {
     "tag": "backlighting",
@@ -5499,7 +5506,7 @@
     "meaning": "Poor Lighting",
     "category": "Negative",
     "count": 102,
-    "usage_rate": "0.67%"
+    "usage_rate": "0.66%"
   },
   {
     "tag": "multiple view",
@@ -5541,21 +5548,21 @@
     "meaning": "White Lines",
     "category": "Negative",
     "count": 99,
-    "usage_rate": "0.65%"
+    "usage_rate": "0.64%"
   },
   {
     "tag": "distorted body",
     "meaning": "Distorted Body",
     "category": "Negative",
     "count": 99,
-    "usage_rate": "0.65%"
+    "usage_rate": "0.64%"
   },
   {
     "tag": "twisted body",
     "meaning": "Twisted Body",
     "category": "Negative",
     "count": 99,
-    "usage_rate": "0.65%"
+    "usage_rate": "0.64%"
   },
   {
     "tag": "text font ui",
@@ -5611,14 +5618,14 @@
     "meaning": "Multiple Arms",
     "category": "Negative",
     "count": 96,
-    "usage_rate": "0.63%"
+    "usage_rate": "0.62%"
   },
   {
     "tag": "inaccurate limb and hand and finger and arm",
     "meaning": "Inaccurate Limb And Hand And Finger And Arm",
     "category": "Negative",
     "count": 96,
-    "usage_rate": "0.63%"
+    "usage_rate": "0.62%"
   },
   {
     "tag": "jpeg",
@@ -5917,13 +5924,6 @@
   {
     "tag": "fused toes",
     "meaning": "Fused Toes",
-    "category": "Negative",
-    "count": 87,
-    "usage_rate": "0.57%"
-  },
-  {
-    "tag": "sweat drop",
-    "meaning": "Sweat Drop",
     "category": "Negative",
     "count": 87,
     "usage_rate": "0.57%"
@@ -6465,28 +6465,28 @@
     "meaning": "Deformed Toes",
     "category": "Negative",
     "count": 79,
-    "usage_rate": "0.52%"
+    "usage_rate": "0.51%"
   },
   {
     "tag": "cap",
     "meaning": "Cap",
     "category": "Negative",
     "count": 79,
-    "usage_rate": "0.52%"
+    "usage_rate": "0.51%"
   },
   {
     "tag": "anime",
     "meaning": "Anime",
     "category": "Negative",
     "count": 79,
-    "usage_rate": "0.52%"
+    "usage_rate": "0.51%"
   },
   {
     "tag": "bar censored",
     "meaning": "Bar Censored",
     "category": "Negative",
     "count": 79,
-    "usage_rate": "0.52%"
+    "usage_rate": "0.51%"
   },
   {
     "tag": "close-up",
@@ -6563,175 +6563,175 @@
     "meaning": "Low Quality Body Parts",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "missing body parts",
     "meaning": "Missing Body Parts",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "disproportional body parts",
     "meaning": "Disproportional Body Parts",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "indistinguishable body parts",
     "meaning": "Indistinguishable Body Parts",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "branched body parts",
     "meaning": "Branched Body Parts",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "bent",
     "meaning": "曲がっています",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "body parts",
     "meaning": "体の部分",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "rheumatism finers",
     "meaning": "Rheumatism Finers",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "ugly fingers",
     "meaning": "Ugly Fingers",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "melted fingers",
     "meaning": "Melted Fingers",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "too fat",
     "meaning": "Too Fat",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "too skiny",
     "meaning": "Too Skiny",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "low quality female",
     "meaning": "Low Quality Female",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "low quality male",
     "meaning": "Low Quality Male",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "poor colors",
     "meaning": "Poor Colors",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "low quality clothes",
     "meaning": "Low Quality Clothes",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "poor background",
     "meaning": "Poor Background",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "wholesome",
     "meaning": "Wholesome",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "CG",
     "meaning": "Cg",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "less details",
     "meaning": "Less Details",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "gay",
     "meaning": "Gay",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "copyright_name",
     "meaning": "著作権名",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "stamp",
     "meaning": "Stamp",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "photo object",
     "meaning": "Photo Object",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "twisted fingers",
     "meaning": "Twisted Fingers",
     "category": "Negative",
     "count": 76,
-    "usage_rate": "0.50%"
+    "usage_rate": "0.49%"
   },
   {
     "tag": "bad vulva",
@@ -8236,28 +8236,28 @@
     "meaning": "Heavy Shadows",
     "category": "Negative",
     "count": 56,
-    "usage_rate": "0.37%"
+    "usage_rate": "0.36%"
   },
   {
     "tag": "speed lines",
     "meaning": "スピードライン",
     "category": "Negative",
     "count": 56,
-    "usage_rate": "0.37%"
+    "usage_rate": "0.36%"
   },
   {
     "tag": "photos",
     "meaning": "Photos",
     "category": "Negative",
     "count": 56,
-    "usage_rate": "0.37%"
+    "usage_rate": "0.36%"
   },
   {
     "tag": "curtains",
     "meaning": "カーテン",
     "category": "Negative",
     "count": 56,
-    "usage_rate": "0.37%"
+    "usage_rate": "0.36%"
   },
   {
     "tag": "sketchy background",
@@ -8537,105 +8537,105 @@
     "meaning": "Dull Texture",
     "category": "Negative",
     "count": 53,
-    "usage_rate": "0.35%"
+    "usage_rate": "0.34%"
   },
   {
     "tag": "plastic rubber skin",
     "meaning": "Plastic Rubber Skin",
     "category": "Negative",
     "count": 53,
-    "usage_rate": "0.35%"
+    "usage_rate": "0.34%"
   },
   {
     "tag": "poreless smooth sole",
     "meaning": "Poreless Smooth Sole",
     "category": "Negative",
     "count": 53,
-    "usage_rate": "0.35%"
+    "usage_rate": "0.34%"
   },
   {
     "tag": "cartoon flat texture",
     "meaning": "Cartoon Flat Texture",
     "category": "Negative",
     "count": 53,
-    "usage_rate": "0.35%"
+    "usage_rate": "0.34%"
   },
   {
     "tag": "messy lineart",
     "meaning": "Messy Lineart",
     "category": "Negative",
     "count": 53,
-    "usage_rate": "0.35%"
+    "usage_rate": "0.34%"
   },
   {
     "tag": "messy line\nbad anatomy",
     "meaning": "Messy Line\nbad Anatomy",
     "category": "Negative",
     "count": 53,
-    "usage_rate": "0.35%"
+    "usage_rate": "0.34%"
   },
   {
     "tag": "deformed teeth",
     "meaning": "Deformed Teeth",
     "category": "Negative",
     "count": 53,
-    "usage_rate": "0.35%"
+    "usage_rate": "0.34%"
   },
   {
     "tag": "malformed foot anatomy",
     "meaning": "Malformed Foot Anatomy",
     "category": "Negative",
     "count": 53,
-    "usage_rate": "0.35%"
+    "usage_rate": "0.34%"
   },
   {
     "tag": "ugly thick sole",
     "meaning": "Ugly Thick Sole",
     "category": "Negative",
     "count": 53,
-    "usage_rate": "0.35%"
+    "usage_rate": "0.34%"
   },
   {
     "tag": "bad fee",
     "meaning": "Bad Fee",
     "category": "Negative",
     "count": 53,
-    "usage_rate": "0.35%"
+    "usage_rate": "0.34%"
   },
   {
     "tag": "ugly\ntext",
     "meaning": "Ugly\ntext",
     "category": "Negative",
     "count": 53,
-    "usage_rate": "0.35%"
+    "usage_rate": "0.34%"
   },
   {
     "tag": "dry mouth",
     "meaning": "Dry Mouth",
     "category": "Negative",
     "count": 53,
-    "usage_rate": "0.35%"
+    "usage_rate": "0.34%"
   },
   {
     "tag": "multiple male",
     "meaning": "Multiple Male",
     "category": "Negative",
     "count": 53,
-    "usage_rate": "0.35%"
+    "usage_rate": "0.34%"
   },
   {
     "tag": "shiny_skin",
     "meaning": "光ってる肌",
     "category": "Negative",
     "count": 53,
-    "usage_rate": "0.35%"
+    "usage_rate": "0.34%"
   },
   {
     "tag": "extra hand",
     "meaning": "Extra Hand",
     "category": "Negative",
     "count": 53,
-    "usage_rate": "0.35%"
+    "usage_rate": "0.34%"
   },
   {
     "tag": "mosaic censor",
@@ -10805,98 +10805,98 @@
     "meaning": "マント",
     "category": "Negative",
     "count": 33,
-    "usage_rate": "0.22%"
+    "usage_rate": "0.21%"
   },
   {
     "tag": "wet skin",
     "meaning": "Wet Skin",
     "category": "Negative",
     "count": 33,
-    "usage_rate": "0.22%"
+    "usage_rate": "0.21%"
   },
   {
     "tag": "hairband",
     "meaning": "ヘアバンド",
     "category": "Negative",
     "count": 33,
-    "usage_rate": "0.22%"
+    "usage_rate": "0.21%"
   },
   {
     "tag": "draft",
     "meaning": "Draft",
     "category": "Negative",
     "count": 33,
-    "usage_rate": "0.22%"
+    "usage_rate": "0.21%"
   },
   {
     "tag": "sloppy hands",
     "meaning": "Sloppy Hands",
     "category": "Negative",
     "count": 33,
-    "usage_rate": "0.22%"
+    "usage_rate": "0.21%"
   },
   {
     "tag": "wrong hand orientation",
     "meaning": "Wrong Hand Orientation",
     "category": "Negative",
     "count": 33,
-    "usage_rate": "0.22%"
+    "usage_rate": "0.21%"
   },
   {
     "tag": "exposed inaccurate limbchest",
     "meaning": "Exposed Inaccurate Limbchest",
     "category": "Negative",
     "count": 33,
-    "usage_rate": "0.22%"
+    "usage_rate": "0.21%"
   },
   {
     "tag": "guilty gear",
     "meaning": "有罪のギア",
     "category": "Negative",
     "count": 33,
-    "usage_rate": "0.22%"
+    "usage_rate": "0.21%"
   },
   {
     "tag": "old style",
     "meaning": "Old Style",
     "category": "Negative",
     "count": 33,
-    "usage_rate": "0.22%"
+    "usage_rate": "0.21%"
   },
   {
     "tag": "background",
     "meaning": "Background",
     "category": "Negative",
     "count": 33,
-    "usage_rate": "0.22%"
+    "usage_rate": "0.21%"
   },
   {
     "tag": "Wrinkles",
     "meaning": "Wrinkles",
     "category": "Negative",
     "count": 33,
-    "usage_rate": "0.22%"
+    "usage_rate": "0.21%"
   },
   {
     "tag": "disproportionate body",
     "meaning": "Disproportionate Body",
     "category": "Negative",
     "count": 33,
-    "usage_rate": "0.22%"
+    "usage_rate": "0.21%"
   },
   {
     "tag": "Unreadable text",
     "meaning": "Unreadable Text",
     "category": "Negative",
     "count": 33,
-    "usage_rate": "0.22%"
+    "usage_rate": "0.21%"
   },
   {
     "tag": "forest",
     "meaning": "森",
     "category": "Negative",
     "count": 33,
-    "usage_rate": "0.22%"
+    "usage_rate": "0.21%"
   },
   {
     "tag": "exposed",
