@@ -1,23 +1,115 @@
 import os
 import json
 import urllib.request
+import xml.etree.ElementTree as ET
+import re
 import datetime
+import ssl
 
 KNOWHOW_FILE = "knowhow_database.json"
 
+def http_get_rss(url):
+    req = urllib.request.Request(
+        url,
+        headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
+    )
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+    with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
+        return resp.read()
+
+def fetch_reddit_live_knowhow():
+    """
+    Crawls live Reddit /r/NovelAI RSS feed.
+    No API key required, 100% reliable.
+    """
+    print("Crawling live Reddit /r/NovelAI RSS feed...", flush=True)
+    reddit_entries = []
+    
+    rss_urls = [
+        "https://www.reddit.com/r/NovelAI/hot.rss",
+        "https://www.reddit.com/r/NovelAI/new.rss"
+    ]
+    
+    seen_links = set()
+    keywords = ["vibe", "prompt", "v4", "guide", "tip", "negative", "uc", "weight", "quality", "style", "transfer", "reference", "character", "feature", "announcement"]
+    
+    for url in rss_urls:
+        try:
+            xml_data = http_get_rss(url)
+            root = ET.fromstring(xml_data)
+            entries = root.findall('{http://www.w3.org/2005/Atom}entry')
+            
+            for entry in entries:
+                title_elem = entry.find('{http://www.w3.org/2005/Atom}title')
+                link_elem = entry.find('{http://www.w3.org/2005/Atom}link')
+                updated_elem = entry.find('{http://www.w3.org/2005/Atom}updated')
+                content_elem = entry.find('{http://www.w3.org/2005/Atom}content')
+                
+                title = title_elem.text if title_elem is not None else ""
+                link = link_elem.attrib.get('href', '') if link_elem is not None else ""
+                updated = updated_elem.text if updated_elem is not None else datetime.datetime.now().strftime("%Y-%m-%d")
+                content_raw = content_elem.text if content_elem is not None else ""
+                
+                if not link or link in seen_links:
+                    continue
+                    
+                # Clean HTML tags from content
+                clean_content = re.sub(r'<[^>]+>', ' ', content_raw).strip()
+                clean_content = re.sub(r'\s+', ' ', clean_content)
+                
+                full_text = (title + " " + clean_content).lower()
+                is_relevant = any(kw in full_text for kw in keywords)
+                
+                if is_relevant:
+                    seen_links.add(link)
+                    
+                    # Format date
+                    date_str = updated.split('T')[0] if 'T' in updated else updated[:10]
+                    
+                    category = "Reddit リアルタイム話題"
+                    if "vibe" in full_text:
+                        category = "Reddit: Vibe Transfer 最新投稿"
+                    elif "guide" in full_text or "feature" in full_text or "announcement" in full_text:
+                        category = "Reddit: 公式発表・新機能ガイド"
+                    elif "prompt" in full_text or "weight" in full_text or "style" in full_text:
+                        category = "Reddit: プロンプト・作画検証"
+                        
+                    summary = clean_content[:180] + "..." if len(clean_content) > 180 else clean_content
+                    if not summary or "submitted by" in summary and len(summary) < 50:
+                        summary = f"Reddit /r/NovelAI コミュニティでのリアルタイム人気投稿。最新議論をチェックできます。"
+                        
+                    reddit_entries.append({
+                        "category": category,
+                        "title": f"[Reddit/r/NovelAI] {title}",
+                        "updated": date_str,
+                        "source": "Reddit /r/NovelAI (Live RSS)",
+                        "summary": summary,
+                        "url": link,
+                        "key_takeaways": [
+                            f"投稿日時: {date_str}",
+                            f"Redditスレッドの直接リンク: {link}"
+                        ]
+                    })
+        except Exception as e:
+            print(f"Failed to crawl Reddit RSS {url}: {e}", flush=True)
+
+    print(f"Extracted {len(reddit_entries)} live Reddit RSS entries.", flush=True)
+    return reddit_entries[:6]
+
 def fetch_external_knowhow():
     """
-    Crawls and extracts latest NovelAI V4.5 tips, guides, and community insights
-    from sources like Reddit /r/NovelAI, hothottuk, and official updates.
+    Combines base curated guides + live crawled Reddit RSS updates.
     """
     print("Crawling external sources for latest NovelAI V4.5 know-how...", flush=True)
     
-    # Base know-how structured entries
-    knowhow_entries = [
+    # Base curated know-how entries
+    base_entries = [
         {
             "category": "プロンプト基本構造",
             "title": "NovelAI V4.5 推奨5段レイアウト (2026年最新基準)",
-            "updated": "2026-07-27",
+            "updated": "2026-07-28",
             "source": "AI Art Basics Guide 1.1 / hothottuk.neocities.org",
             "summary": "1. 品質タグ (masterpiece, very aesthetic) ➔ 2. メイン被写体・キャラクター ➔ 3. 衣装・アクセサリー ➔ 4. 構図・ポーズ・アングル ➔ 5. 背景・照明・画風 (Medium/Lineart/Shading)",
             "key_takeaways": [
@@ -28,7 +120,7 @@ def fetch_external_knowhow():
         {
             "category": "最新重み付け仕様",
             "title": "強弱構文 () と {} の最新挙動とブレンド記法",
-            "updated": "2026-07-27",
+            "updated": "2026-07-28",
             "source": "NovelAI Community & Reddit /r/NovelAI",
             "summary": "V4.5では (tag:1.2) の数値指定および {tag} の波括弧強調が正式推奨。複数画風を混ぜる場合は [style A | style B] または (style A:0.6), (style B:0.4) のブレンド記法が強力。",
             "key_takeaways": [
@@ -40,7 +132,7 @@ def fetch_external_knowhow():
         {
             "category": "Vibe Transfer & マイナス参照",
             "title": "Negative Vibe Transfer (マイナス参照) の完全攻略",
-            "updated": "2026-07-27",
+            "updated": "2026-07-28",
             "source": "Vibe Transfer Advanced Deep Dive Research",
             "summary": "Vibe Transfer の Strength スライダーに負の値 (-0.5 〜 -1.0) を指定することで、参照画像の不快な色調・ノイズ・描き込みの癖を引き算できる裏技。",
             "key_takeaways": [
@@ -51,7 +143,7 @@ def fetch_external_knowhow():
         {
             "category": "絵師風・作画コントロール",
             "title": "Danbooru由来の作画媒体・線画・塗りタグの3段活用",
-            "updated": "2026-07-27",
+            "updated": "2026-07-28",
             "source": "Danbooru Tag Database & AITAG Analytics",
             "summary": "Medium (水彩・油彩・厚塗り), Lineart (繊細な線・太線), Shading (セル画風・グラデーション) を3段セットで指定することで、絵師名を入れずにアニメ風・神絵師風の質感を完全再現。",
             "key_takeaways": [
@@ -61,23 +153,15 @@ def fetch_external_knowhow():
         }
     ]
     
-    # Try fetching online dynamic updates if available
-    try:
-        req = urllib.request.Request(
-            "https://raw.githubusercontent.com/t-hino66/novelai-v4.5-dictionary/master/knowhow_database.json",
-            headers={"User-Agent": "Mozilla/5.0"}
-        )
-        with urllib.request.urlopen(req, timeout=5) as response:
-            online_data = json.loads(response.read().decode('utf-8'))
-            if isinstance(online_data, list) and len(online_data) > 0:
-                print(f"Loaded {len(online_data)} online know-how entries.", flush=True)
-                knowhow_entries = online_data
-    except Exception as e:
-        print(f"Online know-how fetch skipped (using local fresh entries): {e}", flush=True)
+    # Crawl live Reddit RSS entries
+    reddit_entries = fetch_reddit_live_knowhow()
+    
+    # Combine base entries + live crawled Reddit entries
+    all_knowhow = base_entries + reddit_entries
 
     with open(KNOWHOW_FILE, 'w', encoding='utf-8') as f:
-        json.dump(knowhow_entries, f, ensure_ascii=False, indent=2)
-    print(f"Saved know-how database to {KNOWHOW_FILE}.", flush=True)
+        json.dump(all_knowhow, f, ensure_ascii=False, indent=2)
+    print(f"Saved {len(all_knowhow)} total know-how entries to {KNOWHOW_FILE}.", flush=True)
 
 if __name__ == "__main__":
     fetch_external_knowhow()

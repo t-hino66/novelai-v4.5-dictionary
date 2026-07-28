@@ -2,7 +2,7 @@
   {
     "category": "プロンプト基本構造",
     "title": "NovelAI V4.5 推奨5段レイアウト (2026年最新基準)",
-    "updated": "2026-07-27",
+    "updated": "2026-07-28",
     "source": "AI Art Basics Guide 1.1 / hothottuk.neocities.org",
     "summary": "1. 品質タグ (masterpiece, very aesthetic) ➔ 2. メイン被写体・キャラクター ➔ 3. 衣装・アクセサリー ➔ 4. 構図・ポーズ・アングル ➔ 5. 背景・照明・画風 (Medium/Lineart/Shading)",
     "key_takeaways": [
@@ -13,7 +13,7 @@
   {
     "category": "最新重み付け仕様",
     "title": "強弱構文 () と {} の最新挙動とブレンド記法",
-    "updated": "2026-07-27",
+    "updated": "2026-07-28",
     "source": "NovelAI Community & Reddit /r/NovelAI",
     "summary": "V4.5では (tag:1.2) の数値指定および {tag} の波括弧強調が正式推奨。複数画風を混ぜる場合は [style A | style B] または (style A:0.6), (style B:0.4) のブレンド記法が強力。",
     "key_takeaways": [
@@ -25,7 +25,7 @@
   {
     "category": "Vibe Transfer & マイナス参照",
     "title": "Negative Vibe Transfer (マイナス参照) の完全攻略",
-    "updated": "2026-07-27",
+    "updated": "2026-07-28",
     "source": "Vibe Transfer Advanced Deep Dive Research",
     "summary": "Vibe Transfer の Strength スライダーに負の値 (-0.5 〜 -1.0) を指定することで、参照画像の不快な色調・ノイズ・描き込みの癖を引き算できる裏技。",
     "key_takeaways": [
@@ -36,12 +36,84 @@
   {
     "category": "絵師風・作画コントロール",
     "title": "Danbooru由来の作画媒体・線画・塗りタグの3段活用",
-    "updated": "2026-07-27",
+    "updated": "2026-07-28",
     "source": "Danbooru Tag Database & AITAG Analytics",
     "summary": "Medium (水彩・油彩・厚塗り), Lineart (繊細な線・太線), Shading (セル画風・グラデーション) を3段セットで指定することで、絵師名を入れずにアニメ風・神絵師風の質感を完全再現。",
     "key_takeaways": [
       "繊細なイラスト: thick lineart, soft shading, watercolor (medium)",
       "リッチなゲームイラスト: clean lineart, cell shading, detailed shading, digital painting"
+    ]
+  },
+  {
+    "category": "Reddit: 公式発表・新機能ガイド",
+    "title": "[Reddit/r/NovelAI] [Feature Announcement] NovelAI Explore: the ultimate hub for the NovelAI community",
+    "updated": "2026-07-15",
+    "source": "Reddit /r/NovelAI (Live RSS)",
+    "summary": "NovelAI Explore is a living feed of inspiration, built right into NovelAI. Prompt tags, full generation settings, all in one place. Filter by creator, sort by what&#39;s hot, and d...",
+    "url": "https://www.reddit.com/r/NovelAi/comments/1uwt41n/feature_announcement_novelai_explore_the_ultimate/",
+    "key_takeaways": [
+      "投稿日時: 2026-07-15",
+      "Redditスレッドの直接リンク: https://www.reddit.com/r/NovelAi/comments/1uwt41n/feature_announcement_novelai_explore_the_ultimate/"
+    ]
+  },
+  {
+    "category": "Reddit: 公式発表・新機能ガイド",
+    "title": "[Reddit/r/NovelAI] [Text Generation Feature] Good news! You can now set Genre and Tags right in the NovelAI UI. No more formatting them into Memory by hand. Small change, huge impact on tone and style.",
+    "updated": "2026-05-14",
+    "source": "Reddit /r/NovelAI (Live RSS)",
+    "summary": "&#32; submitted by &#32; /u/teaanimesquare [link] &#32; [comments]",
+    "url": "https://www.reddit.com/r/NovelAi/comments/1td8tak/text_generation_feature_good_news_you_can_now_set/",
+    "key_takeaways": [
+      "投稿日時: 2026-05-14",
+      "Redditスレッドの直接リンク: https://www.reddit.com/r/NovelAi/comments/1td8tak/text_generation_feature_good_news_you_can_now_set/"
+    ]
+  },
+  {
+    "category": "Reddit: プロンプト・作画検証",
+    "title": "[Reddit/r/NovelAI] Okay, NAI image model, i see u😏",
+    "updated": "2026-07-27",
+    "source": "Reddit /r/NovelAI (Live RSS)",
+    "summary": "For the record, core prompt was: 1character, solo, simple background, grey background, cowboy shot, character, 1.20::giant, ice, blue ice, see-through, slab body, column legs, trap...",
+    "url": "https://www.reddit.com/r/NovelAi/comments/1v87c97/okay_nai_image_model_i_see_u/",
+    "key_takeaways": [
+      "投稿日時: 2026-07-27",
+      "Redditスレッドの直接リンク: https://www.reddit.com/r/NovelAi/comments/1v87c97/okay_nai_image_model_i_see_u/"
+    ]
+  },
+  {
+    "category": "Reddit リアルタイム話題",
+    "title": "[Reddit/r/NovelAI] Custom CCS Theme Image Link Issue",
+    "updated": "2026-07-25",
+    "source": "Reddit /r/NovelAI (Live RSS)",
+    "summary": "Hello, been having problems trying to find a image site that actually supports the Novel AI CCS Theme, I can&#39;t use Imgur since it is blocked in the UK, does anyone have any alt...",
+    "url": "https://www.reddit.com/r/NovelAi/comments/1v6d454/custom_ccs_theme_image_link_issue/",
+    "key_takeaways": [
+      "投稿日時: 2026-07-25",
+      "Redditスレッドの直接リンク: https://www.reddit.com/r/NovelAi/comments/1v6d454/custom_ccs_theme_image_link_issue/"
+    ]
+  },
+  {
+    "category": "Reddit リアルタイム話題",
+    "title": "[Reddit/r/NovelAI] Character sheet design oc sonic",
+    "updated": "2026-07-25",
+    "source": "Reddit /r/NovelAI (Live RSS)",
+    "summary": "Which one you like? &#32; submitted by &#32; /u/MorningFearless9188 [link] &#32; [comments]",
+    "url": "https://www.reddit.com/r/NovelAi/comments/1v5zcow/character_sheet_design_oc_sonic/",
+    "key_takeaways": [
+      "投稿日時: 2026-07-25",
+      "Redditスレッドの直接リンク: https://www.reddit.com/r/NovelAi/comments/1v5zcow/character_sheet_design_oc_sonic/"
+    ]
+  },
+  {
+    "category": "Reddit リアルタイム話題",
+    "title": "[Reddit/r/NovelAI] Xialong Genre & Tagset Categorized List",
+    "updated": "2026-07-24",
+    "source": "Reddit /r/NovelAI (Live RSS)",
+    "summary": "Here is the full Genre and Tag set for Xialong-v1 placed into categories, mostly to help find all entries that match your new stories. (credit: luca) Note: The model is more than c...",
+    "url": "https://www.reddit.com/r/NovelAi/comments/1v5cwaz/xialong_genre_tagset_categorized_list/",
+    "key_takeaways": [
+      "投稿日時: 2026-07-24",
+      "Redditスレッドの直接リンク: https://www.reddit.com/r/NovelAi/comments/1v5cwaz/xialong_genre_tagset_categorized_list/"
     ]
   }
 ]

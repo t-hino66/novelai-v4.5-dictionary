@@ -1883,6 +1883,7 @@
                                 <ul style="margin:0; padding-left:1.2rem; color:#94a3b8; font-size:0.8rem;">
                                     ${item.key_takeaways.map(t => `<li>${t}</li>`).join('')}
                                 </ul>` : ''}
+                                ${item.url ? `<div style="margin-top:0.6rem;"><a href="${item.url}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:4px; font-size:0.75rem; color:#60a5fa; text-decoration:none; background:#1e293b; padding:4px 10px; border-radius:6px; border:1px solid #3b82f6;"><span>🔗 該当スレッド・一次情報を見る</span></a></div>` : ''}
                             </div>`;
                         });
                         container.innerHTML = html;
