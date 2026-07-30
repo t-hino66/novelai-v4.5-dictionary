@@ -69,6 +69,18 @@
     ]
   },
   {
+    "category": "Reddit: 公式発表・新機能ガイド",
+    "title": "[Reddit/r/NovelAI] V5 Character Features",
+    "updated": "2026-07-29",
+    "source": "Reddit /r/NovelAI (Live RSS)",
+    "summary": "Hey all! Somewhat new to the community here on Reddit but I&#39;ve been a long-time Opus user with NovelAI since the early days. The bulk majority of my stuff is furry, and outside...",
+    "url": "https://www.reddit.com/r/NovelAi/comments/1v9udh7/v5_character_features/",
+    "key_takeaways": [
+      "投稿日時: 2026-07-29",
+      "Redditスレッドの直接リンク: https://www.reddit.com/r/NovelAi/comments/1v9udh7/v5_character_features/"
+    ]
+  },
+  {
     "category": "Reddit: プロンプト・作画検証",
     "title": "[Reddit/r/NovelAI] Okay, NAI image model, i see u😏",
     "updated": "2026-07-27",
@@ -102,18 +114,6 @@
     "key_takeaways": [
       "投稿日時: 2026-07-25",
       "Redditスレッドの直接リンク: https://www.reddit.com/r/NovelAi/comments/1v5zcow/character_sheet_design_oc_sonic/"
-    ]
-  },
-  {
-    "category": "Reddit リアルタイム話題",
-    "title": "[Reddit/r/NovelAI] Xialong Genre & Tagset Categorized List",
-    "updated": "2026-07-24",
-    "source": "Reddit /r/NovelAI (Live RSS)",
-    "summary": "Here is the full Genre and Tag set for Xialong-v1 placed into categories, mostly to help find all entries that match your new stories. (credit: luca) Note: The model is more than c...",
-    "url": "https://www.reddit.com/r/NovelAi/comments/1v5cwaz/xialong_genre_tagset_categorized_list/",
-    "key_takeaways": [
-      "投稿日時: 2026-07-24",
-      "Redditスレッドの直接リンク: https://www.reddit.com/r/NovelAi/comments/1v5cwaz/xialong_genre_tagset_categorized_list/"
     ]
   }
 ]
