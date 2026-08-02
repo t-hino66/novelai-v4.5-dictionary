@@ -1,8 +1,8 @@
 {
-  "updated_at": "2026-08-01 06:10:13",
+  "updated_at": "2026-08-02 03:40:33",
   "total_records": 16809,
   "metrics": {
-    "avg_prompt_tags": 49.6,
+    "avg_prompt_tags": 49.3,
     "avg_neg_tags": 53.7,
     "masterpiece_usage_rate": "87.2%",
     "best_quality_usage_rate": "63.8%"
@@ -15,18 +15,18 @@
     },
     {
       "name": "danbooru",
-      "count": 3472,
-      "ratio": "20.7%"
+      "count": 3694,
+      "ratio": "22.0%"
     },
     {
       "name": "safebooru",
-      "count": 1900,
-      "ratio": "11.3%"
+      "count": 2200,
+      "ratio": "13.1%"
     },
     {
       "name": "yandere",
-      "count": 844,
-      "ratio": "5.0%"
+      "count": 878,
+      "ratio": "5.2%"
     }
   ],
   "top_rankings": {
@@ -213,20 +213,20 @@
         "sample_image": "https://cdn.donmai.us/sample/e4/44/sample-e44401a662a15b1e324109bb3a76bc55.jpg"
       },
       {
-        "tag": "bikini",
-        "meaning": "ビキニ",
-        "category": "Clothing",
-        "count": 297,
-        "usage_rate": "1.77%",
-        "sample_image": "https://cdn.donmai.us/sample/e4/44/sample-e44401a662a15b1e324109bb3a76bc55.jpg"
-      },
-      {
         "tag": "skirt",
         "meaning": "スカート",
         "category": "Clothing",
         "count": 494,
         "usage_rate": "2.94%",
         "sample_image": "https://cdn.donmai.us/original/2d/61/2d614920a229f110cecdcac607522b4c.jpg"
+      },
+      {
+        "tag": "bikini",
+        "meaning": "ビキニ",
+        "category": "Clothing",
+        "count": 297,
+        "usage_rate": "1.77%",
+        "sample_image": "https://cdn.donmai.us/sample/e4/44/sample-e44401a662a15b1e324109bb3a76bc55.jpg"
       },
       {
         "tag": "dress",
@@ -253,20 +253,20 @@
         "sample_image": "https://cdn.donmai.us/sample/09/a2/sample-09a2eb270799373cd7a725ac769a4510.jpg"
       },
       {
-        "tag": "detailed clothes",
-        "meaning": "Detailed Clothes",
-        "category": "Clothing",
-        "count": 620,
-        "usage_rate": "3.69%",
-        "sample_image": ""
-      },
-      {
         "tag": "hat",
         "meaning": "帽子",
         "category": "Clothing",
         "count": 80,
         "usage_rate": "0.48%",
         "sample_image": "https://cdn.donmai.us/sample/5f/dc/sample-5fdc2dc4198b3930ac3a8feb5ba19513.jpg"
+      },
+      {
+        "tag": "detailed clothes",
+        "meaning": "Detailed Clothes",
+        "category": "Clothing",
+        "count": 620,
+        "usage_rate": "3.69%",
+        "sample_image": ""
       },
       {
         "tag": "white shirt",
@@ -287,6 +287,14 @@
         "sample_image": "https://cdn.donmai.us/original/1f/6d/1f6d62116178b36bbe03a872d9c66d5b.png"
       },
       {
+        "tag": "simple_background",
+        "meaning": "単色背景",
+        "category": "Background",
+        "count": 52,
+        "usage_rate": "0.31%",
+        "sample_image": "https://cdn.donmai.us/sample/8c/74/sample-8c743384a9aebff5406c774e590c3798.jpg"
+      },
+      {
         "tag": "outdoors",
         "meaning": "屋外",
         "category": "Background",
@@ -295,11 +303,11 @@
         "sample_image": "https://cdn.donmai.us/sample/e4/44/sample-e44401a662a15b1e324109bb3a76bc55.jpg"
       },
       {
-        "tag": "simple_background",
-        "meaning": "単色背景",
+        "tag": "white_background",
+        "meaning": "白色背景",
         "category": "Background",
-        "count": 52,
-        "usage_rate": "0.31%",
+        "count": 9,
+        "usage_rate": "0.05%",
         "sample_image": "https://cdn.donmai.us/sample/8c/74/sample-8c743384a9aebff5406c774e590c3798.jpg"
       },
       {
@@ -309,14 +317,6 @@
         "count": 1135,
         "usage_rate": "6.75%",
         "sample_image": "https://cdn.donmai.us/sample/b3/b3/sample-b3b371bac350a14ebe78a9d15e9e4d4d.jpg"
-      },
-      {
-        "tag": "white_background",
-        "meaning": "白色背景",
-        "category": "Background",
-        "count": 9,
-        "usage_rate": "0.05%",
-        "sample_image": "https://cdn.donmai.us/sample/8c/74/sample-8c743384a9aebff5406c774e590c3798.jpg"
       },
       {
         "tag": "white background",
