@@ -70,50 +70,50 @@
   },
   {
     "category": "Reddit: プロンプト・作画検証",
-    "title": "[Reddit/r/NovelAI] Anyone else just not know what to do with NovelAI?",
-    "updated": "2026-07-30",
+    "title": "[Reddit/r/NovelAI] D.Va's Your New Roommate",
+    "updated": "2026-08-08",
     "source": "Reddit /r/NovelAI (Live RSS)",
-    "summary": "Ever since Xia dropped, I feel like I never know how to start a story anymore. It used to be so much simpler in the Kayra/Erato days. Now it feels like I need to do hours of prep b...",
-    "url": "https://www.reddit.com/r/NovelAi/comments/1vau76y/anyone_else_just_not_know_what_to_do_with_novelai/",
+    "summary": "First post. Inspired by a post by u/C_domi . Normally my gens push 250-350 tokens, tried something far simpler this time. Gonna mess with some other ideas. Prompt: Anime coloring. ...",
+    "url": "https://www.reddit.com/r/NovelAi/comments/1vj1m0n/dvas_your_new_roommate/",
     "key_takeaways": [
-      "投稿日時: 2026-07-30",
-      "Redditスレッドの直接リンク: https://www.reddit.com/r/NovelAi/comments/1vau76y/anyone_else_just_not_know_what_to_do_with_novelai/"
-    ]
-  },
-  {
-    "category": "Reddit: 公式発表・新機能ガイド",
-    "title": "[Reddit/r/NovelAI] V5 Character Features",
-    "updated": "2026-07-29",
-    "source": "Reddit /r/NovelAI (Live RSS)",
-    "summary": "Hey all! Somewhat new to the community here on Reddit but I&#39;ve been a long-time Opus user with NovelAI since the early days. The bulk majority of my stuff is furry, and outside...",
-    "url": "https://www.reddit.com/r/NovelAi/comments/1v9udh7/v5_character_features/",
-    "key_takeaways": [
-      "投稿日時: 2026-07-29",
-      "Redditスレッドの直接リンク: https://www.reddit.com/r/NovelAi/comments/1v9udh7/v5_character_features/"
+      "投稿日時: 2026-08-08",
+      "Redditスレッドの直接リンク: https://www.reddit.com/r/NovelAi/comments/1vj1m0n/dvas_your_new_roommate/"
     ]
   },
   {
     "category": "Reddit: プロンプト・作画検証",
-    "title": "[Reddit/r/NovelAI] Okay, NAI image model, i see u😏",
-    "updated": "2026-07-27",
+    "title": "[Reddit/r/NovelAI] Thoughts on my first gen?",
+    "updated": "2026-08-07",
     "source": "Reddit /r/NovelAI (Live RSS)",
-    "summary": "For the record, core prompt was: 1character, solo, simple background, grey background, cowboy shot, character, 1.20::giant, ice, blue ice, see-through, slab body, column legs, trap...",
-    "url": "https://www.reddit.com/r/NovelAi/comments/1v87c97/okay_nai_image_model_i_see_u/",
+    "summary": "Kinda impressed with this model ngl Prompt was: &quot;Rem and Ram from Re:Zero, smiling and face bumping with heart pupils. Soft colors and shading with nice and clear line art&quo...",
+    "url": "https://www.reddit.com/r/NovelAi/comments/1vi4k2a/thoughts_on_my_first_gen/",
     "key_takeaways": [
-      "投稿日時: 2026-07-27",
-      "Redditスレッドの直接リンク: https://www.reddit.com/r/NovelAi/comments/1v87c97/okay_nai_image_model_i_see_u/"
+      "投稿日時: 2026-08-07",
+      "Redditスレッドの直接リンク: https://www.reddit.com/r/NovelAi/comments/1vi4k2a/thoughts_on_my_first_gen/"
     ]
   },
   {
     "category": "Reddit リアルタイム話題",
-    "title": "[Reddit/r/NovelAI] Custom CCS Theme Image Link Issue",
-    "updated": "2026-07-25",
+    "title": "[Reddit/r/NovelAI] What to do after maxing out context?",
+    "updated": "2026-08-08",
     "source": "Reddit /r/NovelAI (Live RSS)",
-    "summary": "Hello, been having problems trying to find a image site that actually supports the Novel AI CCS Theme, I can&#39;t use Imgur since it is blocked in the UK, does anyone have any alt...",
-    "url": "https://www.reddit.com/r/NovelAi/comments/1v6d454/custom_ccs_theme_image_link_issue/",
+    "summary": "Hello, everyone. I hope your day is going well. I&#39;ve been playing around in my story and had enough fun that I don&#39;t want to abandon it yet. However, it has gotten to the p...",
+    "url": "https://www.reddit.com/r/NovelAi/comments/1vir117/what_to_do_after_maxing_out_context/",
     "key_takeaways": [
-      "投稿日時: 2026-07-25",
-      "Redditスレッドの直接リンク: https://www.reddit.com/r/NovelAi/comments/1v6d454/custom_ccs_theme_image_link_issue/"
+      "投稿日時: 2026-08-08",
+      "Redditスレッドの直接リンク: https://www.reddit.com/r/NovelAi/comments/1vir117/what_to_do_after_maxing_out_context/"
+    ]
+  },
+  {
+    "category": "Reddit: 公式発表・新機能ガイド",
+    "title": "[Reddit/r/NovelAI] AetherTavern: AetherRoom chat frontend for Xialong",
+    "updated": "2026-08-07",
+    "source": "Reddit /r/NovelAI (Live RSS)",
+    "summary": "AetherRoom&#39;s training data seems to have been included in Xialong, so if you format things right, you can chat with characters, including the fancy emotion functions AetherRoom...",
+    "url": "https://www.reddit.com/r/NovelAi/comments/1vhy2uf/aethertavern_aetherroom_chat_frontend_for_xialong/",
+    "key_takeaways": [
+      "投稿日時: 2026-08-07",
+      "Redditスレッドの直接リンク: https://www.reddit.com/r/NovelAi/comments/1vhy2uf/aethertavern_aetherroom_chat_frontend_for_xialong/"
     ]
   }
 ]

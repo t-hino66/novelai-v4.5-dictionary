@@ -1,32 +1,32 @@
 {
-  "updated_at": "2026-08-02 03:40:33",
-  "total_records": 16809,
+  "updated_at": "2026-08-09 02:32:18",
+  "total_records": 33781,
   "metrics": {
-    "avg_prompt_tags": 49.3,
-    "avg_neg_tags": 53.7,
-    "masterpiece_usage_rate": "87.2%",
-    "best_quality_usage_rate": "63.8%"
+    "avg_prompt_tags": 50.0,
+    "avg_neg_tags": 53.3,
+    "masterpiece_usage_rate": "89.4%",
+    "best_quality_usage_rate": "66.7%"
   },
   "sources": [
     {
       "name": "aitag.win",
-      "count": 16809,
+      "count": 33781,
       "ratio": "100.0%"
     },
     {
       "name": "danbooru",
-      "count": 3694,
-      "ratio": "22.0%"
+      "count": 4694,
+      "ratio": "13.9%"
     },
     {
       "name": "safebooru",
-      "count": 2200,
-      "ratio": "13.1%"
+      "count": 2500,
+      "ratio": "7.4%"
     },
     {
       "name": "yandere",
-      "count": 878,
-      "ratio": "5.2%"
+      "count": 1078,
+      "ratio": "3.2%"
     }
   ],
   "top_rankings": {
@@ -35,80 +35,80 @@
         "tag": "masterpiece",
         "meaning": "傑作 (基本クオリティタグ)",
         "category": "Quality",
-        "count": 22281,
-        "usage_rate": "132.55%",
+        "count": 45824,
+        "usage_rate": "135.65%",
         "sample_image": ""
       },
       {
         "tag": "very aesthetic",
         "meaning": "非常に美しい (美的タグ)",
         "category": "Quality",
-        "count": 20957,
-        "usage_rate": "124.68%",
+        "count": 42271,
+        "usage_rate": "125.13%",
         "sample_image": ""
       },
       {
         "tag": "best quality",
         "meaning": "Best Quality",
         "category": "Quality",
-        "count": 12052,
-        "usage_rate": "71.70%",
+        "count": 25537,
+        "usage_rate": "75.60%",
         "sample_image": ""
       },
       {
         "tag": "highres",
         "meaning": "高画質",
         "category": "Quality",
-        "count": 3490,
-        "usage_rate": "20.76%",
+        "count": 7057,
+        "usage_rate": "20.89%",
         "sample_image": "https://cdn.donmai.us/original/1f/6d/1f6d62116178b36bbe03a872d9c66d5b.png"
       },
       {
         "tag": "absurdres",
         "meaning": "不条理",
         "category": "Quality",
-        "count": 4840,
-        "usage_rate": "28.79%",
+        "count": 9574,
+        "usage_rate": "28.34%",
         "sample_image": "https://cdn.donmai.us/sample/7e/59/sample-7e59a38b73f0c1f20f233c7d3bf28fba.jpg"
       },
       {
         "tag": "amazing quality",
         "meaning": "Amazing Quality",
         "category": "Quality",
-        "count": 5033,
-        "usage_rate": "29.94%",
+        "count": 10468,
+        "usage_rate": "30.99%",
         "sample_image": ""
       },
       {
         "tag": "high quality",
         "meaning": "High Quality",
         "category": "Quality",
-        "count": 952,
-        "usage_rate": "5.66%",
-        "sample_image": ""
-      },
-      {
-        "tag": "great quality",
-        "meaning": "Great Quality",
-        "category": "Quality",
-        "count": 522,
-        "usage_rate": "3.11%",
+        "count": 1773,
+        "usage_rate": "5.25%",
         "sample_image": ""
       },
       {
         "tag": "newest",
         "meaning": "Newest",
         "category": "Quality",
-        "count": 490,
-        "usage_rate": "2.92%",
+        "count": 1016,
+        "usage_rate": "3.01%",
         "sample_image": ""
       },
       {
-        "tag": "ultra quality",
-        "meaning": "Ultra Quality",
+        "tag": "great quality",
+        "meaning": "Great Quality",
         "category": "Quality",
-        "count": 386,
-        "usage_rate": "2.30%",
+        "count": 690,
+        "usage_rate": "2.04%",
+        "sample_image": ""
+      },
+      {
+        "tag": "aesthetic",
+        "meaning": "Aesthetic",
+        "category": "Quality",
+        "count": 641,
+        "usage_rate": "1.90%",
         "sample_image": ""
       }
     ],
@@ -118,80 +118,80 @@
         "tag": "standing",
         "meaning": "立っている",
         "category": "Pose",
-        "count": 3139,
-        "usage_rate": "18.67%",
+        "count": 5371,
+        "usage_rate": "15.90%",
         "sample_image": "https://cdn.donmai.us/sample/8c/74/sample-8c743384a9aebff5406c774e590c3798.jpg"
       },
       {
         "tag": "looking at viewer",
         "meaning": "カメラ目線 (こちらを見つめる)",
         "category": "Pose",
-        "count": 1886,
-        "usage_rate": "11.22%",
+        "count": 3497,
+        "usage_rate": "10.35%",
+        "sample_image": ""
+      },
+      {
+        "tag": "spread legs",
+        "meaning": "開脚ポーズ",
+        "category": "Pose",
+        "count": 3118,
+        "usage_rate": "9.23%",
         "sample_image": ""
       },
       {
         "tag": "lying",
         "meaning": "横たわっている",
         "category": "Pose",
-        "count": 1158,
-        "usage_rate": "6.89%",
+        "count": 2359,
+        "usage_rate": "6.98%",
         "sample_image": "https://cdn.donmai.us/sample/5f/94/sample-5f94c6661bebe621a0342907e36ac634.jpg"
       },
       {
         "tag": "sitting",
         "meaning": "座っている",
         "category": "Pose",
-        "count": 1020,
-        "usage_rate": "6.07%",
+        "count": 1971,
+        "usage_rate": "5.83%",
         "sample_image": "https://cdn.donmai.us/sample/da/e6/sample-dae634e6daf60c4dd97e208a183a5648.jpg"
-      },
-      {
-        "tag": "spread legs",
-        "meaning": "開脚ポーズ",
-        "category": "Pose",
-        "count": 1491,
-        "usage_rate": "8.87%",
-        "sample_image": ""
-      },
-      {
-        "tag": "holding",
-        "meaning": "物を持ってる",
-        "category": "Pose",
-        "count": 15,
-        "usage_rate": "0.09%",
-        "sample_image": "https://cdn.donmai.us/sample/41/83/sample-41833b427b0e16849f521cc080daee8b.jpg"
-      },
-      {
-        "tag": "dynamic pose",
-        "meaning": "動的なポーズ",
-        "category": "Pose",
-        "count": 843,
-        "usage_rate": "5.02%",
-        "sample_image": ""
       },
       {
         "tag": "kneeling",
         "meaning": "膝立ち",
         "category": "Pose",
-        "count": 529,
-        "usage_rate": "3.15%",
+        "count": 1103,
+        "usage_rate": "3.27%",
         "sample_image": "https://cdn.donmai.us/sample/58/d9/sample-58d9a2f82a85050b66f729960a69a984.jpg"
       },
       {
-        "tag": "lying on back",
-        "meaning": "仰向け",
+        "tag": "holding",
+        "meaning": "物を持ってる",
         "category": "Pose",
-        "count": 552,
-        "usage_rate": "3.28%",
+        "count": 20,
+        "usage_rate": "0.06%",
+        "sample_image": "https://cdn.donmai.us/sample/41/83/sample-41833b427b0e16849f521cc080daee8b.jpg"
+      },
+      {
+        "tag": "bare legs",
+        "meaning": "素足",
+        "category": "Pose",
+        "count": 1143,
+        "usage_rate": "3.38%",
+        "sample_image": ""
+      },
+      {
+        "tag": "dynamic pose",
+        "meaning": "動的なポーズ",
+        "category": "Pose",
+        "count": 1136,
+        "usage_rate": "3.36%",
         "sample_image": ""
       },
       {
         "tag": "leaning forward",
         "meaning": "前方に傾いています",
         "category": "Pose",
-        "count": 541,
-        "usage_rate": "3.22%",
+        "count": 1109,
+        "usage_rate": "3.28%",
         "sample_image": ""
       }
     ],
@@ -200,81 +200,81 @@
         "tag": "shirt",
         "meaning": "シャツ",
         "category": "Clothing",
-        "count": 89,
-        "usage_rate": "0.53%",
+        "count": 272,
+        "usage_rate": "0.81%",
         "sample_image": "https://cdn.donmai.us/sample/66/7a/sample-667a434f1391d112d9623bd57afd2e21.jpg"
-      },
-      {
-        "tag": "swimsuit",
-        "meaning": "水着",
-        "category": "Clothing",
-        "count": 127,
-        "usage_rate": "0.76%",
-        "sample_image": "https://cdn.donmai.us/sample/e4/44/sample-e44401a662a15b1e324109bb3a76bc55.jpg"
       },
       {
         "tag": "skirt",
         "meaning": "スカート",
         "category": "Clothing",
-        "count": 494,
-        "usage_rate": "2.94%",
+        "count": 837,
+        "usage_rate": "2.48%",
         "sample_image": "https://cdn.donmai.us/original/2d/61/2d614920a229f110cecdcac607522b4c.jpg"
-      },
-      {
-        "tag": "bikini",
-        "meaning": "ビキニ",
-        "category": "Clothing",
-        "count": 297,
-        "usage_rate": "1.77%",
-        "sample_image": "https://cdn.donmai.us/sample/e4/44/sample-e44401a662a15b1e324109bb3a76bc55.jpg"
-      },
-      {
-        "tag": "dress",
-        "meaning": "ドレス",
-        "category": "Clothing",
-        "count": 151,
-        "usage_rate": "0.90%",
-        "sample_image": "https://cdn.donmai.us/sample/ce/69/sample-ce69b49b0e05112b17c280aefb5f8c38.jpg"
       },
       {
         "tag": "school uniform",
         "meaning": "制服",
         "category": "Clothing",
-        "count": 813,
-        "usage_rate": "4.84%",
+        "count": 1632,
+        "usage_rate": "4.83%",
+        "sample_image": ""
+      },
+      {
+        "tag": "bikini",
+        "meaning": "ビキニ",
+        "category": "Clothing",
+        "count": 430,
+        "usage_rate": "1.27%",
+        "sample_image": "https://cdn.donmai.us/sample/e4/44/sample-e44401a662a15b1e324109bb3a76bc55.jpg"
+      },
+      {
+        "tag": "swimsuit",
+        "meaning": "水着",
+        "category": "Clothing",
+        "count": 207,
+        "usage_rate": "0.61%",
+        "sample_image": "https://cdn.donmai.us/sample/e4/44/sample-e44401a662a15b1e324109bb3a76bc55.jpg"
+      },
+      {
+        "tag": "vibrant colors",
+        "meaning": "Vibrant Colors",
+        "category": "Clothing",
+        "count": 1210,
+        "usage_rate": "3.58%",
+        "sample_image": ""
+      },
+      {
+        "tag": "dress",
+        "meaning": "ドレス",
+        "category": "Clothing",
+        "count": 207,
+        "usage_rate": "0.61%",
+        "sample_image": "https://cdn.donmai.us/sample/ce/69/sample-ce69b49b0e05112b17c280aefb5f8c38.jpg"
+      },
+      {
+        "tag": "white shirt",
+        "meaning": "白シャツ",
+        "category": "Clothing",
+        "count": 1089,
+        "usage_rate": "3.22%",
+        "sample_image": ""
+      },
+      {
+        "tag": "detailed clothes",
+        "meaning": "Detailed Clothes",
+        "category": "Clothing",
+        "count": 996,
+        "usage_rate": "2.95%",
         "sample_image": ""
       },
       {
         "tag": "white_shirt",
         "meaning": "白シャツ",
         "category": "Clothing",
-        "count": 18,
+        "count": 37,
         "usage_rate": "0.11%",
         "sample_image": "https://cdn.donmai.us/sample/09/a2/sample-09a2eb270799373cd7a725ac769a4510.jpg"
-      },
-      {
-        "tag": "hat",
-        "meaning": "帽子",
-        "category": "Clothing",
-        "count": 80,
-        "usage_rate": "0.48%",
-        "sample_image": "https://cdn.donmai.us/sample/5f/dc/sample-5fdc2dc4198b3930ac3a8feb5ba19513.jpg"
-      },
-      {
-        "tag": "detailed clothes",
-        "meaning": "Detailed Clothes",
-        "category": "Clothing",
-        "count": 620,
-        "usage_rate": "3.69%",
-        "sample_image": ""
-      },
-      {
-        "tag": "white shirt",
-        "meaning": "白シャツ",
-        "category": "Clothing",
-        "count": 539,
-        "usage_rate": "3.21%",
-        "sample_image": ""
       }
     ],
     "background": [
@@ -282,80 +282,80 @@
         "tag": "indoors",
         "meaning": "室内",
         "category": "Background",
-        "count": 1553,
-        "usage_rate": "9.24%",
+        "count": 3779,
+        "usage_rate": "11.19%",
         "sample_image": "https://cdn.donmai.us/original/1f/6d/1f6d62116178b36bbe03a872d9c66d5b.png"
       },
       {
-        "tag": "simple_background",
-        "meaning": "単色背景",
+        "tag": "bedroom",
+        "meaning": "寝室",
         "category": "Background",
-        "count": 52,
-        "usage_rate": "0.31%",
-        "sample_image": "https://cdn.donmai.us/sample/8c/74/sample-8c743384a9aebff5406c774e590c3798.jpg"
+        "count": 3396,
+        "usage_rate": "10.05%",
+        "sample_image": "https://cdn.donmai.us/sample/01/14/sample-0114ed04a193913970ba908067dee00f.jpg"
       },
       {
         "tag": "outdoors",
         "meaning": "屋外",
         "category": "Background",
-        "count": 932,
-        "usage_rate": "5.54%",
+        "count": 2019,
+        "usage_rate": "5.98%",
         "sample_image": "https://cdn.donmai.us/sample/e4/44/sample-e44401a662a15b1e324109bb3a76bc55.jpg"
-      },
-      {
-        "tag": "white_background",
-        "meaning": "白色背景",
-        "category": "Background",
-        "count": 9,
-        "usage_rate": "0.05%",
-        "sample_image": "https://cdn.donmai.us/sample/8c/74/sample-8c743384a9aebff5406c774e590c3798.jpg"
       },
       {
         "tag": "night",
         "meaning": "夜",
         "category": "Background",
-        "count": 1135,
-        "usage_rate": "6.75%",
+        "count": 2483,
+        "usage_rate": "7.35%",
         "sample_image": "https://cdn.donmai.us/sample/b3/b3/sample-b3b371bac350a14ebe78a9d15e9e4d4d.jpg"
       },
       {
-        "tag": "white background",
-        "meaning": "白背景",
+        "tag": "cinematic lighting",
+        "meaning": "映画風のドラマチックな照明",
         "category": "Background",
-        "count": 1115,
-        "usage_rate": "6.63%",
+        "count": 1904,
+        "usage_rate": "5.64%",
         "sample_image": ""
       },
       {
         "tag": "simple background",
         "meaning": "シンプルな背景",
         "category": "Background",
-        "count": 1051,
-        "usage_rate": "6.25%",
+        "count": 1882,
+        "usage_rate": "5.57%",
         "sample_image": ""
       },
       {
-        "tag": "bedroom",
-        "meaning": "寝室",
+        "tag": "simple_background",
+        "meaning": "単色背景",
         "category": "Background",
-        "count": 948,
-        "usage_rate": "5.64%",
-        "sample_image": "https://cdn.donmai.us/sample/01/14/sample-0114ed04a193913970ba908067dee00f.jpg"
+        "count": 168,
+        "usage_rate": "0.50%",
+        "sample_image": "https://cdn.donmai.us/sample/8c/74/sample-8c743384a9aebff5406c774e590c3798.jpg"
       },
       {
-        "tag": "cinematic lighting",
-        "meaning": "映画風のドラマチックな照明",
+        "tag": "white_background",
+        "meaning": "白色背景",
         "category": "Background",
-        "count": 947,
-        "usage_rate": "5.63%",
+        "count": 32,
+        "usage_rate": "0.09%",
+        "sample_image": "https://cdn.donmai.us/sample/8c/74/sample-8c743384a9aebff5406c774e590c3798.jpg"
+      },
+      {
+        "tag": "white background",
+        "meaning": "白背景",
+        "category": "Background",
+        "count": 1541,
+        "usage_rate": "4.56%",
         "sample_image": ""
       },
       {
-        "tag": "deep shadows",
-        "meaning": "Deep Shadows",
+        "tag": "on bed",
+        "meaning": "ベッドで",
         "category": "Background",
-        "count": 820,
-        "usage_rate": "4.88%",
+        "count": 1521,
+        "usage_rate": "4.50%",
         "sample_image": ""
       }
     ],
@@ -364,71 +364,71 @@
         "tag": "worst quality",
         "meaning": "最低品質 (作画崩壊防止)",
         "category": "Negative",
-        "count": 31115,
-        "usage_rate": "185.11%"
+        "count": 63363,
+        "usage_rate": "187.57%"
       },
       {
         "tag": "lowres",
         "meaning": "ローレス",
         "category": "Negative",
-        "count": 26988,
-        "usage_rate": "160.56%"
+        "count": 54727,
+        "usage_rate": "162.01%"
       },
       {
         "tag": "jpeg artifacts",
         "meaning": "JPEG圧縮ノイズ・画質劣化",
         "category": "Negative",
-        "count": 26006,
-        "usage_rate": "154.71%"
+        "count": 52613,
+        "usage_rate": "155.75%"
       },
       {
         "tag": "bad quality",
         "meaning": "悪品質 (粗い描画防止)",
         "category": "Negative",
-        "count": 24859,
-        "usage_rate": "147.89%"
+        "count": 49160,
+        "usage_rate": "145.53%"
       },
       {
         "tag": "very displeasing",
         "meaning": "Very Displeasing",
         "category": "Negative",
-        "count": 21716,
-        "usage_rate": "129.19%"
+        "count": 43357,
+        "usage_rate": "128.35%"
       },
       {
         "tag": "multiple views",
         "meaning": "マルチアングル",
         "category": "Negative",
-        "count": 20735,
-        "usage_rate": "123.36%"
+        "count": 40952,
+        "usage_rate": "121.23%"
       },
       {
         "tag": "chromatic aberration",
         "meaning": "色収差",
         "category": "Negative",
-        "count": 20648,
-        "usage_rate": "122.84%"
+        "count": 40859,
+        "usage_rate": "120.95%"
       },
       {
         "tag": "logo",
         "meaning": "ロゴ",
         "category": "Negative",
-        "count": 19978,
-        "usage_rate": "118.85%"
+        "count": 40069,
+        "usage_rate": "118.61%"
       },
       {
         "tag": "scan artifacts",
         "meaning": "アーティファクトをスキャンします",
         "category": "Negative",
-        "count": 19474,
-        "usage_rate": "115.85%"
+        "count": 38562,
+        "usage_rate": "114.15%"
       },
       {
         "tag": "film grain",
         "meaning": "フィルムグレイン",
         "category": "Negative",
-        "count": 18469,
-        "usage_rate": "109.88%"
+        "count": 36798,
+        "usage_rate": "108.93%"
       }
     ]
   }
