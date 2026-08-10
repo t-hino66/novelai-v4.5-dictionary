@@ -551,6 +551,21 @@
         .cat-style { background-color: var(--tag-style); }
         .cat-copyright { background-color: var(--tag-copyright); }
         .cat-others { background-color: var(--tag-others); }
+        .cat-hands, .cat-eyes, .cat-anatomy { background-color: #be123c; }
+        .cat-composition, .cat-artifacts { background-color: #9a3412; }
+        .cat-text---logo, .cat-other { background-color: #475569; }
+
+        .evidence-badge {
+            display: inline-block;
+            padding: 0.18rem 0.45rem;
+            margin: 0.1rem;
+            border-radius: 999px;
+            background: #1e293b;
+            border: 1px solid #475569;
+            color: #cbd5e1;
+            font-size: 0.68rem;
+            white-space: nowrap;
+        }
 
         .btn-copy-tag {
             background-color: var(--badge-bg);
@@ -690,23 +705,32 @@
                     </div>
 
                     <div style="margin-top: 1.5rem;">
-                        <h3 style="color: #f43f5e; margin-bottom: 0.8rem;">🛡️ 鉄板ネガティブプロンプト プリセット (ワンクリックコピー)</h3>
+                        <h3 style="color: #f43f5e; margin-bottom: 0.4rem;">🛡️ NovelAI V4.5 Full UCプリセット</h3>
+                        <p style="font-size:0.78rem; color:var(--text-muted);">Light / Heavy / Human Focus / Furry Focus / NoneはOfficial、Balanced Humanは本辞典独自のCustomです。</p>
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
-                            <div class="preset-card" onclick="copyPreset('standard')" style="background:#0b0d10; border:1px solid var(--border-color); border-radius:10px; padding:1rem; cursor:pointer; transition:all 0.2s;">
-                                <div style="font-weight:bold; color:#60a5fa; margin-bottom:0.4rem;">🛡️ 基本・品質維持セット</div>
-                                <div style="font-size:0.8rem; color:var(--text-muted);">nsfw, lowres, worst quality, low quality, normal quality, bad quality, jpeg artifacts, blurry</div>
+                            <div class="preset-card" onclick="copyPreset('light')" style="background:#0b0d10; border:1px solid var(--border-color); border-radius:10px; padding:1rem; cursor:pointer; transition:all 0.2s;">
+                                <div style="font-weight:bold; color:#60a5fa; margin-bottom:0.4rem;">Official · Light</div>
+                                <div style="font-size:0.8rem; color:var(--text-muted);">lowres, artistic error, scan artifacts, worst quality, bad quality, jpeg artifacts, multiple views, very displeasing, too many watermarks, negative space, blank page</div>
                             </div>
-                            <div class="preset-card" onclick="copyPreset('hands')" style="background:#0b0d10; border:1px solid var(--border-color); border-radius:10px; padding:1rem; cursor:pointer; transition:all 0.2s;">
-                                <div style="font-weight:bold; color:#10b981; margin-bottom:0.4rem;">🤚 手足・作画崩れ防止セット</div>
-                                <div style="font-size:0.8rem; color:var(--text-muted);">bad anatomy, bad hands, missing fingers, extra digit, fewer digits, extra arms, extra legs, mutated hands, deformed</div>
+                            <div class="preset-card" onclick="copyPreset('heavy')" style="background:#0b0d10; border:1px solid var(--border-color); border-radius:10px; padding:1rem; cursor:pointer; transition:all 0.2s;">
+                                <div style="font-weight:bold; color:#10b981; margin-bottom:0.4rem;">Official · Heavy</div>
+                                <div style="font-size:0.8rem; color:var(--text-muted);">lowres, artistic error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, dithering, halftone, screentone, multiple views, logo, too many watermarks, negative space, blank page</div>
                             </div>
-                            <div class="preset-card" onclick="copyPreset('clean')" style="background:#0b0d10; border:1px solid var(--border-color); border-radius:10px; padding:1rem; cursor:pointer; transition:all 0.2s;">
-                                <div style="font-weight:bold; color:#f59e0b; margin-bottom:0.4rem;">✍️ 文字・ロゴ・切れ防止セット</div>
-                                <div style="font-size:0.8rem; color:var(--text-muted);">watermark, signature, username, text, error, logo, cropped, out of frame</div>
+                            <div class="preset-card" onclick="copyPreset('human')" style="background:#0b0d10; border:1px solid var(--border-color); border-radius:10px; padding:1rem; cursor:pointer; transition:all 0.2s;">
+                                <div style="font-weight:bold; color:#f59e0b; margin-bottom:0.4rem;">Official · Human Focus</div>
+                                <div style="font-size:0.8rem; color:var(--text-muted);">Heavy相当 + @_@, mismatched pupils, glowing eyes, bad anatomy</div>
                             </div>
-                            <div class="preset-card" onclick="copyPreset('full')" style="background:#0b0d10; border:1px solid var(--border-color); border-radius:10px; padding:1rem; cursor:pointer; transition:all 0.2s;">
-                                <div style="font-weight:bold; color:#ec4899; margin-bottom:0.4rem;">⭐ 完全版・鉄板フル装備 (推奨)</div>
-                                <div style="font-size:0.8rem; color:var(--text-muted);">worst quality, low quality, bad quality, bad anatomy, bad hands, missing fingers, extra digit, extra arms, extra legs, deformed, disfigured, watermark, signature, text, cropped, blurry, jpeg artifacts</div>
+                            <div class="preset-card" onclick="copyPreset('furry')" style="background:#0b0d10; border:1px solid var(--border-color); border-radius:10px; padding:1rem; cursor:pointer; transition:all 0.2s;">
+                                <div style="font-weight:bold; color:#c084fc; margin-bottom:0.4rem;">Official · Furry Focus</div>
+                                <div style="font-size:0.8rem; color:var(--text-muted);">V4.5 Full Furry向け公式UC</div>
+                            </div>
+                            <div class="preset-card" style="background:#0b0d10; border:1px solid var(--border-color); border-radius:10px; padding:1rem;">
+                                <div style="font-weight:bold; color:#94a3b8; margin-bottom:0.4rem;">Official · None</div>
+                                <div style="font-size:0.8rem; color:var(--text-muted);">自動UCを追加しません。</div>
+                            </div>
+                            <div class="preset-card" onclick="copyPreset('balancedHuman')" style="background:#0b0d10; border:1px solid #ec4899; border-radius:10px; padding:1rem; cursor:pointer; transition:all 0.2s;">
+                                <div style="font-weight:bold; color:#ec4899; margin-bottom:0.4rem;">Custom · Balanced Human</div>
+                                <div style="font-size:0.8rem; color:var(--text-muted);">V4.5 Full · Anime / Human（非公式）</div>
                             </div>
                         </div>
                     </div>
@@ -741,12 +765,27 @@
             <div class="section-title" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
                 <span>🧙‍♂️ NovelAI V4.5 プロンプトスタジオ (左右2分割ワークスペース)</span>
                 <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-                    <button class="btn" onclick="addQualityBooster()" style="background:#2563eb; font-size:0.8rem; padding:0.3rem 0.8rem;">✨ 推奨品質</button>
-                    <button class="btn" onclick="addPresetNegatives()" style="background:#f43f5e; font-size:0.8rem; padding:0.3rem 0.8rem;">🛡️ 鉄板ネガセット</button>
+                    <button class="btn" onclick="addQualityBooster()" style="background:#2563eb; font-size:0.8rem; padding:0.3rem 0.8rem;" title="Add Quality TagsがONの場合は自動追加との重複に注意">✨ V4.5 Full Quality Tags</button>
+                    <select id="negative-preset-select" class="form-control" style="width:auto; font-size:0.8rem;">
+                        <optgroup label="Official · V4.5 Full">
+                            <option value="Light">Light</option>
+                            <option value="Heavy">Heavy</option>
+                            <option value="Human Focus">Human Focus</option>
+                            <option value="Furry Focus">Furry Focus</option>
+                            <option value="None">None</option>
+                        </optgroup>
+                        <optgroup label="Custom · V4.5 Full · Anime / Human">
+                            <option value="Balanced Human">Balanced Human</option>
+                        </optgroup>
+                    </select>
+                    <button class="btn" onclick="addSelectedNegativePreset()" style="background:#f43f5e; font-size:0.8rem; padding:0.3rem 0.8rem;">🛡️ UCを追加</button>
                     <button class="btn" onclick="cleanBuilderPrompts()" style="background:#059669; font-size:0.8rem; padding:0.3rem 0.8rem;">🧹 重複削除・整頓</button>
                     <button class="btn" onclick="clearBuilder()" style="background:#dc2626; font-size:0.8rem; padding:0.3rem 0.8rem;">🗑️ クリア</button>
                 </div>
             </div>
+            <p style="margin:0 0 0.8rem; color:var(--text-muted); font-size:0.78rem;">
+                Quality TagsはNovelAI側のAdd Quality TagsがONなら自動追加されます。UCのLight / Heavy / Human Focus / Furry Focus / Noneは公式、Balanced Humanは本辞典独自のCustomプリセットです。
+            </p>
 
             <div class="builder-workspace">
                 <!-- Left Panel: Tag Explorer & Search -->
@@ -880,8 +919,8 @@
                 </div>
                 <div>
                     <select id="dict-sort-key" class="form-control">
-                        <option value="count-desc">出現回数が多い順</option>
-                        <option value="count-asc">出現回数が少ない順</option>
+                        <option value="count-desc">NAI使用画像数が多い順</option>
+                        <option value="count-asc">NAI使用画像数が少ない順</option>
                         <option value="tag-asc">アルファベット順 (A-Z)</option>
                     </select>
                 </div>
@@ -894,8 +933,10 @@
                             <th>タグ名</th>
                             <th>日本語の意味</th>
                             <th>カテゴリ</th>
-                            <th>出現数</th>
-                            <th>使用率</th>
+                            <th>NAI使用画像数</th>
+                            <th>NAI使用率</th>
+                            <th>Danbooru件数</th>
+                            <th>Evidence</th>
                         </tr>
                     </thead>
                     <tbody id="dict-table-body">
@@ -978,10 +1019,10 @@
             <!-- Section 2: Recommended Tag Order -->
             <div style="background:#0b0d10; border:1px solid var(--border-color); border-radius:12px; padding:1.2rem;">
                 <h3 style="color:#10b981; margin-top:0; margin-bottom:0.8rem; font-size:1.1rem; display:flex; align-items:center; gap:0.5rem;">
-                    <span>📐 2. NovelAI 公式推奨の「プロンプト5段構造」</span>
+                    <span>📐 2. 本辞典推奨の「V4.5プロンプト5ブロック構造」</span>
                 </h3>
                 <p style="color:#cbd5e1; font-size:0.85rem; margin-top:0; margin-bottom:0.8rem;">
-                    プロンプトは上から下（左から右）へレイヤー状に評価されます。全体構図を決定づけるタグを前半に置き、細部の指定を後半に配置するのが黄金パターンです。
+                    これはNovelAI公式の固定テンプレートではなく、重要な要素の順序やキャラクター配置に関する公式ガイドを踏まえた本辞典独自の整理です。順序による変化は同じ設定・seedで比較してください。
                 </p>
                 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:0.8rem;">
                     <div style="background:#1e293b; padding:0.8rem; border-radius:8px; border:1px solid #334155;">
@@ -1010,23 +1051,20 @@
             <!-- Section 3: Data Analytics & Trends -->
             <div style="background:#0b0d10; border:1px solid var(--border-color); border-radius:12px; padding:1.2rem;">
                 <h3 style="color:#f59e0b; margin-top:0; margin-bottom:0.8rem; font-size:1.1rem; display:flex; align-items:center; gap:0.5rem;">
-                    <span>📊 3. 5,000件のデータから判明した実証トレンド ＆ 黄金法則</span>
+                    <span>📊 3. AITAG実生成データで観測された傾向</span>
                 </h3>
                 <div style="display:flex; flex-direction:column; gap:0.8rem; color:#cbd5e1; font-size:0.9rem; line-height:1.6;">
                     <div style="background:#1e293b; padding:0.9rem; border-radius:8px;">
-                        <strong style="color:#60a5fa; font-size:0.95rem;">👑 【クオリティタグの黄金比率】: 単なる盛るだけはNG</strong><br>
-                        当データベース（5,168件）の分析結果、<code>masterpiece</code> (137.9%) と <code>very aesthetic</code> (120.0%) が突出した2大人気タグでした。タグを20個も30個も過剰に盛り込むよりも、<code>masterpiece, very aesthetic, absurdres</code> の3つをベースにする方が、V4.5本来の繊細な線画とクリアな発色が最大限に発揮されます。
+                        <strong style="color:#60a5fa; font-size:0.95rem;">【クオリティタグの観測頻度】</strong><br>
+                        AITAGの各タグは「そのタグを1回以上含む画像数」を分子にして表示します。高頻度は実生成で多く観測されたことを示しますが、効果の高さや因果関係を保証しません。
                     </div>
                     <div style="background:#1e293b; padding:0.9rem; border-radius:8px;">
-                        <strong style="color:#10b981; font-size:0.95rem;">💡 【ライティング（光効果）によるクオリティの劇的向上】</strong><br>
-                        上位統計において <code>high contrast lighting</code> (14.1%), <code>volumetric lighting</code> (13.8%), <code>rim lighting</code> (12.9%), <code>dramatic lighting</code> (10.7%) が集中しています。キャラクター単体指定だけでなく「光の差し込み（リムライトや被写界深度）」をプロンプトに入れることが、イラストに圧倒的なプロっぽさを与える最大の秘密です。
+                        <strong style="color:#10b981; font-size:0.95rem;">【ライティングタグの利用例】</strong><br>
+                        <code>volumetric lighting</code>、<code>rim lighting</code>、<code>dramatic lighting</code>などは実生成プロンプトで観測されます。使用率は採用候補を探す指標であり、画質向上を直接証明するものではありません。
                     </div>
                     <div style="background:#1e293b; padding:0.9rem; border-radius:8px;">
-                        <strong style="color:#ec4899; font-size:0.95rem;">🎨 【絵師3段ブレンド法 (Artist Vector Blending)】</strong><br>
-                        高スコア画像では、1人の絵師指定ではなく <code>0.8::artist:絵師A::, 2.0::artist:絵師B::</code> のように複数の絵師を数値重みで組み合わせる手法が主流です。
-                        <br>&bull; <strong>前半</strong>: デッサン・頭身・ポーズが安定した絵師
-                        <br>&bull; <strong>中盤</strong>: 塗りの質感や背景の空気が綺麗な絵師
-                        <br>&bull; <strong>後半</strong>: 瞳の描き込みや表情が繊細な絵師
+                        <strong style="color:#ec4899; font-size:0.95rem;">【根拠を分離】</strong><br>
+                        AITAGはNovelAI V4.5で入力されたプロンプト、Danbooru / Safebooru / Yande.reは画像アノテーションです。Danbooru系で頻出でもNovelAIでの効果は保証されないため、件数を別々に表示します。
                     </div>
                 </div>
             </div>
@@ -1034,16 +1072,16 @@
             <!-- Section 4: Advanced Weighting -->
             <div style="background:#0b0d10; border:1px solid var(--border-color); border-radius:12px; padding:1.2rem;">
                 <h3 style="color:#ec4899; margin-top:0; margin-bottom:0.8rem; font-size:1.1rem; display:flex; align-items:center; gap:0.5rem;">
-                    <span>⚡ 4. 最新ベクトル重み付け ＆ マイナス重みの裏技</span>
+                    <span>⚡ 4. Numerical Emphasis（Official）</span>
                 </h3>
                 <div style="color:#cbd5e1; font-size:0.9rem; line-height:1.6; display:flex; flex-direction:column; gap:0.6rem;">
                     <div>
-                        <strong style="color:#60a5fa;">&bull; 最新ベクトル重み: 数値::tag::</strong><br>
-                        <code>1.2::masterpiece::</code> や <code>2.0::artist:yoneyama_mai::</code> のように記述。NAI V4/V4.5 の埋め込みベクトルに最も正確に重みを反映できます。※数字で終わるタグ（例: <code>1girl</code>）は <code>1.2::1girl ::</code> のようにスペースを挟んで誤作動を防ぎます。
+                        <strong style="color:#60a5fa;">&bull; 数値強調: 数値::tag ::</strong><br>
+                        <code>1.2::cel shading ::</code> や <code>0.8::soft shading ::</code> のように、終端の <code>::</code> までを重み付けします。<code>{tag}</code> / <code>[tag]</code> による強化・弱化も利用できます。
                     </div>
                     <div>
-                        <strong style="color:#f43f5e;">&bull; マイナス重み指定: -数値::tag:: (V4.5の超強力テクニック)</strong><br>
-                        ネガティブプロンプト枠に入れるのではなく、プロンプト内で <code>-1::hat::</code> と指定することで<strong>帽子要素のみピンポイント除去</strong>できます。また <code>-1::monochrome::</code> とすることで白黒の逆（＝鮮やかな色彩追加）効果が得られます。
+                        <strong style="color:#f43f5e;">&bull; Negative Numerical Emphasis（V4.5以降）</strong><br>
+                        <code>-1::text ::</code> のように対象概念を狙って弱める用途です。Undesired Content全体の代替ではなく、結果を比較しながら利用してください。
                     </div>
                 </div>
             </div>
@@ -1054,9 +1092,7 @@
                     <span>🛡️ 5. ネガティブプロンプトの設計原則</span>
                 </h3>
                 <div style="color:#cbd5e1; font-size:0.9rem; line-height:1.6;">
-                    当データベース抽出の1,335件のネガティブプロンプトの分析より、ネガティブ枠には以下の2大系統をセットで投入するのが最も効果的です：
-                    <br>1. <strong>画質低下・ノイズ防止</strong>: <code>worst quality, low quality, jpeg artifacts, blurry</code>
-                    <br>2. <strong>人体破綻・指くっつき防止</strong>: <code>bad anatomy, bad hands, missing fingers, extra digit, deformed</code>
+                    公式V4.5 Full UC（Light / Heavy / Human Focus / Furry Focus / None）と、本辞典独自のCustom UCを分けて表示します。観測辞典ではQuality、Anatomy、Hands、Eyes、Composition、Text / Logo、Artifacts、Style、Otherに分類しています。
                 </div>
             </div>
 
@@ -1066,27 +1102,27 @@
                     <span>🖼️ 6. Vibe Transfer & References (参照イラスト) 活用のコツ</span>
                 </h3>
                 <div style="color:#cbd5e1; font-size:0.9rem; line-height:1.6;">
-                    参考画像をアップロードして絵柄を一致させるVibe機能は、<strong>Information Extracted: 0.7 前後</strong>、<strong>Strength: 1.0 〜 1.2</strong> が最も安定します。画風ブレを防ぎたい場合は、前述の「絵師タグ」とVibeを少量だけ重ねがけすると、プロ級の絵柄再現が可能になります。
+                    Vibe Transferは参照画像から雰囲気を取り込む機能で、Reference StrengthとInformation Extractedを調整します。公式はInformation Extractedの既定値を起点に実験するよう案内しており、固定の最適値は示していません。
                 </div>
             </div>
 
             <!-- Section 7: Negative Vibe Research -->
             <div style="background:#0b0d10; border:1px solid var(--border-color); border-radius:12px; padding:1.2rem;">
                 <h3 style="color:#c084fc; margin-top:0; margin-bottom:0.8rem; font-size:1.1rem; display:flex; align-items:center; gap:0.5rem;">
-                    <span>🧪 7. 徹底検証: Vibe & Reference のマイナス参照 (Negative Vibe)</span>
+                    <span>🧪 7. Precise Referenceとの機能分離</span>
                 </h3>
                 <div style="color:#cbd5e1; font-size:0.9rem; line-height:1.6; display:flex; flex-direction:column; gap:0.6rem;">
                     <div>
-                        <strong style="color:#c084fc;">&bull; 数値の手入力による「負の参照」が可能</strong><br>
-                        Vibe Transfer / Reference の Strength（強度）スライダーの数値ラベルを直接入力で <code>-0.5</code> 〜 <code>-1.0</code> などの<strong>負の数値</strong>に設定できます。これにより、アップロードした画像が持つ「嫌な背景ノイズ・不快な色調・画風のしつこい癖」を生成結果から直接引き算（減算）できます。
+                        <strong style="color:#c084fc;">&bull; Precise Reference（Official）</strong><br>
+                        V4.5専用の別機能で、StrengthとFidelityを持ちます。公式は数値ラベルから負値を入力できると案内していますが、固定の推奨負値は示していません。
                     </div>
                     <div>
-                        <strong style="color:#f59e0b;">&bull; マイナス設定時の推奨パラメータ</strong><br>
-                        マイナス参照を使う場合は、<strong>Information Extracted (情報抽出量): 0.1 〜 0.2 前後</strong>に留めるのがコツです（抽出量を高めすぎると全体が崩壊するため）。
+                        <strong style="color:#f59e0b;">&bull; 互換性</strong><br>
+                        Vibe TransferとPrecise Referenceは現在同時利用できません。Vibe TransferのInformation ExtractedとPrecise ReferenceのFidelityを混同しないでください。
                     </div>
                     <div>
-                        <strong style="color:#60a5fa;">&bull; 正＋負のペアリング技 (Positive + Negative Pair)</strong><br>
-                        欲しい絵柄の画像を Positive (例: <code>+0.8</code>) で入れつつ、除去したい背景や不要要素だけを持つ画像を Minus (例: <code>-0.5</code>) で同時指定することで、キャラ特性を残したままノイズだけを相殺できます。
+                        <strong style="color:#60a5fa;">&bull; Numerical Negative Emphasis</strong><br>
+                        <code>-1::text ::</code> はプロンプト内の概念へ作用する別機能です。画像参照の負値入力とは分けて扱います。
                     </div>
                 </div>
             </div>
@@ -1095,6 +1131,8 @@
 
     <script>
         let db = [];
+        let dbLoaded = false;
+        let dbLoadPromise = null;
         let dictionary = [];
         let negDictionary = [];
         
@@ -1104,10 +1142,11 @@
         const pageSize = 50;
 
         const presets = {
-            standard: "nsfw, lowres, worst quality, low quality, normal quality, bad quality, jpeg artifacts, blurry",
-            hands: "bad anatomy, bad hands, missing fingers, extra digit, fewer digits, extra arms, extra legs, mutated hands, deformed",
-            clean: "watermark, signature, username, text, error, logo, cropped, out of frame",
-            full: "worst quality, low quality, bad quality, bad anatomy, bad hands, missing fingers, extra digit, extra arms, extra legs, deformed, disfigured, watermark, signature, text, cropped, blurry, jpeg artifacts"
+            light: "lowres, artistic error, scan artifacts, worst quality, bad quality, jpeg artifacts, multiple views, very displeasing, too many watermarks, negative space, blank page",
+            heavy: "lowres, artistic error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, dithering, halftone, screentone, multiple views, logo, too many watermarks, negative space, blank page",
+            human: "lowres, artistic error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, dithering, halftone, screentone, multiple views, logo, too many watermarks, negative space, blank page, @_@, mismatched pupils, glowing eyes, bad anatomy",
+            furry: "{worst quality}, distracting watermark, unfinished, bad quality, {widescreen}, upscale, {sequence}, {{grandfathered content}}, blurred foreground, chromatic aberration, sketch, everyone, [sketch background], simple, [flat colors], ych (character), outline, multiple scenes, [[horror (theme)]], comic",
+            balancedHuman: "lowres, artistic error, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, multiple views, logo, too many watermarks, blank page, @_@, mismatched pupils, glowing eyes, {bad anatomy}, {bad hands}, {missing fingers}, {extra digits}, {fewer digits}, unfinished"
         };
 
         function copyPreset(key) {
@@ -1126,17 +1165,13 @@
             loader.style.display = 'block';
             try {
                 const cacheBuster = new Date().getTime();
-                // 1. Fetch search database
-                const responseDb = await fetch(`novelai_v4_5_database.json?v=${cacheBuster}`);
-                db = await responseDb.json();
-                
-                // 2. Fetch dictionary database
-                const responseDict = await fetch(`novelai_v4_5_tag_dictionary.json?v=${cacheBuster}`);
+                // Load lightweight dictionaries first. The large works database is lazy-loaded on search.
+                const responseDict = await fetch(`tags.json?v=${cacheBuster}`);
                 dictionary = await responseDict.json();
 
-                // 3. Fetch negative dictionary database
+                // Fetch negative dictionary summary
                 try {
-                    const responseNegDict = await fetch(`novelai_v4_5_neg_dictionary.json?v=${cacheBuster}`);
+                    const responseNegDict = await fetch(`negative.json?v=${cacheBuster}`);
                     negDictionary = await responseNegDict.json();
                 } catch(ne) {
                     console.warn("Negative dictionary loading skipped:", ne);
@@ -1145,17 +1180,11 @@
                 loader.style.display = 'none';
                 
                 // Update total count in header
-                document.getElementById('db-count').textContent = `(収録画像: ${db.length}件 | ポジティブ辞書: ${dictionary.length}件 | ネガティブ辞書: ${negDictionary.length}件)`;
+                document.getElementById('db-count').textContent = `(収録画像: 作品検索時に読込 | ポジティブ辞書: ${dictionary.length}件 | ネガティブ辞書: ${negDictionary.length}件)`;
                 document.getElementById('dict-count').textContent = `全 ${dictionary.length} 件の統計辞書`;
-                
-                // Populate samplers dynamically
-                populateSamplers();
                 
                 // Initialize Dictionary display
                 resetDictionaryFilters();
-                
-                // Trigger initial search
-                performSearch();
             } catch (e) {
                 loader.textContent = 'データベースの読み込みに失敗しました。ローカル環境で実行する場合は、HTTPサーバー（例: python -m http.server）を起動してブラウザでアクセスしてください。';
                 console.error(e);
@@ -1213,7 +1242,39 @@
             });
         }
 
-        function performSearch() {
+        async function loadSearchDatabase() {
+            if (dbLoaded) return;
+            if (!dbLoadPromise) {
+                const loader = document.getElementById('loader');
+                loader.style.display = 'block';
+                loader.textContent = '作品データベースを読み込み中...';
+                const cacheBuster = new Date().getTime();
+                dbLoadPromise = fetch(`novelai_v4_5_database.json?v=${cacheBuster}`)
+                    .then(response => {
+                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                        return response.json();
+                    })
+                    .then(data => {
+                        db = data;
+                        dbLoaded = true;
+                        populateSamplers();
+                        document.getElementById('db-count').textContent = `(収録画像: ${db.length}件 | ポジティブ辞書: ${dictionary.length}件 | ネガティブ辞書: ${negDictionary.length}件)`;
+                    })
+                    .finally(() => {
+                        loader.style.display = 'none';
+                    });
+            }
+            return dbLoadPromise;
+        }
+
+        async function performSearch() {
+            try {
+                await loadSearchDatabase();
+            } catch (error) {
+                alert('作品データベースの読み込みに失敗しました。');
+                console.error(error);
+                return;
+            }
             const source = document.getElementById('filter-source').value;
             const sampler = document.getElementById('filter-sampler').value;
             const aspect = document.getElementById('filter-aspect').value;
@@ -1273,7 +1334,7 @@
             const negCounts = countOccurrences(allNegTags);
 
             searchTags.forEach(st => { delete tagCounts[st]; });
-            const commonQuality = ['masterpiece', 'very aesthetic', 'best quality', 'absurdres', 'highres'];
+            const commonQuality = ['location', 'very aesthetic', 'masterpiece', 'no text'];
             commonQuality.forEach(cq => { delete tagCounts[cq]; });
 
             const sortedTags = Object.entries(tagCounts)
@@ -1431,9 +1492,9 @@
 
             // 2. Sort
             if (sortKey === 'count-desc') {
-                dictFiltered.sort((a, b) => b.count - a.count);
+                dictFiltered.sort((a, b) => (b.nai_image_count ?? b.image_count ?? 0) - (a.nai_image_count ?? a.image_count ?? 0));
             } else if (sortKey === 'count-asc') {
-                dictFiltered.sort((a, b) => a.count - b.count);
+                dictFiltered.sort((a, b) => (a.nai_image_count ?? a.image_count ?? 0) - (b.nai_image_count ?? b.image_count ?? 0));
             } else if (sortKey === 'tag-asc') {
                 dictFiltered.sort((a, b) => a.tag.localeCompare(b.tag));
             }
@@ -1471,6 +1532,19 @@
                     imgPreviewHtml = `<a href="${item.sample_image}" target="_blank" style="margin-left:0.4rem; text-decoration:none; font-size:0.9rem;" title="参考例イラストを開く">🖼️</a>`;
                 }
 
+                const evidence = item.evidence || {};
+                const evidenceLabels = [];
+                if (evidence.official) evidenceLabels.push('Official');
+                if (evidence.nai_v45_observed) evidenceLabels.push('NAI V4.5');
+                if (evidence.danbooru || evidence.danbooru_observed) evidenceLabels.push('Danbooru');
+                if (evidence.community) evidenceLabels.push('Community');
+                const evidenceHtml = evidenceLabels.length
+                    ? evidenceLabels.map(label => `<span class="evidence-badge">${label}</span>`).join('')
+                    : '<span style="color:var(--text-muted)">-</span>';
+                const imageCount = item.nai_image_count ?? item.image_count ?? 0;
+                const usageRate = Number(item.nai_usage_rate ?? item.image_usage_rate ?? item.usage_rate ?? 0);
+                const danbooruCount = item.danbooru_count ?? 0;
+
                 tr.innerHTML = `
                     <td>
                         <button class="btn-copy-tag" onclick="copyDictionaryTag('${item.tag}')" title="タグをクリップボードにコピー">コピー</button>
@@ -1479,8 +1553,10 @@
                     </td>
                     <td>${item.meaning || '<span style="color:var(--text-muted)">-</span>'}</td>
                     <td><span class="cat-badge ${catClass}">${item.category}</span></td>
-                    <td style="font-weight:600; color:#fff;">${item.count}</td>
-                    <td>${item.usage_rate}</td>
+                    <td style="font-weight:600; color:#fff;">${imageCount}</td>
+                    <td>${usageRate.toFixed(2)}%</td>
+                    <td>${danbooruCount}</td>
+                    <td>${evidenceHtml}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -1560,7 +1636,7 @@
                     if (currentExploreCat === 'style' && item.category !== 'Style') return false;
                 }
                 if (currentExploreCat === 'quality') {
-                    if (item.category !== 'Quality' && !['masterpiece', 'best quality', 'very aesthetic', 'absurdres', 'highres', 'newest'].includes(item.tag)) return false;
+                    if (item.category !== 'Quality' && !['location', 'very aesthetic', 'masterpiece', 'no text'].includes(item.tag)) return false;
                 }
                 if (query) {
                     const tagMatch = item.tag.toLowerCase().includes(query);
@@ -1609,7 +1685,7 @@
         }
 
         function addQualityBooster() {
-            const boosterTags = ["masterpiece", "best quality", "very aesthetic", "absurdres", "highres", "newest"];
+            const boosterTags = ["location", "very aesthetic", "masterpiece", "no text"];
             boosterTags.slice().reverse().forEach(t => {
                 if (!builderPosTags.find(bt => bt.tag.toLowerCase() === t)) {
                     builderPosTags.unshift({ tag: t, weightMode: 'normal', weightVal: 1.0, category: 'Quality' });
@@ -1619,8 +1695,18 @@
             updatePosOutput();
         }
 
-        function addPresetNegatives() {
-            const presetStr = "worst quality, low quality, bad quality, bad anatomy, bad hands, missing fingers, extra digit, extra arms, extra legs, deformed, disfigured, watermark, signature, text, cropped, blurry, jpeg artifacts";
+        const negativePresets = {
+            "Light": "lowres, artistic error, scan artifacts, worst quality, bad quality, jpeg artifacts, multiple views, very displeasing, too many watermarks, negative space, blank page",
+            "Heavy": "lowres, artistic error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, dithering, halftone, screentone, multiple views, logo, too many watermarks, negative space, blank page",
+            "Human Focus": "lowres, artistic error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, dithering, halftone, screentone, multiple views, logo, too many watermarks, negative space, blank page, @_@, mismatched pupils, glowing eyes, bad anatomy",
+            "Furry Focus": "{worst quality}, distracting watermark, unfinished, bad quality, {widescreen}, upscale, {sequence}, {{grandfathered content}}, blurred foreground, chromatic aberration, sketch, everyone, [sketch background], simple, [flat colors], ych (character), outline, multiple scenes, [[horror (theme)]], comic",
+            "None": "",
+            "Balanced Human": "lowres, artistic error, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, multiple views, logo, too many watermarks, blank page, @_@, mismatched pupils, glowing eyes, {bad anatomy}, {bad hands}, {missing fingers}, {extra digits}, {fewer digits}, unfinished"
+        };
+
+        function addSelectedNegativePreset() {
+            const presetName = document.getElementById('negative-preset-select').value;
+            const presetStr = negativePresets[presetName] || '';
             presetStr.split(',').map(s => s.trim()).forEach(t => {
                 if (t && !builderNegTags.find(bt => bt.tag.toLowerCase() === t.toLowerCase())) {
                     builderNegTags.push({ tag: t, weightMode: 'normal', weightVal: 1.0, category: 'Negative' });
@@ -1874,7 +1960,10 @@
                             html += `
                             <div style="background:#0b0d10; border:1px solid #334155; border-left:4px solid #60a5fa; border-radius:10px; padding:1.1rem;">
                                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:0.5rem;">
-                                    <span style="font-size:0.75rem; background:#1e293b; color:#93c5fd; padding:2px 8px; border-radius:4px; font-weight:bold;">${item.category || '最新ノウハウ'}</span>
+                                    <span>
+                                        <span style="font-size:0.75rem; background:#1e293b; color:#93c5fd; padding:2px 8px; border-radius:4px; font-weight:bold;">${item.category || '最新ノウハウ'}</span>
+                                        <span class="evidence-badge">${item.evidence_level || 'Experimental'}</span>
+                                    </span>
                                     <span style="font-size:0.75rem; color:#64748b;">📅 ${item.updated || ''} | 出典: ${item.source || ''}</span>
                                 </div>
                                 <h4 style="color:#f8fafc; margin:0.3rem 0 0.6rem 0; font-size:1rem;">${item.title || ''}</h4>
