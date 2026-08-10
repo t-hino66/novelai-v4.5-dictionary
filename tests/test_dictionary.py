@@ -212,6 +212,29 @@ class ChatGptImagePromptTests(unittest.TestCase):
 
         self.assertIn("chatgpt_image_prompts.json", build_site.SITE_FILES)
 
+    def test_deep_dive_builders_are_scoped_and_valid(self):
+        prompts = {prompt["id"]: prompt for prompt in self.data["prompts"]}
+        deep_ids = {prompt_id for prompt_id, prompt in prompts.items() if prompt.get("deep_dive")}
+        self.assertEqual(
+            deep_ids,
+            {"anime-character", "cinematic-portrait", "character-sheet"},
+        )
+
+        groups = self.data["modifier_groups"]
+        for prompt_id in deep_ids:
+            group_ids = prompts[prompt_id]["deep_dive"]["group_ids"]
+            self.assertGreaterEqual(len(group_ids), 8)
+            self.assertEqual(len(group_ids), len(set(group_ids)))
+            self.assertTrue(set(group_ids).issubset(groups))
+
+        for group_id, group in groups.items():
+            self.assertIn(group["selection"], {"single", "multiple"})
+            option_ids = [option["id"] for option in group["options"]]
+            self.assertEqual(len(option_ids), len(set(option_ids)), group_id)
+            for option in group["options"]:
+                self.assertTrue(option["ja"])
+                self.assertTrue(option["en"])
+
 
 if __name__ == "__main__":
     unittest.main()

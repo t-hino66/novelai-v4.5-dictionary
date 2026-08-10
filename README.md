@@ -9,7 +9,8 @@ Web UIにはNovelAI系の統計と分離した「ChatGPT画像Prompt」タブも
 ## ChatGPT Images Prompt Library
 
 * `chatgpt_image_prompts.json`: 日本語・英語の編集可能なオリジナルテンプレートと調査出典。小容量の手書きデータなのでGitで管理します。
-* 設計原則はOpenAI公式の[Creating images with ChatGPT](https://openai.com/academy/image-generation/)と[Creating images in ChatGPT](https://help.openai.com/en/articles/11084440-images-in-chatgpt)を正本にしています。
+* 「アニメキャラクターイラスト」「シネマティック・ポートレート」「キャラクター設定画」は詳細ビルダーに対応し、キャラクター性、外見、衣装、画風、線、塗り、色、構図、照明、一貫性などを選択して自然言語Promptへ組み立てられます。
+* 設計原則はOpenAI公式の[Creating images with ChatGPT](https://openai.com/academy/image-generation/)、[Creating images in ChatGPT](https://help.openai.com/en/articles/11084440-images-in-chatgpt)、[GPT Image Generation Models Prompting Guide](https://developers.openai.com/cookbook/examples/multimodal/image-gen-models-prompting-guide)を正本にしています。
 * GitHub上の[Pixmind-io/awesome-gpt-image-2-prompts](https://github.com/Pixmind-io/awesome-gpt-image-2-prompts)、[jamez-bondos/awesome-gpt4o-images](https://github.com/jamez-bondos/awesome-gpt4o-images)、[YouMind-OpenLab/awesome-gpt-image-2](https://github.com/YouMind-OpenLab/awesome-gpt-image-2)は用途カテゴリの調査対象です。権利条件やモデル世代が一様ではないため、Prompt本文は転載していません。
 * 「best quality」のような特定語を効果保証として扱わず、作りたい結果と制約を具体的に書く方針です。
 

@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "updated_at": "2026-08-10",
   "scope": "ChatGPT Imagesで使う自然言語プロンプトのオリジナルテンプレート集",
   "prompt_framework": [
@@ -29,6 +29,13 @@
       "note": "画像生成・画像編集・文字・透明背景・アスペクト比など、ChatGPT Imagesの機能範囲を参照。"
     },
     {
+      "id": "openai-gpt-image-prompting",
+      "type": "official",
+      "title": "GPT Image Generation Models Prompting Guide",
+      "url": "https://developers.openai.com/cookbook/examples/multimodal/image-gen-models-prompting-guide",
+      "note": "Prompt構造、媒体・質感・構図・照明の具体化、キャラクターの外見・比率・衣装・色・性格を再記述する一貫性設計を参照。"
+    },
+    {
       "id": "github-pixmind",
       "type": "community",
       "title": "Pixmind-io/awesome-gpt-image-2-prompts",
@@ -50,6 +57,216 @@
       "note": "多言語コミュニティ事例のカテゴリ範囲を参考にした。権利関係が一様でないため本文は転載していない。"
     }
   ],
+  "modifier_groups": {
+    "character_personality": {
+      "label_ja": "キャラクター性", "label_en": "Character personality", "selection": "multiple",
+      "options": [
+        {"id": "gentle", "ja": "穏やかで親しみやすい", "en": "gentle and approachable"},
+        {"id": "cheerful", "ja": "明るく快活", "en": "bright and cheerful"},
+        {"id": "cool", "ja": "冷静でクール", "en": "calm and cool"},
+        {"id": "mischievous", "ja": "いたずら好き", "en": "mischievous and playful"},
+        {"id": "heroic", "ja": "勇敢で責任感が強い", "en": "brave and responsible"},
+        {"id": "mysterious", "ja": "物静かでミステリアス", "en": "quiet and mysterious"},
+        {"id": "elegant", "ja": "上品で優雅", "en": "elegant and graceful"},
+        {"id": "rebellious", "ja": "自信に満ちた反骨的な性格", "en": "confident with a rebellious edge"}
+      ]
+    },
+    "expression": {
+      "label_ja": "表情・視線", "label_en": "Expression and gaze", "selection": "multiple",
+      "options": [
+        {"id": "soft-smile", "ja": "柔らかな微笑み", "en": "a soft smile"},
+        {"id": "confident", "ja": "正面を見据える自信ある視線", "en": "a confident direct gaze"},
+        {"id": "determined", "ja": "強い決意", "en": "a determined expression"},
+        {"id": "shy", "ja": "控えめな照れ", "en": "a reserved shy expression"},
+        {"id": "melancholic", "ja": "静かで物憂げ", "en": "quiet and melancholic"},
+        {"id": "surprised", "ja": "自然な驚き", "en": "natural surprise"}
+      ]
+    },
+    "visual_traits": {
+      "label_ja": "外見ディテール", "label_en": "Visual traits", "selection": "multiple",
+      "options": [
+        {"id": "long-hair", "ja": "動きのある長い髪", "en": "long flowing hair"},
+        {"id": "short-hair", "ja": "短く無造作な髪", "en": "short tousled hair"},
+        {"id": "braid", "ja": "丁寧な編み髪", "en": "carefully braided hair"},
+        {"id": "glasses", "ja": "細身の眼鏡", "en": "slender glasses"},
+        {"id": "freckles", "ja": "自然なそばかす", "en": "natural freckles"},
+        {"id": "animal-ears", "ja": "感情豊かな動物耳", "en": "expressive animal ears"},
+        {"id": "small-horns", "ja": "左右対称の小さな角", "en": "small symmetrical horns"},
+        {"id": "distinctive-eyes", "ja": "色と形が印象的な瞳", "en": "distinctive eyes with a memorable color and shape"}
+      ]
+    },
+    "outfit_style": {
+      "label_ja": "衣装ジャンル", "label_en": "Outfit direction", "selection": "single",
+      "options": [
+        {"id": "modern-casual", "ja": "現代的なレイヤードカジュアル", "en": "layered modern casual"},
+        {"id": "academy", "ja": "オリジナルの学園風衣装", "en": "an original academy-inspired outfit"},
+        {"id": "fantasy", "ja": "実用的な幻想冒険者衣装", "en": "practical fantasy-adventurer clothing"},
+        {"id": "formal", "ja": "上品なオリジナル正装", "en": "refined original formalwear"},
+        {"id": "street", "ja": "大胆なストリートファッション", "en": "bold street fashion"},
+        {"id": "scifi", "ja": "機能的な近未来ユニフォーム", "en": "a functional near-future uniform"},
+        {"id": "traditional-fusion", "ja": "伝統要素を再構成した現代衣装", "en": "an original traditional-modern fusion outfit"}
+      ]
+    },
+    "portrait_wardrobe": {
+      "label_ja": "ポートレート衣装", "label_en": "Portrait wardrobe", "selection": "single",
+      "options": [
+        {"id": "natural", "ja": "着慣れた素朴な普段着", "en": "well-worn everyday clothing"},
+        {"id": "tailored", "ja": "端正なテーラード衣装", "en": "well-fitted tailored clothing"},
+        {"id": "editorial", "ja": "シルエット重視のモード衣装", "en": "editorial fashion emphasizing silhouette"},
+        {"id": "workwear", "ja": "使用感のある実用服", "en": "practical workwear with believable wear"},
+        {"id": "period", "ja": "独自の時代感がある衣装", "en": "original period-inspired clothing"}
+      ]
+    },
+    "body_proportion": {
+      "label_ja": "頭身・体格", "label_en": "Proportions and build", "selection": "single",
+      "options": [
+        {"id": "chibi", "ja": "可愛いデフォルメ比率", "en": "cute chibi proportions"},
+        {"id": "standard-anime", "ja": "自然な標準アニメ頭身", "en": "balanced standard anime proportions"},
+        {"id": "slender", "ja": "細身で手足の長い体格", "en": "a tall slender build"},
+        {"id": "athletic", "ja": "健康的で引き締まった体格", "en": "a healthy athletic build"},
+        {"id": "sturdy", "ja": "重心の安定したがっしり体格", "en": "a sturdy grounded build"}
+      ]
+    },
+    "pose": {
+      "label_ja": "ポーズ・動作", "label_en": "Pose and action", "selection": "single",
+      "options": [
+        {"id": "standing", "ja": "肩の力を抜いた自然な立ち姿", "en": "a relaxed natural standing pose"},
+        {"id": "walking", "ja": "髪と服が動く歩行中の一瞬", "en": "a mid-step walking pose with moving hair and clothing"},
+        {"id": "looking-back", "ja": "肩越しに振り返る", "en": "looking back over the shoulder"},
+        {"id": "seated", "ja": "手足の配置が自然な座り姿", "en": "a calm seated pose with natural limb placement"},
+        {"id": "dynamic", "ja": "重心と力の方向が明確な動的ポーズ", "en": "a dynamic pose with clear weight and force"},
+        {"id": "candid", "ja": "カメラを意識しない自然な瞬間", "en": "an unposed candid moment"}
+      ]
+    },
+    "illustration_medium": {
+      "label_ja": "画風・媒体", "label_en": "Visual medium", "selection": "single",
+      "options": [
+        {"id": "cel", "ja": "現代的なセルアニメ調", "en": "modern cel-animation styling"},
+        {"id": "light-novel", "ja": "繊細なライトノベル挿絵調", "en": "a polished light-novel illustration look"},
+        {"id": "manga", "ja": "白黒漫画インクとスクリーントーン", "en": "black-and-white manga ink with screentone"},
+        {"id": "watercolor", "ja": "紙の質感を残した透明水彩", "en": "transparent watercolor with visible paper texture"},
+        {"id": "painterly", "ja": "筆致の見える重厚な幻想画", "en": "rich painterly fantasy art with visible brushwork"},
+        {"id": "retro", "ja": "限定色のレトロ手描きアニメ調", "en": "retro hand-drawn anime with a limited palette"},
+        {"id": "flat", "ja": "大胆な色面のフラットグラフィック", "en": "flat graphic illustration with bold color fields"}
+      ]
+    },
+    "photo_style": {
+      "label_ja": "写真表現", "label_en": "Photography direction", "selection": "single",
+      "options": [
+        {"id": "documentary", "ja": "演出感を抑えたドキュメンタリー写真", "en": "honest candid documentary photography"},
+        {"id": "cinematic", "ja": "物語の途中を切り取った映画スチル", "en": "a cinematic still captured mid-story"},
+        {"id": "editorial", "ja": "人物性を残したエディトリアル写真", "en": "a refined editorial portrait preserving personality"},
+        {"id": "studio", "ja": "背景と光を絞ったミニマルスタジオ", "en": "minimal studio photography"},
+        {"id": "analog", "ja": "自然な粒子のアナログフィルム", "en": "analog film photography with natural grain"},
+        {"id": "fine-art", "ja": "象徴性を重視したファインアート写真", "en": "fine-art portraiture emphasizing symbolism"}
+      ]
+    },
+    "linework": {
+      "label_ja": "線の表現", "label_en": "Line treatment", "selection": "single",
+      "options": [
+        {"id": "thin", "ja": "細く均一で明快な輪郭線", "en": "clean thin consistent contour lines"},
+        {"id": "bold", "ja": "太さに強弱がある表情豊かな線", "en": "bold expressive lines with varied thickness"},
+        {"id": "pencil", "ja": "手描きの揺らぎがある柔らかな鉛筆線", "en": "soft pencil lines with hand-drawn variation"},
+        {"id": "minimal", "ja": "輪郭線を抑え色面で形を見せる", "en": "minimal outlines with forms defined by color"},
+        {"id": "rough", "ja": "勢いと速度感があるラフな線", "en": "rough energetic lines with motion"}
+      ]
+    },
+    "coloring": {
+      "label_ja": "塗り・質感", "label_en": "Rendering and texture", "selection": "single",
+      "options": [
+        {"id": "flat-cel", "ja": "境界が明快なフラットセル塗り", "en": "flat cel shading with crisp boundaries"},
+        {"id": "soft-gradient", "ja": "滑らかなグラデーションと柔らかな陰影", "en": "smooth gradients and soft shading"},
+        {"id": "textured", "ja": "筆致と絵具の厚みが見える塗り", "en": "visible brushwork and paint texture"},
+        {"id": "luminous", "ja": "光を含む透明感のある塗り", "en": "luminous rendering with translucent color depth"},
+        {"id": "graphic-shadow", "ja": "形を強調する大胆な図形的な影", "en": "bold graphic shadows emphasizing form"}
+      ]
+    },
+    "palette": {
+      "label_ja": "色彩設計", "label_en": "Color palette", "selection": "single",
+      "options": [
+        {"id": "warm-earth", "ja": "温かいアースカラー", "en": "warm earth tones"},
+        {"id": "cool-blue", "ja": "青中心の静かな寒色", "en": "a calm cool-blue palette"},
+        {"id": "pastel", "ja": "明度の高い柔らかなパステル", "en": "high-key soft pastels"},
+        {"id": "vivid", "ja": "鮮やかな補色の高対比", "en": "vivid high-contrast complementary colors"},
+        {"id": "mono-accent", "ja": "ほぼ単色に一色の差し色", "en": "near-monochrome with one accent color"},
+        {"id": "teal-amber", "ja": "青緑の影と琥珀色の光", "en": "teal shadows and amber highlights"}
+      ]
+    },
+    "composition": {
+      "label_ja": "構図・画角", "label_en": "Composition and framing", "selection": "single",
+      "options": [
+        {"id": "close-up", "ja": "表情中心の顔アップ", "en": "a close-up centered on the expression"},
+        {"id": "bust", "ja": "目線の高さのバストアップ", "en": "an eye-level bust shot"},
+        {"id": "three-quarter", "ja": "身体言語が伝わる膝上構図", "en": "a three-quarter composition showing body language"},
+        {"id": "full-body", "ja": "頭から足先まで入る全身構図", "en": "a full-body composition from head to toe"},
+        {"id": "low-angle", "ja": "存在感を強める控えめなローアングル", "en": "a restrained low angle strengthening presence"},
+        {"id": "high-angle", "ja": "環境との関係が見える俯瞰", "en": "a high angle showing the environment"},
+        {"id": "profile", "ja": "輪郭を見せる横顔構図", "en": "a profile emphasizing the silhouette"}
+      ]
+    },
+    "lighting": {
+      "label_ja": "照明", "label_en": "Lighting", "selection": "single",
+      "options": [
+        {"id": "window", "ja": "片側から回り込む柔らかな窓光", "en": "soft window light wrapping from one side"},
+        {"id": "golden-hour", "ja": "暖かな逆光のゴールデンアワー", "en": "warm golden-hour backlight"},
+        {"id": "rim", "ja": "輪郭を分離する細いリムライト", "en": "a narrow rim light separating the silhouette"},
+        {"id": "overcast", "ja": "影が柔らかな均一の曇天光", "en": "even overcast daylight with soft shadows"},
+        {"id": "neon", "ja": "異なる色温度のネオン反射", "en": "mixed-color neon reflections"},
+        {"id": "side", "ja": "明暗差の強いドラマチックな側光", "en": "dramatic high-contrast side lighting"},
+        {"id": "studio", "ja": "自然な立体感の控えめな三点照明", "en": "restrained three-point studio lighting"}
+      ]
+    },
+    "photo_texture": {
+      "label_ja": "写実ディテール", "label_en": "Photoreal detail", "selection": "multiple",
+      "options": [
+        {"id": "skin", "ja": "毛穴と細かな皺を残した自然な肌", "en": "natural skin retaining pores and fine lines"},
+        {"id": "fabric", "ja": "皺と摩耗が見える布の質感", "en": "fabric with creases and believable wear"},
+        {"id": "grain", "ja": "控えめで均一すぎないフィルム粒子", "en": "subtle irregular film grain"},
+        {"id": "no-retouch", "ja": "過剰な美肌補正やプラスチック感を避ける", "en": "avoid heavy retouching and plastic skin"},
+        {"id": "lived-in", "ja": "背景に自然な生活痕", "en": "believable signs of everyday use"}
+      ]
+    },
+    "environment": {
+      "label_ja": "背景・舞台", "label_en": "Setting", "selection": "single",
+      "options": [
+        {"id": "studio", "ja": "主役を邪魔しない無地スタジオ", "en": "a plain studio background"},
+        {"id": "interior", "ja": "静かで生活感のある室内", "en": "a quiet lived-in interior"},
+        {"id": "urban-night", "ja": "濡れた路面と街明かりの都市の夜", "en": "an urban night with wet pavement and city lights"},
+        {"id": "nature", "ja": "木漏れ日と奥行きのある自然", "en": "layered nature with filtered sunlight"},
+        {"id": "ruins", "ja": "植物に覆われた独自の幻想遺跡", "en": "original fantasy ruins reclaimed by vegetation"},
+        {"id": "graphic", "ja": "抽象的な色面背景", "en": "an abstract background of graphic color fields"}
+      ]
+    },
+    "sheet_layout": {
+      "label_ja": "設定画レイアウト", "label_en": "Sheet layout", "selection": "single",
+      "options": [
+        {"id": "three-view", "ja": "正面・側面・背面の同縮尺3面図", "en": "front, side, and back views at equal scale"},
+        {"id": "four-view", "ja": "正面・斜め前・側面・背面の4面図", "en": "front, three-quarter, side, and back views"},
+        {"id": "breakdown", "ja": "3面図＋衣装と小物の拡大図", "en": "a 3-view turnaround plus clothing and prop details"},
+        {"id": "expressions", "ja": "全身正面図＋6種類の顔表情", "en": "one full-body view plus six expressions"},
+        {"id": "actions", "ja": "基準立ち姿＋3種類の代表動作", "en": "a neutral pose plus three signature actions"}
+      ]
+    },
+    "expression_set": {
+      "label_ja": "表情セット", "label_en": "Expression set", "selection": "single",
+      "options": [
+        {"id": "core", "ja": "喜び・怒り・悲しみ・驚き", "en": "happy, angry, sad, and surprised"},
+        {"id": "subtle", "ja": "微笑み・疑念・安堵・決意", "en": "subtle smile, doubt, relief, and determination"},
+        {"id": "comedic", "ja": "顔立ちを保ったコミカルな表情差分", "en": "comedic expressions preserving facial structure"},
+        {"id": "battle", "ja": "集中・緊張・叫び・疲労", "en": "focused, tense, shouting, and exhausted"}
+      ]
+    },
+    "consistency": {
+      "label_ja": "一貫性ルール", "label_en": "Consistency rules", "selection": "multiple",
+      "options": [
+        {"id": "face", "ja": "全ビューで目・鼻・口・輪郭を固定", "en": "lock eyes, nose, mouth, and facial silhouette across views"},
+        {"id": "proportions", "ja": "身長・頭身・肩幅・手足の長さを固定", "en": "lock height, proportions, shoulder width, and limb length"},
+        {"id": "costume", "ja": "衣装の左右・柄・装飾位置を固定", "en": "lock costume sides, patterns, and ornament positions"},
+        {"id": "colors", "ja": "髪・目・肌・衣装の色を固定", "en": "lock hair, eye, skin, and costume colors"},
+        {"id": "no-redesign", "ja": "角度や表情が変わっても再デザインしない", "en": "do not redesign the character across angles or expressions"}
+      ]
+    }
+  },
   "prompts": [
     {
       "id": "anime-character",
@@ -59,7 +276,12 @@
       "template_ja": "オリジナルキャラクターの一枚絵を作成してください。［年齢層・髪・服装・表情］の人物が［動作］をしており、場所は［背景］です。［画材・描画表現］のアニメイラストとして、［構図］、［照明］、［色彩］で描いてください。縦横比は［比率］。文字、ロゴ、透かしは入れないでください。",
       "template_en": "Create a finished illustration of an original character: [age range, hair, clothing, expression], [action], in [setting]. Render it as an anime illustration with [medium/rendering], [composition], [lighting], and [color palette]. Use a [aspect ratio] canvas. Do not include text, logos, or watermarks.",
       "source_type": "official_guidance_based",
-      "source_ids": ["openai-academy", "github-pixmind"]
+      "source_ids": ["openai-academy", "openai-gpt-image-prompting", "github-pixmind"],
+      "deep_dive": {
+        "group_ids": ["character_personality", "expression", "visual_traits", "outfit_style", "body_proportion", "pose", "illustration_medium", "linework", "coloring", "palette", "composition", "lighting", "environment"],
+        "note_ja": "人物設定と画風を別々に選び、選択語を詳細指定としてPromptへ追加します。",
+        "note_en": "Choose character attributes and visual treatment separately, then append them as structured prompt details."
+      }
     },
     {
       "id": "cinematic-portrait",
@@ -69,7 +291,12 @@
       "template_ja": "［人物の特徴と服装］の写実的なポートレートを作成してください。［場所・時間帯］で、［表情・視線］を捉えた［バストアップ／全身］構図です。［光源と方向］、［色調］、自然な肌と布の質感、控えめな被写界深度。広告的な過剰補正や文字、透かしは避けてください。",
       "template_en": "Create a photorealistic portrait of [person and wardrobe] in [location and time]. Capture [expression and gaze] in a [close-up / full-body] composition. Use [light source and direction], [color palette], natural skin and fabric texture, and subtle depth of field. Avoid excessive commercial retouching, text, and watermarks.",
       "source_type": "official_guidance_based",
-      "source_ids": ["openai-academy", "github-pixmind"]
+      "source_ids": ["openai-academy", "openai-gpt-image-prompting", "github-pixmind"],
+      "deep_dive": {
+        "group_ids": ["character_personality", "expression", "portrait_wardrobe", "pose", "photo_style", "composition", "lighting", "palette", "photo_texture", "environment"],
+        "note_ja": "人物性、撮影方法、実在感のある質感を分けて指定します。",
+        "note_en": "Specify personality, photographic direction, and believable physical texture independently."
+      }
     },
     {
       "id": "product-hero",
@@ -99,7 +326,12 @@
       "template_ja": "同一のオリジナルキャラクター［特徴］の設定画を作成してください。白に近い無地背景に、全身の正面・側面・背面を等身大で横並びにし、右側に表情［3種類］を配置します。衣装、髪型、配色、身体比率を全ビューで統一し、互いに重ねないでください。文字ラベルは不要です。",
       "template_en": "Create a character design sheet for the same original character, [features]. On a near-white plain background, arrange full-body front, side, and back views at equal scale, plus three expressions on the right. Keep clothing, hairstyle, colors, and body proportions identical across every view. Do not overlap figures or add labels.",
       "source_type": "official_guidance_based",
-      "source_ids": ["openai-academy", "github-pixmind"]
+      "source_ids": ["openai-academy", "openai-gpt-image-prompting", "github-pixmind"],
+      "deep_dive": {
+        "group_ids": ["character_personality", "visual_traits", "outfit_style", "body_proportion", "sheet_layout", "expression_set", "illustration_medium", "linework", "coloring", "palette", "consistency"],
+        "note_ja": "外見アンカーと一貫性ルールを明示し、ビュー間のドリフトを抑えます。",
+        "note_en": "Define a visual anchor and explicit invariants to reduce drift across views."
+      }
     },
     {
       "id": "youtube-thumbnail",

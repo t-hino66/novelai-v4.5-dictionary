@@ -679,6 +679,57 @@
             line-height: 1.65;
         }
 
+        .chatgpt-card.deep-dive-card {
+            grid-column: 1 / -1;
+            border-color: #6366f1;
+        }
+
+        .deep-dive-panel {
+            background: #0f131b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .modifier-groups {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 0.8rem;
+            margin-top: 0.8rem;
+        }
+
+        .modifier-group {
+            background: #171b22;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.8rem;
+        }
+
+        .modifier-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.55rem;
+        }
+
+        .modifier-chip {
+            background: #1e293b;
+            border: 1px solid #475569;
+            color: #cbd5e1;
+            border-radius: 999px;
+            padding: 0.35rem 0.65rem;
+            cursor: pointer;
+            font-size: 0.76rem;
+            transition: all 0.15s;
+        }
+
+        .modifier-chip:hover { border-color: #818cf8; }
+        .modifier-chip.active {
+            background: #4f46e5;
+            border-color: #a5b4fc;
+            color: #fff;
+        }
+
         .source-list {
             display: flex;
             flex-direction: column;
@@ -698,6 +749,7 @@
             .chatgpt-layout { grid-template-columns: 1fr; }
             .chatgpt-sidebar { position: static; }
             .chatgpt-grid { grid-template-columns: 1fr; }
+            .modifier-groups { grid-template-columns: 1fr; }
             .tabs { gap: 0.4rem; }
             .tab-btn { font-size: 0.9rem; padding: 0.5rem 0.75rem; }
         }
@@ -1270,6 +1322,9 @@
         let dictionary = [];
         let negDictionary = [];
         let chatGptPromptData = null;
+        const chatGptModifierSelections = {};
+        const chatGptCustomDetails = {};
+        const chatGptDeepOpen = new Set();
         
         // Dictionary Pagination and Filters
         let dictFiltered = [];
@@ -1420,11 +1475,14 @@
             const query = document.getElementById('chatgpt-search').value.toLowerCase().trim();
             const category = document.getElementById('chatgpt-category').value;
             const language = document.getElementById('chatgpt-language').value;
-            const templateKey = language === 'en' ? 'template_en' : 'template_ja';
             const filtered = chatGptPromptData.prompts.filter(item => {
                 if (category !== 'all' && item.category !== category) return false;
                 if (!query) return true;
-                return [item.title, item.category, item.purpose, item.template_ja, item.template_en]
+                const modifierText = (item.deep_dive?.group_ids || []).flatMap(groupId => {
+                    const group = chatGptPromptData.modifier_groups?.[groupId];
+                    return group ? [group.label_ja, group.label_en, ...group.options.flatMap(option => [option.ja, option.en])] : [];
+                });
+                return [item.title, item.category, item.purpose, item.template_ja, item.template_en, ...modifierText]
                     .join(' ').toLowerCase().includes(query);
             });
 
@@ -1435,19 +1493,127 @@
                 return;
             }
 
-            grid.innerHTML = filtered.map(item => `
-                <article class="chatgpt-card">
+            grid.innerHTML = filtered.map(item => {
+                const hasDeepDive = Boolean(item.deep_dive);
+                const isOpen = chatGptDeepOpen.has(item.id);
+                const promptText = buildChatGptPrompt(item, language);
+                return `
+                <article class="chatgpt-card ${hasDeepDive ? 'deep-dive-card' : ''}">
                     <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.7rem;">
                         <div>
                             <span class="cat-badge cat-style">${escapeHtml(item.category)}</span>
                             <h3 style="font-size:1.08rem; margin-top:0.55rem;">${escapeHtml(item.title)}</h3>
                         </div>
-                        <span class="evidence-badge">公式原則ベース・オリジナル</span>
+                        <span class="evidence-badge">${hasDeepDive ? '詳細ビルダー対応' : '公式原則ベース・オリジナル'}</span>
                     </div>
                     <p style="font-size:0.82rem; color:var(--text-muted);">${escapeHtml(item.purpose)}</p>
-                    <textarea id="chatgpt-prompt-${escapeHtml(item.id)}" class="form-control" aria-label="${escapeHtml(item.title)}">${escapeHtml(item[templateKey])}</textarea>
+                    ${hasDeepDive ? `
+                        <button class="btn" type="button" onclick="toggleChatGptDeepDive('${escapeHtml(item.id)}')" style="margin-top:0; background:#4338ca;">
+                            ${isOpen ? '詳細設定を閉じる' : '画風・キャラクターを詳細設定'}
+                        </button>
+                        ${isOpen ? renderChatGptModifierPanel(item, language) : ''}
+                    ` : ''}
+                    <textarea id="chatgpt-prompt-${escapeHtml(item.id)}" class="form-control" aria-label="${escapeHtml(item.title)}">${escapeHtml(promptText)}</textarea>
                     <button class="btn" type="button" onclick="copyChatGptPrompt('${escapeHtml(item.id)}', this)" style="margin-top:0;">テンプレートをコピー</button>
-                </article>`).join('');
+                </article>`;
+            }).join('');
+        }
+
+        function buildChatGptPrompt(item, language) {
+            const templateKey = language === 'en' ? 'template_en' : 'template_ja';
+            if (!item.deep_dive) return item[templateKey];
+            const state = chatGptModifierSelections[item.id] || {};
+            const lines = item.deep_dive.group_ids.flatMap(groupId => {
+                const selectedIds = state[groupId] || [];
+                if (!selectedIds.length) return [];
+                const group = chatGptPromptData.modifier_groups[groupId];
+                const selectedLabels = selectedIds.map(optionId => {
+                    const option = group.options.find(candidate => candidate.id === optionId);
+                    return option ? option[language] : '';
+                }).filter(Boolean);
+                const label = language === 'en' ? group.label_en : group.label_ja;
+                return [`- ${label}: ${selectedLabels.join(language === 'en' ? ', ' : '、')}`];
+            });
+            const custom = (chatGptCustomDetails[item.id] || '').trim();
+            if (custom) lines.push(`- ${language === 'en' ? 'Additional direction' : '自由追記'}: ${custom}`);
+            if (!lines.length) return item[templateKey];
+            return `${item[templateKey]}\n\n${language === 'en' ? 'Detailed direction' : '詳細指定'}:\n${lines.join('\n')}`;
+        }
+
+        function renderChatGptModifierPanel(item, language) {
+            const note = language === 'en' ? item.deep_dive.note_en : item.deep_dive.note_ja;
+            const state = chatGptModifierSelections[item.id] || {};
+            const groupsHtml = item.deep_dive.group_ids.map(groupId => {
+                const group = chatGptPromptData.modifier_groups[groupId];
+                const selected = new Set(state[groupId] || []);
+                const label = language === 'en' ? group.label_en : group.label_ja;
+                const selectionHint = group.selection === 'multiple'
+                    ? (language === 'en' ? 'up to 3' : '3つまで')
+                    : (language === 'en' ? 'choose one' : '1つ選択');
+                const chips = group.options.map(option => `
+                    <button type="button" class="modifier-chip ${selected.has(option.id) ? 'active' : ''}"
+                        onclick="toggleChatGptModifier('${escapeHtml(item.id)}', '${escapeHtml(groupId)}', '${escapeHtml(option.id)}')">
+                        ${escapeHtml(option[language])}
+                    </button>`).join('');
+                return `
+                    <section class="modifier-group">
+                        <div style="display:flex; justify-content:space-between; gap:0.5rem;">
+                            <strong style="font-size:0.83rem;">${escapeHtml(label)}</strong>
+                            <span style="font-size:0.68rem; color:var(--text-muted);">${selectionHint}</span>
+                        </div>
+                        <div class="modifier-chips">${chips}</div>
+                    </section>`;
+            }).join('');
+
+            return `
+                <div class="deep-dive-panel">
+                    <p style="font-size:0.8rem; color:#c7d2fe;">${escapeHtml(note)}</p>
+                    <div class="modifier-groups">${groupsHtml}</div>
+                    <div style="margin-top:0.9rem;">
+                        <label for="chatgpt-custom-${escapeHtml(item.id)}" style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.4rem;">${language === 'en' ? 'Additional custom detail' : '自由追記'}</label>
+                        <input id="chatgpt-custom-${escapeHtml(item.id)}" class="form-control" value="${escapeHtml(chatGptCustomDetails[item.id] || '')}"
+                            placeholder="${language === 'en' ? 'Hair color, eye color, props, story context...' : '髪色、瞳の色、小物、物語背景など...'}"
+                            oninput="setChatGptCustomDetail('${escapeHtml(item.id)}', this.value)">
+                    </div>
+                    <button class="btn" type="button" onclick="resetChatGptModifiers('${escapeHtml(item.id)}')" style="background:#475569; margin-top:0.8rem;">${language === 'en' ? 'Reset detailed selections' : '詳細選択をリセット'}</button>
+                </div>`;
+        }
+
+        function toggleChatGptDeepDive(promptId) {
+            if (chatGptDeepOpen.has(promptId)) chatGptDeepOpen.delete(promptId);
+            else chatGptDeepOpen.add(promptId);
+            renderChatGptPrompts();
+        }
+
+        function toggleChatGptModifier(promptId, groupId, optionId) {
+            const group = chatGptPromptData.modifier_groups[groupId];
+            if (!chatGptModifierSelections[promptId]) chatGptModifierSelections[promptId] = {};
+            const current = chatGptModifierSelections[promptId][groupId] || [];
+            if (current.includes(optionId)) {
+                chatGptModifierSelections[promptId][groupId] = current.filter(id => id !== optionId);
+            } else if (group.selection === 'single') {
+                chatGptModifierSelections[promptId][groupId] = [optionId];
+            } else if (current.length < 3) {
+                chatGptModifierSelections[promptId][groupId] = [...current, optionId];
+            } else {
+                alert('複数選択は各項目3つまでです。');
+                return;
+            }
+            renderChatGptPrompts();
+        }
+
+        function setChatGptCustomDetail(promptId, value) {
+            chatGptCustomDetails[promptId] = value;
+            const item = chatGptPromptData.prompts.find(prompt => prompt.id === promptId);
+            const language = document.getElementById('chatgpt-language').value;
+            const textarea = document.getElementById(`chatgpt-prompt-${promptId}`);
+            if (item && textarea) textarea.value = buildChatGptPrompt(item, language);
+        }
+
+        function resetChatGptModifiers(promptId) {
+            delete chatGptModifierSelections[promptId];
+            delete chatGptCustomDetails[promptId];
+            renderChatGptPrompts();
         }
 
         async function copyChatGptPrompt(id, button) {
