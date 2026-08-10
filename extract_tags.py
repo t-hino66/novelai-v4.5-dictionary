@@ -86,9 +86,10 @@ def clean_detail(detail):
         neg_prompt = img.get("negative_prompt", "") or ""
         
         ai_json_str = img.get("ai_json")
+        ai_data = {}
         if ai_json_str and (not prompt or not neg_prompt):
             try:
-                ai_data = json.loads(ai_json_str)
+                ai_data = json.loads(ai_json_str) if isinstance(ai_json_str, str) else ai_json_str
                 comment = ai_data.get("Comment", {})
                 if isinstance(comment, str):
                     try:
@@ -102,12 +103,47 @@ def clean_detail(detail):
                         neg_prompt = comment.get("uc", "") or ""
             except Exception:
                 pass
+
+        if not ai_data and ai_json_str:
+            try:
+                ai_data = json.loads(ai_json_str) if isinstance(ai_json_str, str) else ai_json_str
+            except Exception:
+                ai_data = {}
+
+        comment = ai_data.get("Comment", {}) if isinstance(ai_data, dict) else {}
+        if isinstance(comment, str):
+            try:
+                comment = json.loads(comment)
+            except Exception:
+                comment = {}
+        metadata = comment if isinstance(comment, dict) else {}
+
+        def metadata_value(field, *aliases):
+            for key in (field,) + aliases:
+                value = img.get(key)
+                if value is not None and value != "":
+                    return value
+                value = metadata.get(key)
+                if value is not None and value != "":
+                    return value
+                if isinstance(ai_data, dict):
+                    value = ai_data.get(key)
+                    if value is not None and value != "":
+                        return value
+            return None
                 
         cleaned_images.append({
             "model": img.get("model") or "",
             "prompt_text": prompt,
             "negative_prompt": neg_prompt,
-            "image_url": img.get("image_url") or img.get("sample_url") or ""
+            "steps": metadata_value("steps"),
+            "scale": metadata_value("scale", "cfg_scale"),
+            "sampler": metadata_value("sampler") or "",
+            "width": metadata_value("width"),
+            "height": metadata_value("height"),
+            "image_path": img.get("image_path") or "",
+            "image_url": img.get("image_url") or img.get("sample_url") or "",
+            "ai_json": ai_json_str or "",
         })
         
     return {

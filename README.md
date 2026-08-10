@@ -1,8 +1,28 @@
 # NovelAI Diffusion & Danbooru Prompt Dictionary & Database
 
-aitag.win および Danbooru API から抽出した統計データに基づく、NovelAI Diffusion 画像生成プロンプト（タグ）データベースおよび日本語タグ辞典リポジトリです。
+aitag.win およびDanbooru系APIから抽出したデータに基づく、NovelAI Diffusion V4.5のプロンプトデータベースおよび日本語タグ辞典です。プロンプトでの観測と画像アノテーションを別の根拠として扱います。
 
 本リポジトリに含まれるプログラムを実行することで、ファンアート投稿や本家Danbooruの統計から自動で最新のプロンプトデータベースを構築できます。
+
+## Data Sources
+
+* **AITAG**: NovelAI V4.5で実際に使用された生成プロンプト。`nai_occurrence_count`（総出現回数）と`nai_image_count`（1回以上含む画像数）を分けて集計します。
+* **Danbooru**: 画像に付与されたアノテーションタグ。`danbooru_count`としてAITAGとは別に集計します。
+* **Safebooru / Yande.re**: 補助的な画像アノテーション。`safebooru_count` / `yandere_count`として別々に保持します。
+
+**Danbooru頻度 ≠ NovelAIでの効果保証**です。また、AITAGでの高頻度も効果の強さや因果関係を証明するものではありません。辞典では`Official`、`NAI V4.5`、`Danbooru`、`Community`のEvidenceを区別します。
+
+## Dictionary schema
+
+主要フィールドは次のとおりです。
+
+* `canonical_tag` / `aliases`: 小文字・空白区切りへ正規化したタグと、underscore表記などの元表記。
+* `occurrence_count`: AITAGプロンプト内での総出現回数。
+* `image_count`: AITAGでタグを1回以上含む画像数。
+* `image_usage_rate`: `image_count / AITAG V4.5画像数 * 100`。後方互換の`usage_rate`も同じ値です。
+* `stats`: AITAG、Danbooru、Safebooru、Yande.reの根拠別集計。
+* `evidence`: `official`、`nai_v45_observed`、`danbooru`、`community`。
+* `related` / `conflicts`: 将来拡張用の配列（現時点では空配列）。
 
 ---
 
@@ -10,6 +30,8 @@ aitag.win および Danbooru API から抽出した統計データに基づく�
 
 * **`novelai_v4_5_tag_dictionary.csv`**
   * 頻出タグの日本語辞典CSV。GitHub上で直接カラム整理されたテーブルとして閲覧・検索・ソートが可能です。
+* **`tags.json` / `negative.json` / `manifest.json`**
+  * Web UIの初期表示に使う軽量辞典とデータmanifest。詳細schemaは従来名の辞典JSONに保持し、作品DBは検索時に遅延読込します。
 * **`novelai_v4_5_dictionary.md`**
   * 統計データに基づく、カテゴリ別の主要タグ（クオリティ、キャラクター、衣装、背景等）のまとめガイド。
 * **`novelai_v4_5_database.csv` / `.json`**
@@ -63,3 +85,12 @@ python3 build_dictionary.py
 ## 📝 開発環境・ライブラリ
 * Python 3.x
 * 外部ライブラリへの依存はありません（すべてPython標準ライブラリ `urllib`, `csv`, `json`, `collections` 等で動作します）。
+
+## 検証
+
+```bash
+python3 -m py_compile extract_tags.py extract_danbooru_tags.py extract_booru_extra.py build_dictionary.py search_prompts.py extract_knowhow.py
+python3 build_dictionary.py
+python3 -m unittest discover -s tests
+python3 validate_data.py
+```

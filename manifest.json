@@ -1,0 +1,9 @@
+{
+  "dictionary": "tags.json",
+  "negative_dictionary": "negative.json",
+  "works_database": "novelai_v4_5_database.json",
+  "tag_count": 38558,
+  "negative_tag_count": 4956,
+  "work_count": 42053,
+  "nai_image_count": 33781
+}

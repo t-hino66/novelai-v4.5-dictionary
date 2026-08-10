@@ -43,9 +43,25 @@ jobs:
           # Crawl and update external NovelAI V4.5 know-how database
           python -u extract_knowhow.py
 
+      - name: Compile Python scripts
+        run: |
+          python3 -m py_compile \
+            extract_tags.py \
+            extract_danbooru_tags.py \
+            extract_booru_extra.py \
+            build_dictionary.py \
+            search_prompts.py \
+            extract_knowhow.py \
+            validate_data.py
+
       - name: Run Build Dictionary Script
         run: |
           python -u build_dictionary.py
+
+      - name: Test and validate generated data
+        run: |
+          python3 -m unittest discover -s tests
+          python3 validate_data.py
 
       - name: Commit and Push Changes
         run: |
@@ -59,4 +75,3 @@ jobs:
             git pull --rebase origin master
             git push origin master
           fi
-
