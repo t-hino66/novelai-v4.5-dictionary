@@ -1,5 +1,6 @@
 import subprocess
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -131,6 +132,37 @@ class ExternalSourceSchemaTests(unittest.TestCase):
         self.assertEqual(cleaned["tag_string"], post["tag_string"])
         self.assertEqual(cleaned["tag_string_model"], "nai_diffusion")
         self.assertEqual(cleaned["width"], 1024)
+
+
+class WorksShardTests(unittest.TestCase):
+    def test_shards_are_grouped_by_source_and_project_ui_fields(self):
+        records = [
+            {
+                "source": "aitag.win", "work_id": str(index), "title": "Fixture",
+                "prompt": "best quality", "negative_prompt": "lowres",
+                "sampler": "Euler", "width": 832, "height": 1216,
+                "image_url": "https://example.test/image.png", "scale": 5,
+                "ai_json": "large internal metadata",
+            }
+            for index in range(3)
+        ] + [{
+            "source": "aibooru", "work_id": "9", "title": "AIbooru Post 9",
+            "prompt": "1girl", "negative_prompt": "", "sampler": "",
+            "width": 1024, "height": 1024, "image_url": "", "scale": 0,
+            "ai_json": "",
+        }]
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            manifest = build_dictionary.write_works_shards(
+                records, output_dir=temp_dir, shard_size=2
+            )
+            self.assertEqual(manifest["total_count"], 4)
+            self.assertEqual(manifest["sources"]["aitag.win"]["count"], 3)
+            self.assertEqual(len(manifest["sources"]["aitag.win"]["files"]), 2)
+            first_path = Path(temp_dir) / manifest["sources"]["aitag.win"]["files"][0]
+            first_records = __import__("json").loads(first_path.read_text(encoding="utf-8"))
+            self.assertNotIn("ai_json", first_records[0])
+            self.assertEqual(first_records[0]["prompt"], "best quality")
 
 
 class SearchPromptsTests(unittest.TestCase):
