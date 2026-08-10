@@ -3,17 +3,65 @@ import csv
 import os
 import re
 import urllib.request
-from collections import Counter
+from collections import Counter, defaultdict
 
 # Inputs/Outputs
 INPUT_AITAG = "extracted_works.json"
 INPUT_DANBOORU = "danbooru_raw_works.json"
 INPUT_BOORU_EXTRA = "booru_extra_raw_works.json"
+INPUT_CIVITAI = "civitai_raw_works.json"
+INPUT_AIBOORU = "aibooru_raw_works.json"
 DATABASE_JSON = "novelai_v4_5_database.json"
 DATABASE_CSV = "novelai_v4_5_database.csv"
 TAG_DICT_CSV = "novelai_v4_5_tag_dictionary.csv"
 MD_DICT_FILE = "novelai_v4_5_dictionary.md"
 NEG_DICT_JSON = "novelai_v4_5_neg_dictionary.json"
+TAG_SUMMARY_JSON = "tags.json"
+NEG_SUMMARY_JSON = "negative.json"
+MANIFEST_JSON = "manifest.json"
+
+OFFICIAL_V45_FULL_QUALITY_TAGS = {
+    "location",
+    "very aesthetic",
+    "masterpiece",
+    "no text",
+}
+
+OFFICIAL_V45_FULL_UC_PRESETS = {
+    "Light": (
+        "lowres, artistic error, scan artifacts, worst quality, bad quality, "
+        "jpeg artifacts, multiple views, very displeasing, too many watermarks, "
+        "negative space, blank page"
+    ),
+    "Heavy": (
+        "lowres, artistic error, film grain, scan artifacts, worst quality, "
+        "bad quality, jpeg artifacts, very displeasing, chromatic aberration, "
+        "dithering, halftone, screentone, multiple views, logo, too many "
+        "watermarks, negative space, blank page"
+    ),
+    "Human Focus": (
+        "lowres, artistic error, film grain, scan artifacts, worst quality, "
+        "bad quality, jpeg artifacts, very displeasing, chromatic aberration, "
+        "dithering, halftone, screentone, multiple views, logo, too many "
+        "watermarks, negative space, blank page, @_@, mismatched pupils, "
+        "glowing eyes, bad anatomy"
+    ),
+    "Furry Focus": (
+        "{worst quality}, distracting watermark, unfinished, bad quality, "
+        "{widescreen}, upscale, {sequence}, {{grandfathered content}}, blurred "
+        "foreground, chromatic aberration, sketch, everyone, [sketch background], "
+        "simple, [flat colors], ych (character), outline, multiple scenes, "
+        "[[horror (theme)]], comic"
+    ),
+    "None": "",
+}
+
+CUSTOM_BALANCED_HUMAN_UC = (
+    "lowres, artistic error, scan artifacts, worst quality, bad quality, jpeg "
+    "artifacts, very displeasing, multiple views, logo, too many watermarks, "
+    "blank page, @_@, mismatched pupils, glowing eyes, {bad anatomy}, {bad hands}, "
+    "{missing fingers}, {extra digits}, {fewer digits}, unfinished"
+)
 
 MANUAL_JP_URL = "https://raw.githubusercontent.com/boorutan/booru-japanese-tag/master/danbooru-jp.csv"
 MACHINE_JP_URL = "https://raw.githubusercontent.com/boorutan/booru-japanese-tag/master/danbooru-machine-jp.csv"
@@ -297,6 +345,121 @@ def clean_tag(tag):
     tag = re.sub(r':\d+(\.\d+)?$', '', tag)
     return tag.strip()
 
+
+def canonicalize_tag(tag):
+    """Return the display/counter key used across all source datasets."""
+    cleaned = clean_tag(str(tag or "")).lower().strip()
+    cleaned = cleaned.replace("_", " ")
+    return re.sub(r"\s+", " ", cleaned).strip()
+
+
+def parse_prompt_tags(prompt, aliases=None):
+    canonical_tags = []
+    for raw_tag in str(prompt or "").split(","):
+        alias = clean_tag(raw_tag).lower().strip()
+        canonical = canonicalize_tag(raw_tag)
+        if not canonical:
+            continue
+        canonical_tags.append(canonical)
+        if aliases is not None:
+            aliases[canonical].update({canonical, alias})
+    return canonical_tags
+
+
+def summarize_prompts(prompts):
+    occurrence_count = Counter()
+    image_count = Counter()
+    aliases = defaultdict(set)
+    for prompt in prompts:
+        tags = parse_prompt_tags(prompt, aliases)
+        occurrence_count.update(tags)
+        image_count.update(set(tags))
+    return {
+        "occurrence_count": occurrence_count,
+        "image_count": image_count,
+        "aliases": aliases,
+    }
+
+
+def calculate_usage_rates(image_counts, total_images):
+    if total_images <= 0:
+        return {tag: 0.0 for tag in image_counts}
+    return {
+        tag: round(min(count, total_images) / total_images * 100, 2)
+        for tag, count in image_counts.items()
+    }
+
+
+def resolve_image_url(image):
+    image_url = image.get("image_url") or ""
+    if image_url:
+        return image_url
+    image_path = image.get("image_path") or ""
+    if image_path:
+        return f"https://ai-img.10118899.xyz/{image_path.lstrip('/')}"
+    return ""
+
+
+def build_aitag_record(work, image, prompt_tags=None, negative_tags=None):
+    if prompt_tags is None:
+        prompt_tags = parse_prompt_tags(image.get("prompt_text", ""))
+    if negative_tags is None:
+        negative_tags = parse_prompt_tags(image.get("negative_prompt", ""))
+    return {
+        "source": "aitag.win",
+        "work_id": str(work.get("id")),
+        "title": work.get("title", ""),
+        "model": image.get("model") or "",
+        "prompt": ",".join(prompt_tags),
+        "negative_prompt": ",".join(negative_tags),
+        "steps": image.get("steps"),
+        "scale": image.get("scale"),
+        "sampler": image.get("sampler") or "",
+        "width": image.get("width"),
+        "height": image.get("height"),
+        "image_path": image.get("image_path") or "",
+        "image_url": resolve_image_url(image),
+        "ai_json": image.get("ai_json") or "",
+    }
+
+
+def get_negative_category(tag):
+    tag = canonicalize_tag(tag)
+    if any(word in tag for word in ("hand", "finger", "digit")):
+        return "Hands"
+    if any(word in tag for word in ("eye", "pupil", "cross-eyed", "@_@")):
+        return "Eyes"
+    if any(word in tag for word in (
+        "anatomy", "limb", "arm", "leg", "feet", "foot", "proportion",
+        "deformed", "disfigured", "mutation", "body",
+    )):
+        return "Anatomy"
+    if any(word in tag for word in ("text", "logo", "watermark", "signature", "username")):
+        return "Text / Logo"
+    if any(word in tag for word in (
+        "artifact", "jpeg", "scan", "grain", "chromatic", "dither",
+        "halftone", "screentone", "blur",
+    )):
+        return "Artifacts"
+    if any(word in tag for word in (
+        "quality", "lowres", "displeasing", "unfinished", "artistic error",
+    )):
+        return "Quality"
+    if any(word in tag for word in (
+        "multiple view", "blank page", "negative space", "cropped", "out of frame",
+    )):
+        return "Composition"
+    if any(word in tag for word in ("sketch", "flat color", "outline", "monochrome", "3d", "photo")):
+        return "Style"
+    return "Other"
+
+
+def get_official_tags():
+    official = set(OFFICIAL_V45_FULL_QUALITY_TAGS)
+    for prompt in OFFICIAL_V45_FULL_UC_PRESETS.values():
+        official.update(parse_prompt_tags(prompt))
+    return official
+
 def load_translation_dict():
     trans_dict = {}
     try:
@@ -383,11 +546,25 @@ def get_meaning(tag, trans_dict):
 
 def process_data():
     flat_records = []
-    all_tags = []
-    all_neg_tags = []
-    total_images = 0
+    nai_occurrence_counts = Counter()
+    nai_image_counts = Counter()
+    neg_occurrence_counts = Counter()
+    neg_image_counts = Counter()
+    civitai_occurrence_counts = Counter()
+    civitai_image_counts = Counter()
+    civitai_neg_occurrence_counts = Counter()
+    civitai_neg_image_counts = Counter()
+    source_tag_counts = {
+        "danbooru": Counter(),
+        "safebooru": Counter(),
+        "yandere": Counter(),
+        "aibooru": Counter(),
+    }
+    aliases = defaultdict(set)
+    negative_aliases = defaultdict(set)
+    total_nai_images = 0
+    total_civitai_images = 0
     tag_to_category = {}
-    danbooru_tag_counts = Counter()
 
     # 1. Parse AITAG (NovelAI 4.5) data if exists
     if os.path.exists(INPUT_AITAG):
@@ -401,21 +578,19 @@ def process_data():
             
             work_id = work.get("id")
             title = work.get("title", "")
-            pixiv_tags = work.get("tags", [])
-            
             for img in images:
                 model = img.get("model") or ""
                 if "NovelAI Diffusion V4.5" not in model:
                     continue
-                    
-                total_images += 1
+
+                total_nai_images += 1
                 prompt = img.get("prompt_text", "")
                 neg_prompt = img.get("negative_prompt", "")
-                
+
                 ai_json_str = img.get("ai_json")
                 if ai_json_str and not neg_prompt:
                     try:
-                        ai_data = json.loads(ai_json_str)
+                        ai_data = json.loads(ai_json_str) if isinstance(ai_json_str, str) else ai_json_str
                         comment = ai_data.get("Comment", {})
                         if isinstance(comment, str):
                             try:
@@ -428,33 +603,21 @@ def process_data():
                             v4_neg = ai_data.get("v4_negative_prompt", {})
                             if isinstance(v4_neg, dict):
                                 neg_prompt = v4_neg.get("caption", {}).get("base_caption", "")
-                    except Exception as e:
+                    except Exception:
                         pass
-                
-                clean_prompt_list = [clean_tag(t) for t in prompt.split(",") if t.strip()]
-                clean_neg_list = [clean_tag(t) for t in neg_prompt.split(",") if t.strip()]
-                all_tags.extend(clean_prompt_list)
-                all_neg_tags.extend(clean_neg_list)
-                
-                image_path = img.get("image_path", "")
-                image_url = ""
-                if image_path:
-                    image_url = f"https://ai-img.10118899.xyz/{image_path}"
 
-                flat_records.append({
-                    "source": "aitag.win",
-                    "work_id": str(work_id),
-                    "title": title,
-                    "model": model,
-                    "prompt": ",".join(clean_prompt_list),
-                    "negative_prompt": ",".join(clean_neg_list),
-                    "steps": img.get("steps"),
-                    "scale": img.get("scale"),
-                    "sampler": img.get("sampler"),
-                    "width": img.get("width"),
-                    "height": img.get("height"),
-                    "image_url": image_url
-                })
+                prompt_tags = parse_prompt_tags(prompt, aliases)
+                negative_tags = parse_prompt_tags(neg_prompt, negative_aliases)
+                nai_occurrence_counts.update(prompt_tags)
+                nai_image_counts.update(set(prompt_tags))
+                neg_occurrence_counts.update(negative_tags)
+                neg_image_counts.update(set(negative_tags))
+
+                normalized_img = dict(img)
+                normalized_img["negative_prompt"] = neg_prompt
+                flat_records.append(
+                    build_aitag_record(work, normalized_img, prompt_tags, negative_tags)
+                )
     else:
         print(f"Skipping {INPUT_AITAG} (not found).")
 
@@ -467,31 +630,34 @@ def process_data():
         for post in danbooru_posts:
             tag_string = post.get("tag_string", "")
             # Convert space separated tag string to comma separated NAI style prompt
-            clean_prompt_list = [clean_tag(t) for t in tag_string.split(" ") if t.strip()]
-            
-            # Count Danbooru tags
-            for t in clean_prompt_list:
-                danbooru_tag_counts[t.lower()] += 1
+            raw_tags = [t for t in tag_string.split(" ") if t.strip()]
+            clean_prompt_list = []
+            for raw_tag in raw_tags:
+                canonical = canonicalize_tag(raw_tag)
+                if canonical:
+                    clean_prompt_list.append(canonical)
+                    aliases[canonical].update({canonical, clean_tag(raw_tag).lower()})
+            source_tag_counts["danbooru"].update(set(clean_prompt_list))
             
             # Map categories based on Danbooru tag fields
             chars = post.get("tag_string_character", "")
             if chars:
                 for t in chars.split(" "):
-                    t_clean = clean_tag(t)
+                    t_clean = canonicalize_tag(t)
                     if t_clean:
                         tag_to_category[t_clean.lower()] = "Character"
             
             artists = post.get("tag_string_artist", "")
             if artists:
                 for t in artists.split(" "):
-                    t_clean = clean_tag(t)
+                    t_clean = canonicalize_tag(t)
                     if t_clean:
                         tag_to_category[t_clean.lower()] = "Style"
 
             copyrights = post.get("tag_string_copyright", "")
             if copyrights:
                 for t in copyrights.split(" "):
-                    t_clean = clean_tag(t)
+                    t_clean = canonicalize_tag(t)
                     if t_clean:
                         tag_to_category[t_clean.lower()] = "Copyright"
             
@@ -513,7 +679,9 @@ def process_data():
                 "sampler": "",
                 "width": post.get("width"),
                 "height": post.get("height"),
-                "image_url": image_url
+                "image_path": "",
+                "image_url": image_url,
+                "ai_json": ""
             })
     else:
         print(f"Skipping {INPUT_DANBOORU} (not found).")
@@ -526,12 +694,16 @@ def process_data():
             
         for post in booru_posts:
             tag_string = post.get("tag_string", "")
-            clean_prompt_list = [clean_tag(t) for t in tag_string.split(" ") if t.strip()]
-            
-            for t in clean_prompt_list:
-                danbooru_tag_counts[t.lower()] += 1
-
             src = post.get("source", "booru")
+            clean_prompt_list = []
+            for raw_tag in (t for t in tag_string.split(" ") if t.strip()):
+                canonical = canonicalize_tag(raw_tag)
+                if canonical:
+                    clean_prompt_list.append(canonical)
+                    aliases[canonical].update({canonical, clean_tag(raw_tag).lower()})
+            if src in source_tag_counts:
+                source_tag_counts[src].update(set(clean_prompt_list))
+
             work_id = str(post.get("id"))
             flat_records.append({
                 "source": src,
@@ -545,10 +717,81 @@ def process_data():
                 "sampler": "",
                 "width": post.get("width"),
                 "height": post.get("height"),
-                "image_url": post.get("image_url", "")
+                "image_path": "",
+                "image_url": post.get("image_url", ""),
+                "ai_json": ""
             })
     else:
         print(f"Skipping {INPUT_BOORU_EXTRA} (not found).")
+
+    # 4. Civitai public generation metadata is community evidence. It must not
+    # affect the NovelAI V4.5 denominator or usage-rate counters above.
+    if os.path.exists(INPUT_CIVITAI):
+        print(f"Parsing Civitai community evidence: {INPUT_CIVITAI}...")
+        with open(INPUT_CIVITAI, encoding="utf-8") as f:
+            civitai_images = json.load(f)
+        for image in civitai_images:
+            prompt_tags = parse_prompt_tags(image.get("prompt", ""), aliases)
+            negative_tags = parse_prompt_tags(image.get("negative_prompt", ""), negative_aliases)
+            if not prompt_tags and not negative_tags:
+                continue
+            total_civitai_images += 1
+            civitai_occurrence_counts.update(prompt_tags)
+            civitai_image_counts.update(set(prompt_tags))
+            civitai_neg_occurrence_counts.update(negative_tags)
+            civitai_neg_image_counts.update(set(negative_tags))
+            image_id = str(image.get("id"))
+            flat_records.append({
+                "source": "civitai", "work_id": image_id,
+                "title": (f"Civitai Model: {image.get('model')}"
+                          if image.get("evidence_type") == "model_tags"
+                          else f"Civitai Image {image_id}"),
+                "model": image.get("model") or "Civitai community model",
+                "prompt": ",".join(prompt_tags),
+                "negative_prompt": ",".join(negative_tags),
+                "steps": image.get("steps") or "",
+                "scale": image.get("cfg_scale") or image.get("cfgScale") or "",
+                "sampler": image.get("sampler") or "",
+                "width": image.get("width"), "height": image.get("height"),
+                "image_path": "", "image_url": image.get("url") or "", "ai_json": "",
+            })
+    else:
+        print(f"Skipping {INPUT_CIVITAI} (not found).")
+
+    # 5. AIbooru tags are AI-image annotations, independent of prompt evidence.
+    if os.path.exists(INPUT_AIBOORU):
+        print(f"Parsing AIbooru annotations: {INPUT_AIBOORU}...")
+        with open(INPUT_AIBOORU, encoding="utf-8") as f:
+            aibooru_posts = json.load(f)
+        for post in aibooru_posts:
+            clean_prompt_list = []
+            for raw_tag in (tag for tag in post.get("tag_string", "").split(" ") if tag):
+                canonical = canonicalize_tag(raw_tag)
+                if canonical:
+                    clean_prompt_list.append(canonical)
+                    aliases[canonical].update({canonical, clean_tag(raw_tag).lower()})
+            source_tag_counts["aibooru"].update(set(clean_prompt_list))
+            for field, category in (("tag_string_character", "Character"),
+                                    ("tag_string_artist", "Style"),
+                                    ("tag_string_copyright", "Copyright"),
+                                    ("tag_string_model", "Style")):
+                for raw_tag in post.get(field, "").split(" "):
+                    canonical = canonicalize_tag(raw_tag)
+                    if canonical:
+                        tag_to_category[canonical] = category
+            work_id = str(post.get("id"))
+            flat_records.append({
+                "source": "aibooru", "work_id": work_id,
+                "title": f"AIbooru Post {work_id}", "model": "AIbooru annotation",
+                "prompt": ",".join(clean_prompt_list), "negative_prompt": "",
+                "steps": "", "scale": post.get("score") or "", "sampler": "",
+                "width": post.get("width"), "height": post.get("height"),
+                "image_path": "", "image_url": post.get("image_url") or "", "ai_json": "",
+            })
+    else:
+        print(f"Skipping {INPUT_AIBOORU} (not found).")
+
+    if not flat_records:
         print("No source database found to build dictionary. Please run extract_tags.py or extract_danbooru_tags.py.")
         return
 
@@ -559,14 +802,13 @@ def process_data():
 
     headers = list(flat_records[0].keys())
     with open(DATABASE_CSV, 'w', encoding='utf-8', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=headers)
+        writer = csv.DictWriter(f, fieldnames=headers, lineterminator="\n")
         writer.writeheader()
         for r in flat_records:
             writer.writerow(r)
 
     # Build Tag Dictionary CSV
     print("Building tag frequency dictionary...")
-    tag_counts = Counter(all_tags)
     trans_dict = load_translation_dict()
     
     # Build tag sample image lookup
@@ -580,28 +822,49 @@ def process_data():
                     tag_sample_images[t_clean] = img_url
 
     # AITAGとDanbooruの両方のユニークタグの和集合を走査対象とする
-    all_unique_tags = set(tag_counts.keys()).union(set(danbooru_tag_counts.keys()))
-    
-    # AITAG出現数 + Danbooru出現数 の合計が多い順にソート
-    sorted_tags = sorted(all_unique_tags, key=lambda t: (tag_counts.get(t, 0) + danbooru_tag_counts.get(t, 0)), reverse=True)
+    all_unique_tags = set(nai_occurrence_counts)
+    all_unique_tags.update(civitai_occurrence_counts)
+    for counts in source_tag_counts.values():
+        all_unique_tags.update(counts)
+
+    sorted_tags = sorted(
+        all_unique_tags,
+        key=lambda tag: (
+            nai_image_counts.get(tag, 0),
+            nai_occurrence_counts.get(tag, 0),
+            source_tag_counts["danbooru"].get(tag, 0),
+            civitai_image_counts.get(tag, 0),
+            source_tag_counts["aibooru"].get(tag, 0),
+        ),
+        reverse=True,
+    )
+
+    official_tags = get_official_tags()
+    usage_rates = calculate_usage_rates(nai_image_counts, total_nai_images)
+    civitai_usage_rates = calculate_usage_rates(civitai_image_counts, total_civitai_images)
     
     tag_dict_rows = []
     for tag in sorted_tags:
-        count = tag_counts.get(tag, 0)  # AITAGでの出現数
-        dan_count = danbooru_tag_counts.get(tag, 0)  # Danbooruでの出現数
+        occurrence_count = nai_occurrence_counts.get(tag, 0)
+        image_count = nai_image_counts.get(tag, 0)
+        dan_count = source_tag_counts["danbooru"].get(tag, 0)
+        safe_count = source_tag_counts["safebooru"].get(tag, 0)
+        yandere_count = source_tag_counts["yandere"].get(tag, 0)
+        civitai_count = civitai_image_counts.get(tag, 0)
+        aibooru_count = source_tag_counts["aibooru"].get(tag, 0)
         
         category = get_category_enhanced(tag, tag_to_category)
         
         # しきい値の適用
         if category in ("Character", "Style", "Copyright"):
             # キャラクター・作品・絵師は、AITAGで1回以上、またはDanbooruで3回以上出現していれば採用
-            if count >= 1 or dan_count >= 3:
+            if occurrence_count >= 1 or dan_count >= 3 or civitai_count >= 3 or aibooru_count >= 3:
                 pass
             else:
                 continue
         else:
             # 一般タグはAITAGで3回以上出現しているもののみ
-            if count >= 3:
+            if occurrence_count >= 3 or civitai_count >= 3 or aibooru_count >= 3:
                 pass
             else:
                 continue
@@ -610,25 +873,80 @@ def process_data():
         if not meaning:
             meaning = format_english_tag(tag, category)
             
-        usage_rate = (count / total_images) * 100 if total_images else 0
         sample_img = tag_sample_images.get(tag.lower(), "")
-        
+        evidence = {
+            "official": tag in official_tags,
+            "nai_v45_observed": image_count > 0,
+            "danbooru": dan_count > 0,
+            "danbooru_observed": dan_count > 0,
+            "community": False,
+            "civitai": civitai_count > 0,
+            "aibooru": aibooru_count > 0,
+        }
+        evidence["community"] = evidence["civitai"]
+        stats = {
+            "nai_image_count": image_count,
+            "nai_usage_rate": usage_rates.get(tag, 0.0),
+            "nai_occurrence_count": occurrence_count,
+            "danbooru_count": dan_count,
+            "safebooru_count": safe_count,
+            "yandere_count": yandere_count,
+            "civitai_image_count": civitai_count,
+            "civitai_usage_rate": civitai_usage_rates.get(tag, 0.0),
+            "civitai_occurrence_count": civitai_occurrence_counts.get(tag, 0),
+            "aibooru_count": aibooru_count,
+        }
+        confidence = "high" if evidence["official"] or image_count >= 10 else "medium"
+
         tag_dict_rows.append({
             "tag": tag,
+            "canonical_tag": tag,
+            "aliases": sorted(aliases[tag]),
             "meaning": meaning,
+            "ja": meaning,
             "category": category,
-            "count": count,  # AITAGでの出現数を表示（実用頻度）
-            "usage_rate": f"{usage_rate:.2f}%",
-            "sample_image": sample_img
+            "occurrence_count": occurrence_count,
+            "image_count": image_count,
+            "image_usage_rate": usage_rates.get(tag, 0.0),
+            "usage_rate": usage_rates.get(tag, 0.0),
+            "count": occurrence_count,
+            "nai_occurrence_count": occurrence_count,
+            "nai_image_count": image_count,
+            "nai_usage_rate": usage_rates.get(tag, 0.0),
+            "danbooru_count": dan_count,
+            "safebooru_count": safe_count,
+            "yandere_count": yandere_count,
+            "civitai_image_count": civitai_count,
+            "civitai_usage_rate": civitai_usage_rates.get(tag, 0.0),
+            "civitai_occurrence_count": civitai_occurrence_counts.get(tag, 0),
+            "aibooru_count": aibooru_count,
+            "evidence": evidence,
+            "stats": stats,
+            "related": [],
+            "conflicts": [],
+            "confidence": confidence,
+            "sample_image": sample_img,
         })
 
     # Output tag dictionary CSV
     print(f"Saving tag dictionary: {TAG_DICT_CSV} ({len(tag_dict_rows)} tags)")
     with open(TAG_DICT_CSV, 'w', encoding='utf-8', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=["tag", "meaning", "category", "count", "usage_rate", "sample_image"])
+        csv_fields = [
+            "tag", "canonical_tag", "aliases", "meaning", "category",
+            "nai_occurrence_count", "nai_image_count", "nai_usage_rate",
+            "danbooru_count", "safebooru_count", "yandere_count",
+            "civitai_image_count", "civitai_usage_rate", "civitai_occurrence_count",
+            "aibooru_count", "evidence",
+            "confidence", "sample_image",
+        ]
+        writer = csv.DictWriter(f, fieldnames=csv_fields, lineterminator="\n")
         writer.writeheader()
         for r in tag_dict_rows:
-            writer.writerow(r)
+            writer.writerow({
+                **{field: r.get(field, "") for field in csv_fields},
+                "aliases": json.dumps(r["aliases"], ensure_ascii=False),
+                "evidence": ",".join(key for key, value in r["evidence"].items() if value),
+            })
 
     # Output tag dictionary JSON for Web UI
     TAG_DICT_JSON = "novelai_v4_5_tag_dictionary.json"
@@ -637,47 +955,137 @@ def process_data():
         json.dump(tag_dict_rows, f, ensure_ascii=False, indent=2)
 
     # Build & Output Negative Tag Dictionary JSON for Web UI
-    neg_tag_counts = Counter(all_neg_tags)
     neg_dict_rows = []
-    for neg_tag, c in neg_tag_counts.most_common():
-        if c < 2:
+    negative_usage_rates = calculate_usage_rates(neg_image_counts, total_nai_images)
+    civitai_negative_usage_rates = calculate_usage_rates(civitai_neg_image_counts, total_civitai_images)
+    all_negative_tags = set(neg_occurrence_counts) | set(civitai_neg_occurrence_counts)
+    for neg_tag in sorted(
+        all_negative_tags,
+        key=lambda tag: (neg_image_counts[tag], civitai_neg_image_counts[tag]),
+        reverse=True,
+    ):
+        occurrence_count = neg_occurrence_counts.get(neg_tag, 0)
+        if occurrence_count < 2 and civitai_neg_occurrence_counts.get(neg_tag, 0) < 3:
             continue
+        image_count = neg_image_counts.get(neg_tag, 0)
         meaning = get_meaning(neg_tag, trans_dict)
         if not meaning:
             meaning = format_english_tag(neg_tag, "Negative Prompt")
-        usage_rate = (c / total_images) * 100 if total_images else 0
+        is_official = neg_tag in official_tags
+        evidence = {
+            "official": is_official,
+            "nai_v45_observed": image_count > 0,
+            "danbooru": False,
+            "danbooru_observed": False,
+            "community": False,
+            "civitai": civitai_neg_image_counts.get(neg_tag, 0) > 0,
+            "aibooru": False,
+        }
+        evidence["community"] = evidence["civitai"]
         neg_dict_rows.append({
             "tag": neg_tag,
+            "canonical_tag": neg_tag,
+            "aliases": sorted(negative_aliases[neg_tag]),
             "meaning": meaning,
-            "category": "Negative",
-            "count": c,
-            "usage_rate": f"{usage_rate:.2f}%"
+            "category": get_negative_category(neg_tag),
+            "occurrence_count": occurrence_count,
+            "image_count": image_count,
+            "image_usage_rate": negative_usage_rates.get(neg_tag, 0.0),
+            "usage_rate": negative_usage_rates.get(neg_tag, 0.0),
+            "count": occurrence_count,
+            "nai_occurrence_count": occurrence_count,
+            "nai_image_count": image_count,
+            "nai_usage_rate": negative_usage_rates.get(neg_tag, 0.0),
+            "danbooru_count": 0,
+            "safebooru_count": 0,
+            "yandere_count": 0,
+            "civitai_image_count": civitai_neg_image_counts.get(neg_tag, 0),
+            "civitai_usage_rate": civitai_negative_usage_rates.get(neg_tag, 0.0),
+            "civitai_occurrence_count": civitai_neg_occurrence_counts.get(neg_tag, 0),
+            "aibooru_count": 0,
+            "official_preset": is_official,
+            "observed": image_count > 0,
+            "evidence": evidence,
+            "stats": {
+                "nai_image_count": image_count,
+                "nai_usage_rate": negative_usage_rates.get(neg_tag, 0.0),
+                "nai_occurrence_count": occurrence_count,
+                "danbooru_count": 0,
+                "civitai_image_count": civitai_neg_image_counts.get(neg_tag, 0),
+                "civitai_usage_rate": civitai_negative_usage_rates.get(neg_tag, 0.0),
+                "civitai_occurrence_count": civitai_neg_occurrence_counts.get(neg_tag, 0),
+                "aibooru_count": 0,
+            },
+            "related": [],
+            "conflicts": [],
+            "confidence": "high" if is_official or image_count >= 10 else "medium",
         })
 
     print(f"Saving negative tag dictionary JSON: {NEG_DICT_JSON} ({len(neg_dict_rows)} neg tags)")
     with open(NEG_DICT_JSON, 'w', encoding='utf-8') as f:
         json.dump(neg_dict_rows, f, ensure_ascii=False, indent=2)
 
+    summary_fields = (
+        "tag", "canonical_tag", "meaning", "category", "nai_image_count",
+        "nai_usage_rate", "danbooru_count", "civitai_image_count",
+        "civitai_usage_rate", "aibooru_count", "evidence", "sample_image",
+    )
+    tag_summaries = [
+        {field: row.get(field) for field in summary_fields if field in row}
+        for row in tag_dict_rows
+    ]
+    negative_summaries = [
+        {field: row.get(field) for field in summary_fields if field in row}
+        for row in neg_dict_rows
+    ]
+    with open(TAG_SUMMARY_JSON, 'w', encoding='utf-8') as f:
+        json.dump(tag_summaries, f, ensure_ascii=False, separators=(",", ":"))
+    with open(NEG_SUMMARY_JSON, 'w', encoding='utf-8') as f:
+        json.dump(negative_summaries, f, ensure_ascii=False, separators=(",", ":"))
+    with open(MANIFEST_JSON, 'w', encoding='utf-8') as f:
+        json.dump({
+            "dictionary": TAG_SUMMARY_JSON,
+            "negative_dictionary": NEG_SUMMARY_JSON,
+            "works_database": DATABASE_JSON,
+            "tag_count": len(tag_dict_rows),
+            "negative_tag_count": len(neg_dict_rows),
+            "work_count": len(flat_records),
+            "nai_image_count": total_nai_images,
+            "civitai_image_count": total_civitai_images,
+            "aibooru_post_count": sum(
+                1 for record in flat_records if record.get("source") == "aibooru"
+            ),
+        }, f, ensure_ascii=False, indent=2)
+
     # Build Markdown Dictionary Guide
     print(f"Generating markdown dictionary guide: {MD_DICT_FILE}...")
-    generate_markdown_guide(flat_records, tag_dict_rows, total_images)
+    generate_markdown_guide(flat_records, tag_dict_rows, total_nai_images)
 
     # Build Dynamic Analytics JSON for Web UI
     ANALYTICS_JSON = "analytics_data.json"
     print(f"Generating live analytics JSON: {ANALYTICS_JSON}...")
-    generate_analytics_json(flat_records, tag_dict_rows, neg_dict_rows, total_images, ANALYTICS_JSON)
+    generate_analytics_json(flat_records, tag_dict_rows, neg_dict_rows, total_nai_images, ANALYTICS_JSON)
 
-def generate_analytics_json(records, tags, neg_tags, total_images, output_file):
+def generate_analytics_json(records, tags, neg_tags, total_nai_images, output_file):
     import datetime
-    
-    prompt_lengths = [len(r["prompt"].split(",")) for r in records if r.get("prompt")]
-    neg_lengths = [len(r["negative_prompt"].split(",")) for r in records if r.get("negative_prompt")]
+
+    nai_records = [record for record in records if record.get("source") == "aitag.win"]
+    prompt_lengths = [len(r["prompt"].split(",")) for r in nai_records if r.get("prompt")]
+    neg_lengths = [len(r["negative_prompt"].split(",")) for r in nai_records if r.get("negative_prompt")]
     
     avg_prompt = sum(prompt_lengths) / len(prompt_lengths) if prompt_lengths else 0
     avg_neg = sum(neg_lengths) / len(neg_lengths) if neg_lengths else 0
     
     sources = Counter([r["source"] for r in records if r.get("source")]).most_common()
-    source_stats = [{"name": src, "count": c, "ratio": f"{c/total_images*100:.1f}%"} for src, c in sources]
+    total_records = len(records)
+    source_stats = [
+        {
+            "name": src,
+            "count": c,
+            "ratio": f"{c / total_records * 100:.1f}%" if total_records else "0%",
+        }
+        for src, c in sources
+    ]
     
     quality_list = [t for t in tags if t["category"] == "Quality"][:10]
     style_list = [t for t in tags if t["category"] in ("Art Style", "Medium", "Shading", "Lineart")][:10]
@@ -686,18 +1094,19 @@ def generate_analytics_json(records, tags, neg_tags, total_images, output_file):
     bg_list = [t for t in tags if t["category"] in ("Background", "Lighting")][:10]
     neg_list = neg_tags[:10]
     
-    # Calculate quality tag ratio (e.g. masterpiece, best quality)
-    masterpiece_count = sum(1 for r in records if "masterpiece" in r.get("prompt", "").lower())
-    best_quality_count = sum(1 for r in records if "best quality" in r.get("prompt", "").lower())
+    tags_by_name = {tag["canonical_tag"]: tag for tag in tags}
+    masterpiece_rate = tags_by_name.get("masterpiece", {}).get("nai_usage_rate", 0.0)
+    best_quality_rate = tags_by_name.get("best quality", {}).get("nai_usage_rate", 0.0)
     
     analytics = {
         "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "total_records": total_images,
+        "total_records": total_records,
+        "nai_total_images": total_nai_images,
         "metrics": {
             "avg_prompt_tags": round(avg_prompt, 1),
             "avg_neg_tags": round(avg_neg, 1),
-            "masterpiece_usage_rate": f"{masterpiece_count/total_images*100:.1f}%" if total_images else "0%",
-            "best_quality_usage_rate": f"{best_quality_count/total_images*100:.1f}%" if total_images else "0%"
+            "masterpiece_usage_rate": f"{masterpiece_rate:.1f}%",
+            "best_quality_usage_rate": f"{best_quality_rate:.1f}%",
         },
         "sources": source_stats,
         "top_rankings": {
@@ -714,19 +1123,28 @@ def generate_analytics_json(records, tags, neg_tags, total_images, output_file):
         json.dump(analytics, f, ensure_ascii=False, indent=2)
     print("Analytics JSON generated successfully.")
 
-def generate_markdown_guide(records, tags, total_images):
-    samplers = Counter([r["sampler"] for r in records if r.get("sampler")]).most_common(5)
-    resolutions = Counter([f"{r['width']}x{r['height']}" for r in records if r.get("width") and r.get("height")]).most_common(5)
+def generate_markdown_guide(records, tags, total_nai_images):
+    nai_records = [record for record in records if record.get("source") == "aitag.win"]
+    samplers = Counter([r["sampler"] for r in nai_records if r.get("sampler")]).most_common(5)
+    resolutions = Counter([
+        f"{r['width']}x{r['height']}" for r in nai_records
+        if r.get("width") and r.get("height")
+    ]).most_common(5)
     sources = Counter([r["source"] for r in records if r.get("source")]).most_common()
     
-    md_content = """# NovelAI Diffusion V4.5 & Danbooru \u30d7\u30ed\u30f3\u30d7\u30c8\u8f9e\u5178
+    total_records = len(records)
 
-aitag.win\u304a\u3088\u3073 Danbooru API \u304b\u3089\u62bd\u51fa\u3057\u305f\u7d71\u8a08\u30c7\u30fc\u30bf\u306b\u57fa\u3065\u304f\u3001NovelAI\u306e\u9244\u677f\u30bf\u30b0\u30ea\u30b9\u30c8\u306e\u958b\u767a\u30ac\u30a4\u30c9\u3067\u3059\u3002
+    md_content = """# NovelAI Diffusion V4.5 Prompt Intelligence Dictionary
+
+aitag.winで観測したNovelAI V4.5実生成プロンプトと、Danbooru系の画像アノテーションを根拠別に集計した辞典です。高頻度は効果の因果や強さを保証しません。
 
 ## \U0001f4ca \u30c7\u30fc\u30bf\u30bd\u30fc\u30b9\u7d71\u8a08 (Data Source)
 """
     for src, c in sources:
-        md_content += f"- **{src}**: {c} \u4ef6 ({c/total_images*100:.1f}%)\n"
+        ratio = c / total_records * 100 if total_records else 0
+        md_content += f"- **{src}**: {c} \u4ef6 ({ratio:.1f}%)\n"
+
+    md_content += f"- **AITAG V4.5 image denominator**: {total_nai_images} images\n"
 
     md_content += """
 ## ⚙\ufe0f \u63a8\u5968\u8a2d\u5b9a\u30d1\u30bf\u30fc\u30f3 (\u7d71\u8a08)
@@ -738,25 +1156,26 @@ aitag.win\u304a\u3088\u3073 Danbooru API \u304b\u3089\u62bd\u51fa\u3057\u305f\u7
         
     md_content += "\n### \u89e3\u50cf\u5ea6 (Resolution)\n"
     for r, c in resolutions:
-        md_content += f"- **{r}**: {c} \u4ef6 ({c/total_images*100:.1f}%)\n"
+        ratio = c / total_nai_images * 100 if total_nai_images else 0
+        md_content += f"- **{r}**: {c} \u4ef6 ({ratio:.1f}%)\n"
 
-    md_content += "\n## \U0001f511 \u30af\u30aa\u30ea\u30c6\u30a3\u30bf\u30b0\u9244\u677f\u30bb\u30c3\u30c8\n"
+    md_content += "\n## \U0001f511 高頻度のクオリティタグ（効果保証ではありません）\n"
     quality_tags = [t for t in tags if t["category"] == "Quality"][:10]
-    md_content += "| \u30bf\u30b0 | \u610f\u5473 | \u51fa\u73fe\u56de\u6570 | \u4f7f\u7528\u7387 |\n|---|---|---|---|\n"
+    md_content += "| タグ | 意味 | NAI使用画像数 | NAI使用率 | Danbooru件数 |\n|---|---|---:|---:|---:|\n"
     for t in quality_tags:
-        md_content += f"| `{t['tag']}` | {t['meaning']} | {t['count']} | {t['usage_rate']} |\n"
+        md_content += f"| `{t['tag']}` | {t['meaning']} | {t['nai_image_count']} | {t['nai_usage_rate']:.2f}% | {t['danbooru_count']} |\n"
 
     md_content += "\n## \U0001f457 \u4e3b\u8981\u8863\u88c5\u30bf\u30b0\n"
     cloth_tags = [t for t in tags if t["category"] == "Clothing"][:15]
-    md_content += "| \u30bf\u30b0 | \u610f\u5473 | \u51fa\u73fe\u56de\u6570 | \u4f7f\u7528\u7387 |\n|---|---|---|---|\n"
+    md_content += "| タグ | 意味 | NAI使用画像数 | NAI使用率 | Danbooru件数 |\n|---|---|---:|---:|---:|\n"
     for t in cloth_tags:
-        md_content += f"| `{t['tag']}` | {t['meaning']} | {t['count']} | {t['usage_rate']} |\n"
+        md_content += f"| `{t['tag']}` | {t['meaning']} | {t['nai_image_count']} | {t['nai_usage_rate']:.2f}% | {t['danbooru_count']} |\n"
 
     md_content += "\n## \U0001f3ed \u80cc\u666f\u30fb\u7167\u660e\u30bf\u30b0\n"
     bg_tags = [t for t in tags if t["category"] == "Background"][:15]
-    md_content += "| \u30bf\u30b0 | \u610f\u5473 | \u51fa\u73fe\u56de\u6570 | \u4f7f\u7528\u7387 |\n|---|---|---|---|\n"
+    md_content += "| タグ | 意味 | NAI使用画像数 | NAI使用率 | Danbooru件数 |\n|---|---|---:|---:|---:|\n"
     for t in bg_tags:
-        md_content += f"| `{t['tag']}` | {t['meaning']} | {t['count']} | {t['usage_rate']} |\n"
+        md_content += f"| `{t['tag']}` | {t['meaning']} | {t['nai_image_count']} | {t['nai_usage_rate']:.2f}% | {t['danbooru_count']} |\n"
 
     with open(MD_DICT_FILE, 'w', encoding='utf-8') as f:
         f.write(md_content)

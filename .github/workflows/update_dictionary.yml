@@ -1,4 +1,4 @@
-name: Update NovelAI & Danbooru Tags Dictionary
+name: Update NovelAI and external evidence dictionaries
 
 on:
   schedule:
@@ -38,14 +38,38 @@ jobs:
           # Fetch incremental extra posts (500 posts)
           python -u extract_booru_extra.py 500
 
+      - name: Run Civitai community evidence extraction
+        run: python -u extract_civitai_tags.py 500
+
+      - name: Run AIbooru annotation extraction
+        run: python -u extract_aibooru_tags.py 500
+
       - name: Run Know-how Crawling Script
         run: |
           # Crawl and update external NovelAI V4.5 know-how database
           python -u extract_knowhow.py
 
+      - name: Compile Python scripts
+        run: |
+          python3 -m py_compile \
+            extract_tags.py \
+            extract_danbooru_tags.py \
+            extract_booru_extra.py \
+            extract_civitai_tags.py \
+            extract_aibooru_tags.py \
+            build_dictionary.py \
+            search_prompts.py \
+            extract_knowhow.py \
+            validate_data.py
+
       - name: Run Build Dictionary Script
         run: |
           python -u build_dictionary.py
+
+      - name: Test and validate generated data
+        run: |
+          python3 -m unittest discover -s tests
+          python3 validate_data.py
 
       - name: Commit and Push Changes
         run: |
@@ -55,8 +79,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "chore: auto-update database from aitag.win and danbooru [skip ci]"
+            git commit -m "chore: auto-update prompt evidence databases [skip ci]"
             git pull --rebase origin master
             git push origin master
           fi
-

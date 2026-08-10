@@ -1,6 +1,6 @@
 import json
-import sys
 import argparse
+import os
 from collections import Counter
 
 DATABASE_FILE = "novelai_v4_5_database.json"
@@ -66,8 +66,7 @@ def main():
     print(f"=== 検索条件 ===")
     print(f"ソース: {args.source} | サンプラー: {args.sampler} | 縦横比: {args.aspect} | 検索タグ: {search_tags}")
     print(f"合致件数: {len(filtered)} 件 / 全 {len(db)} 件")
-    print(f"=================
-")
+    print("=================\n")
     
     if not filtered:
         print("合致する作品がありません。検索条件を緩めてください。")
@@ -86,7 +85,7 @@ def main():
     neg_counts = Counter(all_neg_tags)
     
     # Exclude quality tags and search input tags from co-occurrence
-    common_quality = ['masterpiece', 'very aesthetic', 'best quality', 'absurdres', 'highres']
+    common_quality = ['location', 'very aesthetic', 'masterpiece', 'no text']
     for t in common_quality + search_tags:
         if t in tag_counts:
             del tag_counts[t]
@@ -98,14 +97,12 @@ def main():
     print("--- POSITIVE PROMPT ---")
     pos_prompt = common_quality + search_tags + top_co_tags
     print(", ".join(pos_prompt))
-    print("
---- NEGATIVE PROMPT ---")
+    print("\n--- NEGATIVE PROMPT ---")
     neg_prompt = [n[0] for n in neg_counts.most_common(10)]
     if not neg_prompt:
         neg_prompt = ['lowres', 'bad anatomy', 'bad hands', 'text', 'error', 'missing fingers', 'extra digit', 'worst quality', 'low quality']
     print(", ".join(neg_prompt))
-    print("------------------------
-")
+    print("------------------------\n")
     
     # 2. Co-occurrence list
     print("🤝 [同時によく使われる共起タグ (Top 15)]")
