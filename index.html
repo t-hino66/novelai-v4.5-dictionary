@@ -70,6 +70,7 @@
         .tabs {
             display: flex;
             justify-content: center;
+            flex-wrap: wrap;
             gap: 1rem;
             margin-bottom: 2rem;
             border-bottom: 1px solid var(--border-color);
@@ -627,6 +628,79 @@
         #page-info {
             font-weight: 600;
         }
+
+        /* ChatGPT Images prompt library */
+        .chatgpt-layout {
+            display: grid;
+            grid-template-columns: 290px minmax(0, 1fr);
+            gap: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .chatgpt-sidebar {
+            background: var(--panel-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.4rem;
+            height: fit-content;
+            position: sticky;
+            top: 1rem;
+        }
+
+        .chatgpt-guide {
+            background: linear-gradient(135deg, #172033, #21183d);
+            border: 1px solid #6366f1;
+            border-radius: 14px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .chatgpt-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 1rem;
+        }
+
+        .chatgpt-card {
+            background: var(--panel-color);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+
+        .chatgpt-card textarea {
+            min-height: 190px;
+            resize: vertical;
+            font-family: inherit;
+            line-height: 1.65;
+        }
+
+        .source-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+        }
+
+        .source-link {
+            color: #93c5fd;
+            text-decoration: none;
+            font-size: 0.82rem;
+        }
+
+        .source-link:hover { text-decoration: underline; }
+
+        @media (max-width: 860px) {
+            body { padding: 1rem; }
+            .chatgpt-layout { grid-template-columns: 1fr; }
+            .chatgpt-sidebar { position: static; }
+            .chatgpt-grid { grid-template-columns: 1fr; }
+            .tabs { gap: 0.4rem; }
+            .tab-btn { font-size: 0.9rem; padding: 0.5rem 0.75rem; }
+        }
     </style>
 </head>
 <body>
@@ -642,6 +716,7 @@
         <button id="nav-builder-btn" class="tab-btn" onclick="switchTab('builder-tab')">🧙‍♂️ 呪文ビルダー & NAI重み付け</button>
         <button id="nav-dict-btn" class="tab-btn" onclick="switchTab('dict-tab')">📖 タグ日本語図鑑</button>
         <button id="nav-guide-btn" class="tab-btn" onclick="switchTab('guide-tab')">💡 NAI攻略ノウハウ & データ分析</button>
+        <button id="nav-chatgpt-btn" class="tab-btn" onclick="switchTab('chatgpt-tab')">🖼️ ChatGPT画像Prompt</button>
     </div>
 
     <!-- Tab 1: Search Module -->
@@ -1139,6 +1214,53 @@
         </div>
     </div>
 
+    <!-- Tab 5: ChatGPT Images Prompt Library -->
+    <div id="chatgpt-tab" class="tab-content">
+        <div class="chatgpt-layout">
+            <aside class="chatgpt-sidebar">
+                <div class="filter-section">
+                    <h3>テンプレート検索</h3>
+                    <input id="chatgpt-search" class="form-control" type="search" placeholder="例: サムネイル、編集、商品">
+                </div>
+                <div class="filter-section">
+                    <h3>カテゴリ</h3>
+                    <select id="chatgpt-category" class="form-control">
+                        <option value="all">すべて</option>
+                    </select>
+                </div>
+                <div class="filter-section">
+                    <h3>表示言語</h3>
+                    <select id="chatgpt-language" class="form-control">
+                        <option value="ja">日本語</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+                <p id="chatgpt-count" style="font-size:0.82rem; color:var(--text-muted);"></p>
+                <div style="margin-top:1.4rem; padding-top:1rem; border-top:1px solid var(--border-color);">
+                    <h3 style="font-size:0.9rem; margin-bottom:0.7rem;">調査した資料</h3>
+                    <div id="chatgpt-sources" class="source-list"></div>
+                </div>
+            </aside>
+
+            <main>
+                <div class="chatgpt-guide">
+                    <div class="section-title" style="margin-bottom:0.7rem;">
+                        <span>ChatGPT Images向けプロンプト設計</span>
+                    </div>
+                    <p style="color:#dbeafe; font-size:0.92rem;">
+                        ChatGPTではタグの羅列や「best quality」の件数ではなく、作りたい用途と視覚条件を自然言語で明確に伝えます。
+                        <strong>目的 → 主題 → 動作 → 場所 → スタイル → 構図 → 照明 → 比率 → 制約</strong>を必要な範囲で指定してください。
+                    </p>
+                    <p style="color:var(--text-muted); font-size:0.8rem; margin-top:0.5rem;">
+                        下の文章は本辞典で新規作成した編集可能なテンプレートです。［角括弧］を具体的な内容へ置き換えてコピーしてください。結果はモデル更新や入力画像によって変わります。
+                    </p>
+                </div>
+                <div id="chatgpt-error" style="display:none; color:#fca5a5; padding:1rem;"></div>
+                <div id="chatgpt-prompt-grid" class="chatgpt-grid"></div>
+            </main>
+        </div>
+    </div>
+
     <script>
         let db = [];
         let worksManifest = null;
@@ -1147,6 +1269,7 @@
         const cacheBuster = new Date().getTime();
         let dictionary = [];
         let negDictionary = [];
+        let chatGptPromptData = null;
         
         // Dictionary Pagination and Filters
         let dictFiltered = [];
@@ -1227,7 +1350,118 @@
             } else if (tabId === 'guide-tab') {
                 const btn = document.getElementById('nav-guide-btn');
                 if (btn) btn.classList.add('active');
+            } else if (tabId === 'chatgpt-tab') {
+                const btn = document.getElementById('nav-chatgpt-btn');
+                if (btn) btn.classList.add('active');
+                loadChatGptPromptLibrary();
             }
+        }
+
+        // ---------------------------------
+        // ChatGPT Images prompt library
+        // ---------------------------------
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&#039;');
+        }
+
+        async function loadChatGptPromptLibrary() {
+            if (chatGptPromptData) {
+                renderChatGptPrompts();
+                return;
+            }
+
+            const error = document.getElementById('chatgpt-error');
+            try {
+                const response = await fetch(`chatgpt_image_prompts.json?v=${cacheBuster}`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                chatGptPromptData = await response.json();
+                populateChatGptCategories();
+                renderChatGptSources();
+                renderChatGptPrompts();
+                error.style.display = 'none';
+            } catch (loadError) {
+                error.textContent = 'ChatGPT画像Promptの読み込みに失敗しました。ページを再読み込みしてください。';
+                error.style.display = 'block';
+                console.error('ChatGPT prompt library load failed:', loadError);
+            }
+        }
+
+        function populateChatGptCategories() {
+            const select = document.getElementById('chatgpt-category');
+            const categories = [...new Set(chatGptPromptData.prompts.map(item => item.category))].sort();
+            select.innerHTML = '<option value="all">すべて</option>';
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                select.appendChild(option);
+            });
+        }
+
+        function renderChatGptSources() {
+            const container = document.getElementById('chatgpt-sources');
+            container.innerHTML = chatGptPromptData.sources.map(source => {
+                const label = source.type === 'official' ? '公式' : 'GitHub参考';
+                return `
+                    <div>
+                        <span class="evidence-badge">${label}</span>
+                        <a class="source-link" href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.title)}</a>
+                    </div>`;
+            }).join('');
+        }
+
+        function renderChatGptPrompts() {
+            if (!chatGptPromptData) return;
+            const query = document.getElementById('chatgpt-search').value.toLowerCase().trim();
+            const category = document.getElementById('chatgpt-category').value;
+            const language = document.getElementById('chatgpt-language').value;
+            const templateKey = language === 'en' ? 'template_en' : 'template_ja';
+            const filtered = chatGptPromptData.prompts.filter(item => {
+                if (category !== 'all' && item.category !== category) return false;
+                if (!query) return true;
+                return [item.title, item.category, item.purpose, item.template_ja, item.template_en]
+                    .join(' ').toLowerCase().includes(query);
+            });
+
+            document.getElementById('chatgpt-count').textContent = `${filtered.length} / ${chatGptPromptData.prompts.length} テンプレート`;
+            const grid = document.getElementById('chatgpt-prompt-grid');
+            if (!filtered.length) {
+                grid.innerHTML = '<div class="results-panel" style="color:var(--text-muted);">条件に一致するテンプレートはありません。</div>';
+                return;
+            }
+
+            grid.innerHTML = filtered.map(item => `
+                <article class="chatgpt-card">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.7rem;">
+                        <div>
+                            <span class="cat-badge cat-style">${escapeHtml(item.category)}</span>
+                            <h3 style="font-size:1.08rem; margin-top:0.55rem;">${escapeHtml(item.title)}</h3>
+                        </div>
+                        <span class="evidence-badge">公式原則ベース・オリジナル</span>
+                    </div>
+                    <p style="font-size:0.82rem; color:var(--text-muted);">${escapeHtml(item.purpose)}</p>
+                    <textarea id="chatgpt-prompt-${escapeHtml(item.id)}" class="form-control" aria-label="${escapeHtml(item.title)}">${escapeHtml(item[templateKey])}</textarea>
+                    <button class="btn" type="button" onclick="copyChatGptPrompt('${escapeHtml(item.id)}', this)" style="margin-top:0;">テンプレートをコピー</button>
+                </article>`).join('');
+        }
+
+        async function copyChatGptPrompt(id, button) {
+            const textarea = document.getElementById(`chatgpt-prompt-${id}`);
+            if (!textarea) return;
+            try {
+                await navigator.clipboard.writeText(textarea.value);
+            } catch (copyError) {
+                textarea.select();
+                document.execCommand('copy');
+            }
+            const original = button.textContent;
+            button.textContent = 'コピーしました';
+            setTimeout(() => { button.textContent = original; }, 1200);
         }
 
         // ---------------------------------
@@ -2029,6 +2263,9 @@
 
         // Initialize Prompt Studio list & Dynamic Analytics on DOMContentLoaded
         window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('chatgpt-search').addEventListener('input', renderChatGptPrompts);
+            document.getElementById('chatgpt-category').addEventListener('change', renderChatGptPrompts);
+            document.getElementById('chatgpt-language').addEventListener('change', renderChatGptPrompts);
             setTimeout(() => {
                 renderBuilderExploreList();
                 loadLiveAnalyticsAndKnowhow();

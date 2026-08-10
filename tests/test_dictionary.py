@@ -1,3 +1,4 @@
+import json
 import subprocess
 import sys
 import tempfile
@@ -177,6 +178,39 @@ class SearchPromptsTests(unittest.TestCase):
 
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("--tags", result.stdout)
+
+
+class ChatGptImagePromptTests(unittest.TestCase):
+    def setUp(self):
+        self.data = json.loads(
+            (ROOT / "chatgpt_image_prompts.json").read_text(encoding="utf-8")
+        )
+
+    def test_prompt_library_has_unique_complete_templates(self):
+        prompts = self.data["prompts"]
+        ids = [prompt["id"] for prompt in prompts]
+        self.assertGreaterEqual(len(prompts), 10)
+        self.assertEqual(len(ids), len(set(ids)))
+        for prompt in prompts:
+            for field in (
+                "title", "category", "purpose", "template_ja", "template_en",
+                "source_type", "source_ids",
+            ):
+                self.assertTrue(prompt[field], f"{prompt['id']} is missing {field}")
+
+    def test_prompt_sources_are_https_and_referenced(self):
+        sources = {source["id"]: source for source in self.data["sources"]}
+        self.assertIn("official", {source["type"] for source in sources.values()})
+        self.assertIn("community", {source["type"] for source in sources.values()})
+        for source in sources.values():
+            self.assertTrue(source["url"].startswith("https://"))
+        for prompt in self.data["prompts"]:
+            self.assertTrue(set(prompt["source_ids"]).issubset(sources))
+
+    def test_pages_build_includes_prompt_library(self):
+        import build_site
+
+        self.assertIn("chatgpt_image_prompts.json", build_site.SITE_FILES)
 
 
 if __name__ == "__main__":

@@ -4,6 +4,15 @@ aitag.win、Civitai、およびDanbooru系APIから抽出したデータに基�
 
 本リポジトリに含まれるプログラムを実行することで、各サイトの公開Prompt・コミュニティ情報・Annotationから自動で最新のEvidenceデータベースを構築できます。
 
+Web UIにはNovelAI系の統計と分離した「ChatGPT画像Prompt」タブもあります。ChatGPT Images向けに、用途、主題、構図、照明、文字、変更しない条件などを自然言語で指定するオリジナルテンプレートを収録しています。これは外部サイトのタグ頻度をChatGPT向けに転用したものではありません。
+
+## ChatGPT Images Prompt Library
+
+* `chatgpt_image_prompts.json`: 日本語・英語の編集可能なオリジナルテンプレートと調査出典。小容量の手書きデータなのでGitで管理します。
+* 設計原則はOpenAI公式の[Creating images with ChatGPT](https://openai.com/academy/image-generation/)と[Creating images in ChatGPT](https://help.openai.com/en/articles/11084440-images-in-chatgpt)を正本にしています。
+* GitHub上の[Pixmind-io/awesome-gpt-image-2-prompts](https://github.com/Pixmind-io/awesome-gpt-image-2-prompts)、[jamez-bondos/awesome-gpt4o-images](https://github.com/jamez-bondos/awesome-gpt4o-images)、[YouMind-OpenLab/awesome-gpt-image-2](https://github.com/YouMind-OpenLab/awesome-gpt-image-2)は用途カテゴリの調査対象です。権利条件やモデル世代が一様ではないため、Prompt本文は転載していません。
+* 「best quality」のような特定語を効果保証として扱わず、作りたい結果と制約を具体的に書く方針です。
+
 ## Data Sources
 
 * **AITAG**: NovelAI V4.5で実際に使用された生成プロンプト。`nai_occurrence_count`（総出現回数）と`nai_image_count`（1回以上含む画像数）を分けて集計します。

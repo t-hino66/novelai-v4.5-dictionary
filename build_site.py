@@ -10,6 +10,7 @@ SITE_FILES = (
     "negative.json",
     "analytics_data.json",
     "knowhow_database.json",
+    "chatgpt_image_prompts.json",
     "manifest.json",
 )
 
