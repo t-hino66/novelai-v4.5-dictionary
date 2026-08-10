@@ -4,6 +4,7 @@ import os
 import re
 import urllib.request
 from collections import Counter, defaultdict
+from pathlib import Path
 
 # Inputs/Outputs
 INPUT_AITAG = "extracted_works.json"
@@ -19,6 +20,13 @@ NEG_DICT_JSON = "novelai_v4_5_neg_dictionary.json"
 TAG_SUMMARY_JSON = "tags.json"
 NEG_SUMMARY_JSON = "negative.json"
 MANIFEST_JSON = "manifest.json"
+WORKS_DIRECTORY = "works"
+WORKS_SHARD_SIZE = 5000
+
+UI_DATABASE_FIELDS = (
+    "source", "work_id", "title", "model", "prompt", "negative_prompt",
+    "steps", "scale", "sampler", "width", "height", "image_url",
+)
 
 OFFICIAL_V45_FULL_QUALITY_TAGS = {
     "location",
@@ -388,6 +396,49 @@ def calculate_usage_rates(image_counts, total_images):
         tag: round(min(count, total_images) / total_images * 100, 2)
         for tag, count in image_counts.items()
     }
+
+
+def project_work_record(record):
+    """Keep only fields consumed by the browser search UI."""
+    return {
+        field: record.get(field)
+        for field in UI_DATABASE_FIELDS
+        if record.get(field) not in (None, "")
+    }
+
+
+def write_works_shards(records, output_dir=WORKS_DIRECTORY, shard_size=WORKS_SHARD_SIZE):
+    """Write compact, source-scoped browser data files and their manifest."""
+    output_path = Path(output_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
+    for stale_file in output_path.glob("*.json"):
+        stale_file.unlink()
+
+    grouped = defaultdict(list)
+    for record in records:
+        source = record.get("source")
+        if source:
+            grouped[source].append(project_work_record(record))
+
+    manifest = {"total_count": len(records), "sources": {}}
+    for source in sorted(grouped):
+        source_records = grouped[source]
+        slug = re.sub(r"[^a-z0-9]+", "-", source.lower()).strip("-")
+        files = []
+        for start in range(0, len(source_records), shard_size):
+            shard_number = start // shard_size + 1
+            filename = f"{slug}-{shard_number:03d}.json"
+            with (output_path / filename).open("w", encoding="utf-8") as file:
+                json.dump(
+                    source_records[start:start + shard_size], file,
+                    ensure_ascii=False, separators=(",", ":"),
+                )
+            files.append(filename)
+        manifest["sources"][source] = {"count": len(source_records), "files": files}
+
+    with (output_path / "manifest.json").open("w", encoding="utf-8") as file:
+        json.dump(manifest, file, ensure_ascii=False, indent=2)
+    return manifest
 
 
 def resolve_image_url(image):
@@ -807,6 +858,12 @@ def process_data():
         for r in flat_records:
             writer.writerow(r)
 
+    works_manifest = write_works_shards(flat_records)
+    print(
+        f"Saved browser works shards: {WORKS_DIRECTORY}/ "
+        f"({works_manifest['total_count']} records)"
+    )
+
     # Build Tag Dictionary CSV
     print("Building tag frequency dictionary...")
     trans_dict = load_translation_dict()
@@ -1046,7 +1103,12 @@ def process_data():
         json.dump({
             "dictionary": TAG_SUMMARY_JSON,
             "negative_dictionary": NEG_SUMMARY_JSON,
-            "works_database": DATABASE_JSON,
+            "works_manifest": f"{WORKS_DIRECTORY}/manifest.json",
+            "full_exports": {
+                "release": "https://github.com/t-hino66/novelai-v4.5-dictionary/releases/tag/data-snapshot",
+                "database_json": "novelai_v4_5_database.json",
+                "database_csv": "novelai_v4_5_database.csv",
+            },
             "tag_count": len(tag_dict_rows),
             "negative_tag_count": len(neg_dict_rows),
             "work_count": len(flat_records),

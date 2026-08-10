@@ -1,85 +1,130 @@
-name: Update NovelAI and external evidence dictionaries
+name: Build and deploy prompt evidence dictionary
 
 on:
+  push:
+    branches: [master]
+  pull_request:
   schedule:
-    - cron: '0 0 * * 0' # Weekly on Sundays at 00:00 UTC
-  workflow_dispatch: # Allows manual execution from GitHub Web UI
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
-  update:
+  build:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
+    permissions:
+      contents: read
     env:
+      GH_TOKEN: ${{ github.token }}
       PYTHONUNBUFFERED: "1"
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
-          python-version: '3.10'
+          python-version: '3.12'
 
-      - name: Run AITAG Scraping Script
+      - name: Download the latest source snapshot
         run: |
-          # Fetch incremental updates (1000 works)
+          gh release download data-snapshot \
+            --pattern 'extracted_works.json' \
+            --pattern '*_raw_works.json' \
+            --dir .
+
+      - name: Refresh external source data
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: |
           python -u extract_tags.py 1000
-
-      - name: Run Danbooru Scraping Script
-        run: |
-          # Fetch incremental high score posts from Danbooru (1000 posts)
           python -u extract_danbooru_tags.py 1000 "score:>=50"
-
-      - name: Run Extra Booru (Safebooru / Yandere) Scraping Script
-        run: |
-          # Fetch incremental extra posts (500 posts)
           python -u extract_booru_extra.py 500
-
-      - name: Run Civitai community evidence extraction
-        run: python -u extract_civitai_tags.py 500
-
-      - name: Run AIbooru annotation extraction
-        run: python -u extract_aibooru_tags.py 500
-
-      - name: Run Know-how Crawling Script
-        run: |
-          # Crawl and update external NovelAI V4.5 know-how database
+          python -u extract_civitai_tags.py 500
+          python -u extract_aibooru_tags.py 500
           python -u extract_knowhow.py
 
       - name: Compile Python scripts
         run: |
-          python3 -m py_compile \
+          python -m py_compile \
             extract_tags.py \
             extract_danbooru_tags.py \
             extract_booru_extra.py \
             extract_civitai_tags.py \
             extract_aibooru_tags.py \
             build_dictionary.py \
+            build_site.py \
             search_prompts.py \
             extract_knowhow.py \
             validate_data.py
 
-      - name: Run Build Dictionary Script
+      - name: Build and validate dictionaries
         run: |
           python -u build_dictionary.py
+          python -m unittest discover -s tests
+          python validate_data.py
+          python build_site.py
 
-      - name: Test and validate generated data
-        run: |
-          python3 -m unittest discover -s tests
-          python3 validate_data.py
+      - name: Package rolling data snapshot and exports
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: data-snapshot-assets
+          path: |
+            extracted_works.json
+            danbooru_raw_works.json
+            booru_extra_raw_works.json
+            civitai_raw_works.json
+            aibooru_raw_works.json
+            novelai_v4_5_database.json
+            novelai_v4_5_database.csv
+            novelai_v4_5_tag_dictionary.json
+            novelai_v4_5_tag_dictionary.csv
+            novelai_v4_5_neg_dictionary.json
+            novelai_v4_5_dictionary.md
+          retention-days: 1
 
-      - name: Commit and Push Changes
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          if git diff --staged --quiet; then
-            echo "No changes to commit."
-          else
-            git commit -m "chore: auto-update prompt evidence databases [skip ci]"
-            git pull --rebase origin master
-            git push origin master
-          fi
+      - name: Upload GitHub Pages artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  snapshot:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Download generated snapshot assets
+        uses: actions/download-artifact@v4
+        with:
+          name: data-snapshot-assets
+          path: data-snapshot-assets
+
+      - name: Update rolling release assets
+        run: gh release upload data-snapshot data-snapshot-assets/* --clobber --repo ${{ github.repository }}
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

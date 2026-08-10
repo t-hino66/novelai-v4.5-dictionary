@@ -9,8 +9,8 @@ aitag.win、Civitai、およびDanbooru系APIから抽出したデータに基�
 * **AITAG**: NovelAI V4.5で実際に使用された生成プロンプト。`nai_occurrence_count`（総出現回数）と`nai_image_count`（1回以上含む画像数）を分けて集計します。
 * **Danbooru**: 画像に付与されたアノテーションタグ。`danbooru_count`としてAITAGとは別に集計します。
 * **Safebooru / Yande.re**: 補助的な画像アノテーション。`safebooru_count` / `yandere_count`として別々に保持します。
-* **Civitai**: 公開画像の生成Prompt（APIが匿名公開する場合）または公開モデルのコミュニティタグ。`civitai_image_count` / `civitai_usage_rate`として独立集計し、NAI V4.5使用率には混ぜません。
-* **AIbooru**: AI画像に付与されたAnnotationタグ。`aibooru_count`として独立集計します。
+* **Civitai**: 公開画像の生成Prompt（APIが匿名公開する場合）または公開モデルのコミュニティタグ。現在の匿名Image APIはPrompt metadataを返さないため、公開モデルタグを使用しています。`civitai_image_count` / `civitai_usage_rate`として独立集計し、NAI V4.5使用率には混ぜません。
+* **AIbooru**: AI画像に付与されたAnnotationタグ。生成時のPromptではありません。`aibooru_count`として独立集計します。
 
 **外部サイトの頻度 ≠ NovelAIでの効果保証**です。また、AITAGでの高頻度も効果の強さや因果関係を証明するものではありません。辞典では`Official`、`NAI V4.5`、`Danbooru`、`Civitai`、`AIbooru`のEvidenceを区別します。
 
@@ -28,16 +28,12 @@ aitag.win、Civitai、およびDanbooru系APIから抽出したデータに基�
 
 ---
 
-## 📂 構成ファイル
+## 📂 データ配信構成
 
-* **`novelai_v4_5_tag_dictionary.csv`**
-  * 頻出タグの日本語辞典CSV。GitHub上で直接カラム整理されたテーブルとして閲覧・検索・ソートが可能です。
-* **`tags.json` / `negative.json` / `manifest.json`**
-  * Web UIの初期表示に使う軽量辞典とデータmanifest。詳細schemaは従来名の辞典JSONに保持し、作品DBは検索時に遅延読込します。
-* **`novelai_v4_5_dictionary.md`**
-  * 統計データに基づく、カテゴリ別の主要タグ（クオリティ、キャラクター、衣装、背景等）のまとめガイド。
-* **`novelai_v4_5_database.csv` / `.json`**
-  * 抽出した全画像データ（AITAGおよびDanbooru）を統一フォーマットで記録したフラットデータベース。
+* Web UI用の`tags.json`、`negative.json`、`works/*.json`はGitHub Actionsで生成し、Pages artifactとして直接デプロイします。
+* 作品DBはソース別・最大5,000件のshardに分け、検索時に選択されたソースだけを遅延ロードします。
+* 完全版JSON/CSVと増分更新用の元データは、Git履歴ではなく[`data-snapshot` Release](https://github.com/t-hino66/novelai-v4.5-dictionary/releases/tag/data-snapshot)で保持します。
+* 生成物は`.gitignore`対象です。ローカルでは`build_dictionary.py`で再生成できます。
 * **`extract_tags.py`**
   * aitag.win から NovelAI Diffusion V4.5 のデータをスクレイピングして `extracted_works.json` を保存するスクリプト。
 * **`extract_danbooru_tags.py`**
@@ -54,9 +50,9 @@ aitag.win、Civitai、およびDanbooru系APIから抽出したデータに基�
 * **自動定期実行**: 毎週日曜日の深夜に、自動的に新規データをスクレイピングしてタグ辞書を更新します。
 * **手動実行手順**:
   1. リポジトリ上部の「**Actions**」タブをクリックします。
-  2. 左サイドバーから「**Update NovelAI Tags Dictionary**」をクリックします。
+  2. 左サイドバーから「**Build and deploy prompt evidence dictionary**」をクリックします。
   3. 右上に表示される「**Run workflow**」ボタンをクリックし、さらに緑色の「Run workflow」を実行します。
-  4. 数分でスクリプトが実行され、CSV や Markdown などの成果物が自動的に最新化され、コミット＆プッシュされます。
+  4. スクリプトが元データを更新し、完全版をReleaseへ保存した後、Web用データをGitHub Pagesへデプロイします。生成データはGitへコミットされません。
 
 ### 2. ローカル PC でスクレイピング（抽出）
 ローカルで手動実行したい場合は、目的に応じて以下のスクリプトを実行します。
@@ -91,8 +87,9 @@ python3 build_dictionary.py
 ## 検証
 
 ```bash
-python3 -m py_compile extract_tags.py extract_danbooru_tags.py extract_booru_extra.py build_dictionary.py search_prompts.py extract_knowhow.py
+python3 -m py_compile extract_tags.py extract_danbooru_tags.py extract_booru_extra.py build_dictionary.py build_site.py search_prompts.py extract_knowhow.py
 python3 build_dictionary.py
 python3 -m unittest discover -s tests
 python3 validate_data.py
+python3 build_site.py
 ```

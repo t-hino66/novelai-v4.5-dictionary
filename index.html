@@ -928,6 +928,12 @@
                 </div>
             </div>
 
+            <div style="margin:0 0 1rem; padding:0.9rem 1rem; border:1px solid #334155; border-radius:8px; background:#0f172a; color:var(--text-muted); font-size:0.85rem; line-height:1.65;">
+                <strong style="color:#e2e8f0;">件数の読み方：</strong>
+                NAIは実生成Prompt、Civitaiは公開Promptまたはモデルのコミュニティタグ、AIbooruは画像内容のAnnotationです。
+                外部サイトが0件でも「生成Promptとして使われない」という意味ではありません。たとえば品質語はPromptでは一般的でも、画像内容を説明するAIbooru Annotationには通常現れません。
+            </div>
+
             <div class="dict-table-container">
                 <table class="dict-table">
                     <thead>
@@ -938,8 +944,8 @@
                             <th>NAI使用画像数</th>
                             <th>NAI使用率</th>
                             <th>Danbooru件数</th>
-                            <th>Civitai件数</th>
-                            <th>AIbooru件数</th>
+                            <th>Civitai Evidence件数</th>
+                            <th>AIbooru Annotation件数</th>
                             <th>Evidence</th>
                         </tr>
                     </thead>
@@ -1135,8 +1141,10 @@
 
     <script>
         let db = [];
-        let dbLoaded = false;
-        let dbLoadPromise = null;
+        let worksManifest = null;
+        let worksManifestPromise = null;
+        const worksSourceCache = new Map();
+        const cacheBuster = new Date().getTime();
         let dictionary = [];
         let negDictionary = [];
         
@@ -1168,7 +1176,6 @@
             const loader = document.getElementById('loader');
             loader.style.display = 'block';
             try {
-                const cacheBuster = new Date().getTime();
                 // Load lightweight dictionaries first. The large works database is lazy-loaded on search.
                 const responseDict = await fetch(`tags.json?v=${cacheBuster}`);
                 dictionary = await responseDict.json();
@@ -1183,8 +1190,8 @@
                 
                 loader.style.display = 'none';
                 
-                // Update total count in header
-                document.getElementById('db-count').textContent = `(収録画像: 作品検索時に読込 | ポジティブ辞書: ${dictionary.length}件 | ネガティブ辞書: ${negDictionary.length}件)`;
+                const manifest = await loadWorksManifest();
+                document.getElementById('db-count').textContent = `(収録画像: ${manifest.total_count}件・ソース別遅延読込 | ポジティブ辞書: ${dictionary.length}件 | ネガティブ辞書: ${negDictionary.length}件)`;
                 document.getElementById('dict-count').textContent = `全 ${dictionary.length} 件の統計辞書`;
                 
                 // Initialize Dictionary display
@@ -1246,40 +1253,61 @@
             });
         }
 
-        async function loadSearchDatabase() {
-            if (dbLoaded) return;
-            if (!dbLoadPromise) {
-                const loader = document.getElementById('loader');
-                loader.style.display = 'block';
-                loader.textContent = '作品データベースを読み込み中...';
-                const cacheBuster = new Date().getTime();
-                dbLoadPromise = fetch(`novelai_v4_5_database.json?v=${cacheBuster}`)
+        async function loadWorksManifest() {
+            if (worksManifest) return worksManifest;
+            if (!worksManifestPromise) {
+                worksManifestPromise = fetch(`works/manifest.json?v=${cacheBuster}`)
                     .then(response => {
-                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                        if (!response.ok) throw new Error(`Works manifest HTTP ${response.status}`);
                         return response.json();
                     })
                     .then(data => {
-                        db = data;
-                        dbLoaded = true;
-                        populateSamplers();
-                        document.getElementById('db-count').textContent = `(収録画像: ${db.length}件 | ポジティブ辞書: ${dictionary.length}件 | ネガティブ辞書: ${negDictionary.length}件)`;
-                    })
-                    .finally(() => {
-                        loader.style.display = 'none';
+                        worksManifest = data;
+                        return data;
                     });
             }
-            return dbLoadPromise;
+            return worksManifestPromise;
+        }
+
+        async function loadWorksSource(source) {
+            if (worksSourceCache.has(source)) return worksSourceCache.get(source);
+            const manifest = await loadWorksManifest();
+            const sourceEntry = manifest.sources[source];
+            if (!sourceEntry) return [];
+            const loadPromise = Promise.all(sourceEntry.files.map(filename =>
+                fetch(`works/${filename}?v=${cacheBuster}`).then(response => {
+                    if (!response.ok) throw new Error(`${filename} HTTP ${response.status}`);
+                    return response.json();
+                })
+            )).then(shards => shards.flat());
+            worksSourceCache.set(source, loadPromise);
+            return loadPromise;
+        }
+
+        async function loadSearchDatabase(source) {
+            const loader = document.getElementById('loader');
+            loader.style.display = 'block';
+            loader.textContent = '選択したデータソースを読み込み中...';
+            try {
+                const manifest = await loadWorksManifest();
+                const sources = source === 'all' ? Object.keys(manifest.sources) : [source];
+                db = (await Promise.all(sources.map(loadWorksSource))).flat();
+                populateSamplers();
+                document.getElementById('db-count').textContent = `(収録画像: ${manifest.total_count}件・今回読込 ${db.length}件 | ポジティブ辞書: ${dictionary.length}件 | ネガティブ辞書: ${negDictionary.length}件)`;
+            } finally {
+                loader.style.display = 'none';
+            }
         }
 
         async function performSearch() {
+            const source = document.getElementById('filter-source').value;
             try {
-                await loadSearchDatabase();
+                await loadSearchDatabase(source);
             } catch (error) {
                 alert('作品データベースの読み込みに失敗しました。');
                 console.error(error);
                 return;
             }
-            const source = document.getElementById('filter-source').value;
             const sampler = document.getElementById('filter-sampler').value;
             const aspect = document.getElementById('filter-aspect').value;
             const tagsInput = document.getElementById('filter-tags').value;
