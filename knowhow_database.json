@@ -2,7 +2,7 @@
   {
     "category": "プロンプト基本構造",
     "title": "NovelAI V4.5 推奨5段レイアウト (2026年最新基準)",
-    "updated": "2026-07-28",
+    "updated": "2026-08-10",
     "source": "AI Art Basics Guide 1.1 / hothottuk.neocities.org",
     "summary": "1. 品質タグ (masterpiece, very aesthetic) ➔ 2. メイン被写体・キャラクター ➔ 3. 衣装・アクセサリー ➔ 4. 構図・ポーズ・アングル ➔ 5. 背景・照明・画風 (Medium/Lineart/Shading)",
     "key_takeaways": [
@@ -11,9 +11,32 @@
     ]
   },
   {
+    "category": "構図・レイアウト構造",
+    "title": "カメラ・アングル優先（Framing & Camera Priority）レイアウト",
+    "updated": "2026-08-10",
+    "source": "AI Art Basics Guide 1.1 & NovelAI Official Guide",
+    "summary": "from above (見下ろし) や cowboy shot (膝上構図) などのカメラ画角タグは、キャラクター属性の直前に配置することで画角の旋回・ズーム失敗を劇的に防ぐレイアウト。",
+    "key_takeaways": [
+      "推奨順序: masterpiece, 1girl, cowboy shot, from above, blue hair...",
+      "構図タグが文末にあると背景や小物に押されて無視されやすくなります。",
+      "画角変更時は背景指定を簡潔 (simple background等) にするとカメラがスムーズに動きます。"
+    ]
+  },
+  {
+    "category": "色移り防止レイアウト",
+    "title": "色属性の混ざり防止（Color Bleeding Isolation）配置ルール",
+    "updated": "2026-08-10",
+    "source": "hothottuk.neocities.org / NovelAI Deep Dive",
+    "summary": "キャラクターの髪色・瞳色と、背景・照明・小物の色が混ざり合う (Color Bleeding) のを防ぐため、キャラクター属性ブロックと背景・画風ブロックを完全に分離隔離するレイアウト。",
+    "key_takeaways": [
+      "キャラブロック (1girl, blue hair, white dress) と背景ブロック (sunset, orange sky, classroom) の間にカンマ区切りを明確化。",
+      "髪色が背景色に引っ張られる場合は (blue hair:1.15) のようにピンポイント強調または -1::orange hair:: で否定。"
+    ]
+  },
+  {
     "category": "最新重み付け仕様",
     "title": "強弱構文 () と {} の最新挙動とブレンド記法",
-    "updated": "2026-07-28",
+    "updated": "2026-08-10",
     "source": "NovelAI Community & Reddit /r/NovelAI",
     "summary": "V4.5では (tag:1.2) の数値指定および {tag} の波括弧強調が正式推奨。複数画風を混ぜる場合は [style A | style B] または (style A:0.6), (style B:0.4) のブレンド記法が強力。",
     "key_takeaways": [
@@ -23,9 +46,21 @@
     ]
   },
   {
+    "category": "ネガティブレイアウト",
+    "title": "3段階層型ネガティブプロンプトの設計構成",
+    "updated": "2026-08-10",
+    "source": "NovelAI V4.5 Best Practice Guide",
+    "summary": "ネガティブプロンプトを「第1段: 低品質除外 ➔ 第2段: 実写・3Dノイズ除外 ➔ 第3段: 解剖学的破綻除外」の3ブロック階層で配置する安定化テクニック。",
+    "key_takeaways": [
+      "1. 低品質: lowres, bad anatomy, worst quality, low quality",
+      "2. 2Dアニメ固定: monochrome, photo, 3d, realistic, render",
+      "3. パーツ補正: extra fingers, missing fingers, bad hands"
+    ]
+  },
+  {
     "category": "Vibe Transfer & マイナス参照",
     "title": "Negative Vibe Transfer (マイナス参照) の完全攻略",
-    "updated": "2026-07-28",
+    "updated": "2026-08-10",
     "source": "Vibe Transfer Advanced Deep Dive Research",
     "summary": "Vibe Transfer の Strength スライダーに負の値 (-0.5 〜 -1.0) を指定することで、参照画像の不快な色調・ノイズ・描き込みの癖を引き算できる裏技。",
     "key_takeaways": [
@@ -36,7 +71,7 @@
   {
     "category": "絵師風・作画コントロール",
     "title": "Danbooru由来の作画媒体・線画・塗りタグの3段活用",
-    "updated": "2026-07-28",
+    "updated": "2026-08-10",
     "source": "Danbooru Tag Database & AITAG Analytics",
     "summary": "Medium (水彩・油彩・厚塗り), Lineart (繊細な線・太線), Shading (セル画風・グラデーション) を3段セットで指定することで、絵師名を入れずにアニメ風・神絵師風の質感を完全再現。",
     "key_takeaways": [
