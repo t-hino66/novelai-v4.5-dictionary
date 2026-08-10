@@ -73,7 +73,7 @@ jobs:
 
       - name: Package rolling data snapshot and exports
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: data-snapshot-assets
           path: |
@@ -92,7 +92,7 @@ jobs:
 
       - name: Upload GitHub Pages artifact
         if: github.event_name != 'pull_request'
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
@@ -106,7 +106,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
     steps:
       - name: Download generated snapshot assets
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: data-snapshot-assets
           path: data-snapshot-assets
@@ -127,4 +127,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
