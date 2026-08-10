@@ -1,16 +1,18 @@
-# NovelAI Diffusion & Danbooru Prompt Dictionary & Database
+# NovelAI Diffusion Prompt Evidence Dictionary & Database
 
-aitag.win およびDanbooru系APIから抽出したデータに基づく、NovelAI Diffusion V4.5のプロンプトデータベースおよび日本語タグ辞典です。プロンプトでの観測と画像アノテーションを別の根拠として扱います。
+aitag.win、Civitai、およびDanbooru系APIから抽出したデータに基づく、NovelAI Diffusion V4.5のプロンプトデータベースおよび日本語タグ辞典です。プロンプトでの観測、コミュニティPrompt、画像Annotationを別の根拠として扱います。
 
-本リポジトリに含まれるプログラムを実行することで、ファンアート投稿や本家Danbooruの統計から自動で最新のプロンプトデータベースを構築できます。
+本リポジトリに含まれるプログラムを実行することで、各サイトの公開Prompt・コミュニティ情報・Annotationから自動で最新のEvidenceデータベースを構築できます。
 
 ## Data Sources
 
 * **AITAG**: NovelAI V4.5で実際に使用された生成プロンプト。`nai_occurrence_count`（総出現回数）と`nai_image_count`（1回以上含む画像数）を分けて集計します。
 * **Danbooru**: 画像に付与されたアノテーションタグ。`danbooru_count`としてAITAGとは別に集計します。
 * **Safebooru / Yande.re**: 補助的な画像アノテーション。`safebooru_count` / `yandere_count`として別々に保持します。
+* **Civitai**: 公開画像の生成Prompt（APIが匿名公開する場合）または公開モデルのコミュニティタグ。`civitai_image_count` / `civitai_usage_rate`として独立集計し、NAI V4.5使用率には混ぜません。
+* **AIbooru**: AI画像に付与されたAnnotationタグ。`aibooru_count`として独立集計します。
 
-**Danbooru頻度 ≠ NovelAIでの効果保証**です。また、AITAGでの高頻度も効果の強さや因果関係を証明するものではありません。辞典では`Official`、`NAI V4.5`、`Danbooru`、`Community`のEvidenceを区別します。
+**外部サイトの頻度 ≠ NovelAIでの効果保証**です。また、AITAGでの高頻度も効果の強さや因果関係を証明するものではありません。辞典では`Official`、`NAI V4.5`、`Danbooru`、`Civitai`、`AIbooru`のEvidenceを区別します。
 
 ## Dictionary schema
 
@@ -20,8 +22,8 @@ aitag.win およびDanbooru系APIから抽出したデータに基づく、Novel
 * `occurrence_count`: AITAGプロンプト内での総出現回数。
 * `image_count`: AITAGでタグを1回以上含む画像数。
 * `image_usage_rate`: `image_count / AITAG V4.5画像数 * 100`。後方互換の`usage_rate`も同じ値です。
-* `stats`: AITAG、Danbooru、Safebooru、Yande.reの根拠別集計。
-* `evidence`: `official`、`nai_v45_observed`、`danbooru`、`community`。
+* `stats`: AITAG、Danbooru、Safebooru、Yande.re、Civitai、AIbooruの根拠別集計。
+* `evidence`: `official`、`nai_v45_observed`、`danbooru`、`civitai`、`aibooru`、`community`。
 * `related` / `conflicts`: 将来拡張用の配列（現時点では空配列）。
 
 ---

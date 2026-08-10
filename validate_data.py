@@ -14,13 +14,15 @@ def validate_dictionary(path):
 
     for row in rows:
         tag = row.get("tag", "<missing>")
-        usage_rate = row.get("usage_rate")
-        assert isinstance(usage_rate, (int, float)), (
-            f"{path}: {tag!r} usage_rate must be numeric, got {usage_rate!r}"
-        )
-        assert 0 <= usage_rate <= 100, (
-            f"{path}: {tag!r} usage_rate out of range: {usage_rate}"
-        )
+        for field, usage_rate in row.items():
+            if field != "usage_rate" and not field.endswith("_usage_rate"):
+                continue
+            assert isinstance(usage_rate, (int, float)), (
+                f"{path}: {tag!r} {field} must be numeric, got {usage_rate!r}"
+            )
+            assert 0 <= usage_rate <= 100, (
+                f"{path}: {tag!r} {field} out of range: {usage_rate}"
+            )
         assert row.get("occurrence_count", 0) >= row.get("image_count", 0), (
             f"{path}: {tag!r} occurrence_count is below image_count"
         )

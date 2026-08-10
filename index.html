@@ -632,7 +632,7 @@
 <body>
 
     <header>
-        <h1>NovelAI & Danbooru Prompt System</h1>
+        <h1>NovelAI Prompt Evidence System</h1>
         <p>画像検索・共起タグ解析・タグ日本語図鑑データベース <span id="db-count" style="font-size: 0.9rem; font-weight: normal; color: var(--text-muted);"></span></p>
     </header>
 
@@ -655,6 +655,8 @@
                         <option value="all">すべて (All)</option>
                         <option value="aitag.win">NovelAI V4.5 (aitag.win)</option>
                         <option value="danbooru">Danbooru (本家スコア画像)</option>
+                        <option value="civitai">Civitai (コミュニティ情報)</option>
+                        <option value="aibooru">AIbooru (AI画像Annotation)</option>
                     </select>
                 </div>
 
@@ -936,6 +938,8 @@
                             <th>NAI使用画像数</th>
                             <th>NAI使用率</th>
                             <th>Danbooru件数</th>
+                            <th>Civitai件数</th>
+                            <th>AIbooru件数</th>
                             <th>Evidence</th>
                         </tr>
                     </thead>
@@ -1369,12 +1373,18 @@
                 const card = document.createElement('div');
                 card.className = 'work-card';
                 
-                const url = item.source === 'aitag.win' 
-                    ? `https://aitag.win/i/${item.work_id}` 
-                    : `https://danbooru.donmai.us/posts/${item.work_id}`;
-
-                const badgeClass = item.source === 'aitag.win' ? 'src-aitag' : 'src-danbooru';
-                const sourceName = item.source === 'aitag.win' ? 'NovelAI 4.5' : 'Danbooru';
+                const sourceDetails = {
+                    'aitag.win': { url: `https://aitag.win/i/${item.work_id}`, name: 'NovelAI 4.5', css: 'src-aitag' },
+                    danbooru: { url: `https://danbooru.donmai.us/posts/${item.work_id}`, name: 'Danbooru', css: 'src-danbooru' },
+                    civitai: { url: item.title?.startsWith('Civitai Model:') ? `https://civitai.com/models/${item.work_id}` : `https://civitai.com/images/${item.work_id}`, name: 'Civitai', css: 'src-danbooru' },
+                    aibooru: { url: `https://aibooru.online/posts/${item.work_id}`, name: 'AIbooru', css: 'src-danbooru' },
+                    safebooru: { url: item.image_url, name: 'Safebooru', css: 'src-danbooru' },
+                    yandere: { url: item.image_url, name: 'Yande.re', css: 'src-danbooru' },
+                };
+                const details = sourceDetails[item.source] || { url: item.image_url || '#', name: item.source, css: 'src-danbooru' };
+                const url = details.url;
+                const badgeClass = details.css;
+                const sourceName = details.name;
 
                 let imgHtml = '';
                 if (item.image_url) {
@@ -1537,13 +1547,17 @@
                 if (evidence.official) evidenceLabels.push('Official');
                 if (evidence.nai_v45_observed) evidenceLabels.push('NAI V4.5');
                 if (evidence.danbooru || evidence.danbooru_observed) evidenceLabels.push('Danbooru');
-                if (evidence.community) evidenceLabels.push('Community');
+                if (evidence.civitai) evidenceLabels.push('Civitai');
+                if (evidence.aibooru) evidenceLabels.push('AIbooru');
+                if (evidence.community && !evidence.civitai) evidenceLabels.push('Community');
                 const evidenceHtml = evidenceLabels.length
                     ? evidenceLabels.map(label => `<span class="evidence-badge">${label}</span>`).join('')
                     : '<span style="color:var(--text-muted)">-</span>';
                 const imageCount = item.nai_image_count ?? item.image_count ?? 0;
                 const usageRate = Number(item.nai_usage_rate ?? item.image_usage_rate ?? item.usage_rate ?? 0);
                 const danbooruCount = item.danbooru_count ?? 0;
+                const civitaiCount = item.civitai_image_count ?? 0;
+                const aibooruCount = item.aibooru_count ?? 0;
 
                 tr.innerHTML = `
                     <td>
@@ -1556,6 +1570,8 @@
                     <td style="font-weight:600; color:#fff;">${imageCount}</td>
                     <td>${usageRate.toFixed(2)}%</td>
                     <td>${danbooruCount}</td>
+                    <td>${civitaiCount}</td>
+                    <td>${aibooruCount}</td>
                     <td>${evidenceHtml}</td>
                 `;
                 tbody.appendChild(tr);

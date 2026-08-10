@@ -9,6 +9,8 @@ from collections import Counter, defaultdict
 INPUT_AITAG = "extracted_works.json"
 INPUT_DANBOORU = "danbooru_raw_works.json"
 INPUT_BOORU_EXTRA = "booru_extra_raw_works.json"
+INPUT_CIVITAI = "civitai_raw_works.json"
+INPUT_AIBOORU = "aibooru_raw_works.json"
 DATABASE_JSON = "novelai_v4_5_database.json"
 DATABASE_CSV = "novelai_v4_5_database.csv"
 TAG_DICT_CSV = "novelai_v4_5_tag_dictionary.csv"
@@ -548,14 +550,20 @@ def process_data():
     nai_image_counts = Counter()
     neg_occurrence_counts = Counter()
     neg_image_counts = Counter()
+    civitai_occurrence_counts = Counter()
+    civitai_image_counts = Counter()
+    civitai_neg_occurrence_counts = Counter()
+    civitai_neg_image_counts = Counter()
     source_tag_counts = {
         "danbooru": Counter(),
         "safebooru": Counter(),
         "yandere": Counter(),
+        "aibooru": Counter(),
     }
     aliases = defaultdict(set)
     negative_aliases = defaultdict(set)
     total_nai_images = 0
+    total_civitai_images = 0
     tag_to_category = {}
 
     # 1. Parse AITAG (NovelAI 4.5) data if exists
@@ -716,6 +724,73 @@ def process_data():
     else:
         print(f"Skipping {INPUT_BOORU_EXTRA} (not found).")
 
+    # 4. Civitai public generation metadata is community evidence. It must not
+    # affect the NovelAI V4.5 denominator or usage-rate counters above.
+    if os.path.exists(INPUT_CIVITAI):
+        print(f"Parsing Civitai community evidence: {INPUT_CIVITAI}...")
+        with open(INPUT_CIVITAI, encoding="utf-8") as f:
+            civitai_images = json.load(f)
+        for image in civitai_images:
+            prompt_tags = parse_prompt_tags(image.get("prompt", ""), aliases)
+            negative_tags = parse_prompt_tags(image.get("negative_prompt", ""), negative_aliases)
+            if not prompt_tags and not negative_tags:
+                continue
+            total_civitai_images += 1
+            civitai_occurrence_counts.update(prompt_tags)
+            civitai_image_counts.update(set(prompt_tags))
+            civitai_neg_occurrence_counts.update(negative_tags)
+            civitai_neg_image_counts.update(set(negative_tags))
+            image_id = str(image.get("id"))
+            flat_records.append({
+                "source": "civitai", "work_id": image_id,
+                "title": (f"Civitai Model: {image.get('model')}"
+                          if image.get("evidence_type") == "model_tags"
+                          else f"Civitai Image {image_id}"),
+                "model": image.get("model") or "Civitai community model",
+                "prompt": ",".join(prompt_tags),
+                "negative_prompt": ",".join(negative_tags),
+                "steps": image.get("steps") or "",
+                "scale": image.get("cfg_scale") or image.get("cfgScale") or "",
+                "sampler": image.get("sampler") or "",
+                "width": image.get("width"), "height": image.get("height"),
+                "image_path": "", "image_url": image.get("url") or "", "ai_json": "",
+            })
+    else:
+        print(f"Skipping {INPUT_CIVITAI} (not found).")
+
+    # 5. AIbooru tags are AI-image annotations, independent of prompt evidence.
+    if os.path.exists(INPUT_AIBOORU):
+        print(f"Parsing AIbooru annotations: {INPUT_AIBOORU}...")
+        with open(INPUT_AIBOORU, encoding="utf-8") as f:
+            aibooru_posts = json.load(f)
+        for post in aibooru_posts:
+            clean_prompt_list = []
+            for raw_tag in (tag for tag in post.get("tag_string", "").split(" ") if tag):
+                canonical = canonicalize_tag(raw_tag)
+                if canonical:
+                    clean_prompt_list.append(canonical)
+                    aliases[canonical].update({canonical, clean_tag(raw_tag).lower()})
+            source_tag_counts["aibooru"].update(set(clean_prompt_list))
+            for field, category in (("tag_string_character", "Character"),
+                                    ("tag_string_artist", "Style"),
+                                    ("tag_string_copyright", "Copyright"),
+                                    ("tag_string_model", "Style")):
+                for raw_tag in post.get(field, "").split(" "):
+                    canonical = canonicalize_tag(raw_tag)
+                    if canonical:
+                        tag_to_category[canonical] = category
+            work_id = str(post.get("id"))
+            flat_records.append({
+                "source": "aibooru", "work_id": work_id,
+                "title": f"AIbooru Post {work_id}", "model": "AIbooru annotation",
+                "prompt": ",".join(clean_prompt_list), "negative_prompt": "",
+                "steps": "", "scale": post.get("score") or "", "sampler": "",
+                "width": post.get("width"), "height": post.get("height"),
+                "image_path": "", "image_url": post.get("image_url") or "", "ai_json": "",
+            })
+    else:
+        print(f"Skipping {INPUT_AIBOORU} (not found).")
+
     if not flat_records:
         print("No source database found to build dictionary. Please run extract_tags.py or extract_danbooru_tags.py.")
         return
@@ -748,6 +823,7 @@ def process_data():
 
     # AITAGとDanbooruの両方のユニークタグの和集合を走査対象とする
     all_unique_tags = set(nai_occurrence_counts)
+    all_unique_tags.update(civitai_occurrence_counts)
     for counts in source_tag_counts.values():
         all_unique_tags.update(counts)
 
@@ -757,12 +833,15 @@ def process_data():
             nai_image_counts.get(tag, 0),
             nai_occurrence_counts.get(tag, 0),
             source_tag_counts["danbooru"].get(tag, 0),
+            civitai_image_counts.get(tag, 0),
+            source_tag_counts["aibooru"].get(tag, 0),
         ),
         reverse=True,
     )
 
     official_tags = get_official_tags()
     usage_rates = calculate_usage_rates(nai_image_counts, total_nai_images)
+    civitai_usage_rates = calculate_usage_rates(civitai_image_counts, total_civitai_images)
     
     tag_dict_rows = []
     for tag in sorted_tags:
@@ -771,19 +850,21 @@ def process_data():
         dan_count = source_tag_counts["danbooru"].get(tag, 0)
         safe_count = source_tag_counts["safebooru"].get(tag, 0)
         yandere_count = source_tag_counts["yandere"].get(tag, 0)
+        civitai_count = civitai_image_counts.get(tag, 0)
+        aibooru_count = source_tag_counts["aibooru"].get(tag, 0)
         
         category = get_category_enhanced(tag, tag_to_category)
         
         # しきい値の適用
         if category in ("Character", "Style", "Copyright"):
             # キャラクター・作品・絵師は、AITAGで1回以上、またはDanbooruで3回以上出現していれば採用
-            if occurrence_count >= 1 or dan_count >= 3:
+            if occurrence_count >= 1 or dan_count >= 3 or civitai_count >= 3 or aibooru_count >= 3:
                 pass
             else:
                 continue
         else:
             # 一般タグはAITAGで3回以上出現しているもののみ
-            if occurrence_count >= 3:
+            if occurrence_count >= 3 or civitai_count >= 3 or aibooru_count >= 3:
                 pass
             else:
                 continue
@@ -799,7 +880,10 @@ def process_data():
             "danbooru": dan_count > 0,
             "danbooru_observed": dan_count > 0,
             "community": False,
+            "civitai": civitai_count > 0,
+            "aibooru": aibooru_count > 0,
         }
+        evidence["community"] = evidence["civitai"]
         stats = {
             "nai_image_count": image_count,
             "nai_usage_rate": usage_rates.get(tag, 0.0),
@@ -807,6 +891,10 @@ def process_data():
             "danbooru_count": dan_count,
             "safebooru_count": safe_count,
             "yandere_count": yandere_count,
+            "civitai_image_count": civitai_count,
+            "civitai_usage_rate": civitai_usage_rates.get(tag, 0.0),
+            "civitai_occurrence_count": civitai_occurrence_counts.get(tag, 0),
+            "aibooru_count": aibooru_count,
         }
         confidence = "high" if evidence["official"] or image_count >= 10 else "medium"
 
@@ -828,6 +916,10 @@ def process_data():
             "danbooru_count": dan_count,
             "safebooru_count": safe_count,
             "yandere_count": yandere_count,
+            "civitai_image_count": civitai_count,
+            "civitai_usage_rate": civitai_usage_rates.get(tag, 0.0),
+            "civitai_occurrence_count": civitai_occurrence_counts.get(tag, 0),
+            "aibooru_count": aibooru_count,
             "evidence": evidence,
             "stats": stats,
             "related": [],
@@ -842,7 +934,9 @@ def process_data():
         csv_fields = [
             "tag", "canonical_tag", "aliases", "meaning", "category",
             "nai_occurrence_count", "nai_image_count", "nai_usage_rate",
-            "danbooru_count", "safebooru_count", "yandere_count", "evidence",
+            "danbooru_count", "safebooru_count", "yandere_count",
+            "civitai_image_count", "civitai_usage_rate", "civitai_occurrence_count",
+            "aibooru_count", "evidence",
             "confidence", "sample_image",
         ]
         writer = csv.DictWriter(f, fieldnames=csv_fields, lineterminator="\n")
@@ -863,8 +957,15 @@ def process_data():
     # Build & Output Negative Tag Dictionary JSON for Web UI
     neg_dict_rows = []
     negative_usage_rates = calculate_usage_rates(neg_image_counts, total_nai_images)
-    for neg_tag, occurrence_count in neg_occurrence_counts.most_common():
-        if occurrence_count < 2:
+    civitai_negative_usage_rates = calculate_usage_rates(civitai_neg_image_counts, total_civitai_images)
+    all_negative_tags = set(neg_occurrence_counts) | set(civitai_neg_occurrence_counts)
+    for neg_tag in sorted(
+        all_negative_tags,
+        key=lambda tag: (neg_image_counts[tag], civitai_neg_image_counts[tag]),
+        reverse=True,
+    ):
+        occurrence_count = neg_occurrence_counts.get(neg_tag, 0)
+        if occurrence_count < 2 and civitai_neg_occurrence_counts.get(neg_tag, 0) < 3:
             continue
         image_count = neg_image_counts.get(neg_tag, 0)
         meaning = get_meaning(neg_tag, trans_dict)
@@ -877,7 +978,10 @@ def process_data():
             "danbooru": False,
             "danbooru_observed": False,
             "community": False,
+            "civitai": civitai_neg_image_counts.get(neg_tag, 0) > 0,
+            "aibooru": False,
         }
+        evidence["community"] = evidence["civitai"]
         neg_dict_rows.append({
             "tag": neg_tag,
             "canonical_tag": neg_tag,
@@ -895,6 +999,10 @@ def process_data():
             "danbooru_count": 0,
             "safebooru_count": 0,
             "yandere_count": 0,
+            "civitai_image_count": civitai_neg_image_counts.get(neg_tag, 0),
+            "civitai_usage_rate": civitai_negative_usage_rates.get(neg_tag, 0.0),
+            "civitai_occurrence_count": civitai_neg_occurrence_counts.get(neg_tag, 0),
+            "aibooru_count": 0,
             "official_preset": is_official,
             "observed": image_count > 0,
             "evidence": evidence,
@@ -903,6 +1011,10 @@ def process_data():
                 "nai_usage_rate": negative_usage_rates.get(neg_tag, 0.0),
                 "nai_occurrence_count": occurrence_count,
                 "danbooru_count": 0,
+                "civitai_image_count": civitai_neg_image_counts.get(neg_tag, 0),
+                "civitai_usage_rate": civitai_negative_usage_rates.get(neg_tag, 0.0),
+                "civitai_occurrence_count": civitai_neg_occurrence_counts.get(neg_tag, 0),
+                "aibooru_count": 0,
             },
             "related": [],
             "conflicts": [],
@@ -915,7 +1027,8 @@ def process_data():
 
     summary_fields = (
         "tag", "canonical_tag", "meaning", "category", "nai_image_count",
-        "nai_usage_rate", "danbooru_count", "evidence", "sample_image",
+        "nai_usage_rate", "danbooru_count", "civitai_image_count",
+        "civitai_usage_rate", "aibooru_count", "evidence", "sample_image",
     )
     tag_summaries = [
         {field: row.get(field) for field in summary_fields if field in row}
@@ -938,6 +1051,10 @@ def process_data():
             "negative_tag_count": len(neg_dict_rows),
             "work_count": len(flat_records),
             "nai_image_count": total_nai_images,
+            "civitai_image_count": total_civitai_images,
+            "aibooru_post_count": sum(
+                1 for record in flat_records if record.get("source") == "aibooru"
+            ),
         }, f, ensure_ascii=False, indent=2)
 
     # Build Markdown Dictionary Guide

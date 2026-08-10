@@ -3,10 +3,12 @@
 aitag.winで観測したNovelAI V4.5実生成プロンプトと、Danbooru系の画像アノテーションを根拠別に集計した辞典です。高頻度は効果の因果や強さを保証しません。
 
 ## 📊 データソース統計 (Data Source)
-- **aitag.win**: 33781 件 (80.3%)
-- **danbooru**: 4694 件 (11.2%)
-- **safebooru**: 2500 件 (5.9%)
-- **yandere**: 1078 件 (2.6%)
+- **aitag.win**: 33781 件 (78.5%)
+- **danbooru**: 4694 件 (10.9%)
+- **safebooru**: 2500 件 (5.8%)
+- **yandere**: 1078 件 (2.5%)
+- **civitai**: 500 件 (1.2%)
+- **aibooru**: 500 件 (1.2%)
 - **AITAG V4.5 image denominator**: 33781 images
 
 ## ⚙️ 推奨設定パターン (統計)
