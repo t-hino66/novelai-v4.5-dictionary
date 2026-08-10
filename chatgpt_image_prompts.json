@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-08-10",
+  "scope": "ChatGPT Imagesで使う自然言語プロンプトのオリジナルテンプレート集",
+  "prompt_framework": [
+    "目的",
+    "主題",
+    "動作",
+    "場所",
+    "視覚スタイル",
+    "構図",
+    "照明",
+    "アスペクト比",
+    "制約"
+  ],
+  "sources": [
+    {
+      "id": "openai-academy",
+      "type": "official",
+      "title": "Creating images with ChatGPT",
+      "url": "https://openai.com/academy/image-generation/",
+      "note": "明確な1〜3文、目的・主題・動作・場所・スタイル、必要に応じた構図・照明・制約、部分編集の指示を設計原則として参照。"
+    },
+    {
+      "id": "openai-help-images",
+      "type": "official",
+      "title": "Creating images in ChatGPT",
+      "url": "https://help.openai.com/en/articles/11084440-images-in-chatgpt",
+      "note": "画像生成・画像編集・文字・透明背景・アスペクト比など、ChatGPT Imagesの機能範囲を参照。"
+    },
+    {
+      "id": "github-pixmind",
+      "type": "community",
+      "title": "Pixmind-io/awesome-gpt-image-2-prompts",
+      "url": "https://github.com/Pixmind-io/awesome-gpt-image-2-prompts",
+      "note": "ポートレート、商品、UI、ゲーム素材、文字表現などのカテゴリ構成を参考にした。本文は転載していない。"
+    },
+    {
+      "id": "github-jamez-bondos",
+      "type": "community",
+      "title": "jamez-bondos/awesome-gpt4o-images",
+      "url": "https://github.com/jamez-bondos/awesome-gpt4o-images",
+      "note": "ChatGPT画像生成の用途分類を参考にした。本文は転載していない。"
+    },
+    {
+      "id": "github-youmind",
+      "type": "community",
+      "title": "YouMind-OpenLab/awesome-gpt-image-2",
+      "url": "https://github.com/YouMind-OpenLab/awesome-gpt-image-2",
+      "note": "多言語コミュニティ事例のカテゴリ範囲を参考にした。権利関係が一様でないため本文は転載していない。"
+    }
+  ],
+  "prompts": [
+    {
+      "id": "anime-character",
+      "title": "アニメキャラクターイラスト",
+      "category": "イラスト",
+      "purpose": "キャラクター、背景、構図を一度に指定する基本形",
+      "template_ja": "オリジナルキャラクターの一枚絵を作成してください。［年齢層・髪・服装・表情］の人物が［動作］をしており、場所は［背景］です。［画材・描画表現］のアニメイラストとして、［構図］、［照明］、［色彩］で描いてください。縦横比は［比率］。文字、ロゴ、透かしは入れないでください。",
+      "template_en": "Create a finished illustration of an original character: [age range, hair, clothing, expression], [action], in [setting]. Render it as an anime illustration with [medium/rendering], [composition], [lighting], and [color palette]. Use a [aspect ratio] canvas. Do not include text, logos, or watermarks.",
+      "source_type": "official_guidance_based",
+      "source_ids": ["openai-academy", "github-pixmind"]
+    },
+    {
+      "id": "cinematic-portrait",
+      "title": "シネマティック・ポートレート",
+      "category": "写真",
+      "purpose": "人物写真の雰囲気、画角、光を具体化する",
+      "template_ja": "［人物の特徴と服装］の写実的なポートレートを作成してください。［場所・時間帯］で、［表情・視線］を捉えた［バストアップ／全身］構図です。［光源と方向］、［色調］、自然な肌と布の質感、控えめな被写界深度。広告的な過剰補正や文字、透かしは避けてください。",
+      "template_en": "Create a photorealistic portrait of [person and wardrobe] in [location and time]. Capture [expression and gaze] in a [close-up / full-body] composition. Use [light source and direction], [color palette], natural skin and fabric texture, and subtle depth of field. Avoid excessive commercial retouching, text, and watermarks.",
+      "source_type": "official_guidance_based",
+      "source_ids": ["openai-academy", "github-pixmind"]
+    },
+    {
+      "id": "product-hero",
+      "title": "商品ヒーロービジュアル",
+      "category": "商品・広告",
+      "purpose": "ECや広告用の商品画像を構成する",
+      "template_ja": "［商品名・形・素材・色］を主役にした商品ヒーロー画像を作成してください。［背景・台座］の上に配置し、［照明］で素材感と輪郭を見せます。［正面／斜め45度／俯瞰］、余白は［位置］に確保、縦横比は［比率］。ブランド名や説明文は生成せず、商品形状を一貫させてください。",
+      "template_en": "Create a product hero image featuring [product, shape, material, color]. Place it on [background or pedestal] and use [lighting] to reveal its texture and silhouette. Frame it from [front / 45-degree / overhead], reserve negative space on [position], and use [aspect ratio]. Do not invent brand names or copy; keep the product geometry consistent.",
+      "source_type": "official_guidance_based",
+      "source_ids": ["openai-academy", "github-pixmind"]
+    },
+    {
+      "id": "transparent-cutout",
+      "title": "透明背景の切り抜き素材",
+      "category": "商品・広告",
+      "purpose": "後加工しやすい単体素材を生成する",
+      "template_ja": "［対象物］を1点だけ、中央に配置した切り抜き素材として作成してください。正面から全体が見え、輪郭を欠けさせず、自然な質感と均一なスタジオ照明にしてください。背景は完全な透明。影、床、文字、枠、余分な物体は追加しないでください。",
+      "template_en": "Create a clean cutout of one [subject], centered and fully visible from the front with intact edges, natural texture, and even studio lighting. Use a fully transparent background. Do not add a floor, shadow, text, border, or extra objects.",
+      "source_type": "official_guidance_based",
+      "source_ids": ["openai-academy", "openai-help-images"]
+    },
+    {
+      "id": "character-sheet",
+      "title": "キャラクター設定画",
+      "category": "デザイン",
+      "purpose": "同じ人物の外見を複数ビューで整理する",
+      "template_ja": "同一のオリジナルキャラクター［特徴］の設定画を作成してください。白に近い無地背景に、全身の正面・側面・背面を等身大で横並びにし、右側に表情［3種類］を配置します。衣装、髪型、配色、身体比率を全ビューで統一し、互いに重ねないでください。文字ラベルは不要です。",
+      "template_en": "Create a character design sheet for the same original character, [features]. On a near-white plain background, arrange full-body front, side, and back views at equal scale, plus three expressions on the right. Keep clothing, hairstyle, colors, and body proportions identical across every view. Do not overlap figures or add labels.",
+      "source_type": "official_guidance_based",
+      "source_ids": ["openai-academy", "github-pixmind"]
+    },
+    {
+      "id": "youtube-thumbnail",
+      "title": "YouTubeサムネイル",
+      "category": "文字・ポスター",
+      "purpose": "小さく表示しても伝わる16:9画像を作る",
+      "template_ja": "YouTube動画「［テーマ］」の16:9サムネイルを作成してください。［主役］を［左右どちらか］に大きく置き、反対側に短い見出し「［正確な文字列］」を太い読みやすいゴシック体で配置します。［配色］、強い明暗差、要素は最大3つ。追加の文字、ロゴ、透かしは入れないでください。",
+      "template_en": "Create a 16:9 YouTube thumbnail for “[topic].” Place [main subject] large on the [left/right], and put the exact short headline “[EXACT TEXT]” on the opposite side in a bold, highly legible sans-serif typeface. Use [color palette], strong contrast, and no more than three visual elements. Do not add any other text, logos, or watermarks.",
+      "source_type": "official_guidance_based",
+      "source_ids": ["openai-academy", "openai-help-images", "github-pixmind"]
+    },
+    {
+      "id": "infographic",
+      "title": "インフォグラフィック",
+      "category": "文字・ポスター",
+      "purpose": "情報の順序と短い文字を明示する",
+      "template_ja": "［テーマ］を説明する縦長インフォグラフィックを作成してください。上から「［タイトル］」、続いて［3〜5個の項目と短い説明］を番号順に配置します。［配色］、フラットな図形、十分な余白、シャープで読みやすい日本語文字。指定した文言以外の文字やロゴは追加しないでください。",
+      "template_en": "Create a vertical infographic explaining [topic]. From top to bottom, show the exact title “[TITLE]” followed by [three to five numbered points with short copy]. Use [color palette], flat shapes, generous spacing, and sharp, highly legible text. Do not add wording or logos beyond the supplied copy.",
+      "source_type": "official_guidance_based",
+      "source_ids": ["openai-academy", "openai-help-images", "github-pixmind"]
+    },
+    {
+      "id": "event-poster",
+      "title": "イベントポスター",
+      "category": "文字・ポスター",
+      "purpose": "正確な文字列と視線誘導を指定する",
+      "template_ja": "［イベント種別］の縦型ポスターを作成してください。メインビジュアルは［内容］。上部に「［イベント名］」、下部に「［日付・場所］」をこの表記のまま配置します。［デザイン様式］、［配色］、タイトルを最も大きく、情報の優先順位が明確なレイアウト。指定外の文字やロゴは追加しないでください。",
+      "template_en": "Create a vertical poster for [event type]. The main visual is [subject]. Place the exact event name “[EVENT NAME]” at the top and “[DATE · LOCATION]” at the bottom. Use [design style] and [color palette], with the title largest and a clear information hierarchy. Do not add unrequested text or logos.",
+      "source_type": "official_guidance_based",
+      "source_ids": ["openai-academy", "github-pixmind"]
+    },
+    {
+      "id": "ui-mockup",
+      "title": "UIモックアップ",
+      "category": "UI・Web",
+      "purpose": "画面の構造と状態を視覚化する",
+      "template_ja": "［サービス種別］の［デスクトップ／モバイル］UIモックアップを作成してください。画面には［主要セクション］を含め、ユーザーが［操作］を完了した状態を表示します。［デザイン方針］、［配色］、8pxグリッド、明確な情報階層、実用的な余白。読めないダミー文字ではなく、指定した短い日本語ラベルだけを使用してください。",
+      "template_en": "Create a [desktop/mobile] UI mockup for a [service type]. Include [main sections] and show the completed state after the user [action]. Use [design direction], [color palette], an 8px spacing grid, clear hierarchy, and practical whitespace. Use only the supplied short labels instead of illegible placeholder text.",
+      "source_type": "official_guidance_based",
+      "source_ids": ["openai-academy", "github-pixmind"]
+    },
+    {
+      "id": "game-asset-sheet",
+      "title": "ゲーム素材シート",
+      "category": "ゲーム素材",
+      "purpose": "統一感のある複数アイコンを生成する",
+      "template_ja": "［ゲームジャンル］用の［個数］個のアイコン素材シートを作成してください。対象は［アイテム一覧］。すべて同じ［画風］、視点、輪郭線、光源、縮尺で、等間隔のグリッドに1つずつ配置します。背景は透明。アイコン同士を重ねず、文字、数字、枠、影は追加しないでください。",
+      "template_en": "Create a sheet of [count] game icons for a [game genre]: [item list]. Keep the same [visual style], viewpoint, outline treatment, light direction, and scale for every icon. Place one icon in each cell of an evenly spaced grid on a transparent background. Do not overlap icons or add text, numbers, borders, or shadows.",
+      "source_type": "official_guidance_based",
+      "source_ids": ["openai-academy", "openai-help-images", "github-pixmind"]
+    },
+    {
+      "id": "reference-composite",
+      "title": "複数参照画像の合成",
+      "category": "画像編集",
+      "purpose": "添付画像ごとの役割と空間関係を指定する",
+      "template_ja": "添付1枚目の［人物／商品］を主役として、2枚目の［背景／衣装／素材］の要素を組み合わせた新しい画像を作成してください。主役は画面の［位置］、［ポーズ・向き］、背景との大きさは自然に。1枚目の［維持する特徴］を保ち、2枚目からは［取り込む特徴］だけを使ってください。［比率］、［照明］。文字やロゴは追加しないでください。",
+      "template_en": "Create a new image using the [person/product] in attachment 1 as the main subject and [background/clothing/material] from attachment 2. Place the subject at [position] with [pose and direction] at a natural scale. Preserve [features to keep] from attachment 1 and use only [features to borrow] from attachment 2. Use [aspect ratio] and [lighting]. Do not add text or logos.",
+      "source_type": "official_guidance_based",
+      "source_ids": ["openai-academy", "openai-help-images"]
+    },
+    {
+      "id": "targeted-edit",
+      "title": "部分編集（変更点を限定）",
+      "category": "画像編集",
+      "purpose": "元画像の意図しない変化を抑える",
+      "template_ja": "添付画像の［変更対象］だけを［変更後の内容］へ変更してください。それ以外はすべて元画像と同じに保ってください。特に［人物の顔・ポーズ・構図・背景・照明など維持項目］は変更しないでください。追加の物体、文字、ロゴは生成しないでください。",
+      "template_en": "Change only [target area] in the attached image to [requested result]. Keep everything else exactly the same. In particular, do not alter [face, pose, composition, background, lighting, or other protected elements]. Do not add objects, text, or logos.",
+      "source_type": "official_guidance_based",
+      "source_ids": ["openai-academy", "openai-help-images"]
+    }
+  ]
+}
