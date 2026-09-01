@@ -9,6 +9,7 @@ from pathlib import Path
 import build_dictionary
 import build_v5_dictionary
 import build_v5_natural_language
+import build_v5_sources
 import extract_tags
 import extract_aibooru_tags
 import extract_civitai_tags
@@ -101,6 +102,33 @@ class AitagSchemaTests(unittest.TestCase):
 
 
 class V5DictionaryTests(unittest.TestCase):
+    def test_v5_source_catalog_excludes_personal_png_import(self):
+        report = build_v5_sources.build_report(civitai_paths=())
+        source_ids = {source["id"] for source in report["sources"]}
+        self.assertIn("novelai-explore-v5", source_ids)
+        self.assertIn("novelai-image-metadata", source_ids)
+        self.assertIn("civitai-v5", source_ids)
+        self.assertFalse(report["personal_png_import"])
+        self.assertEqual(report["metrics"]["explore_example_count"], 2)
+
+    def test_v5_source_catalog_requires_explicit_model_identity_for_civitai(self):
+        self.assertFalse(
+            build_v5_sources._is_strict_civitai_v5({
+                "model": "Some V5 workflow",
+                "prompt": "NovelAI Diffusion V5",
+            })
+        )
+        self.assertTrue(
+            build_v5_sources._is_strict_civitai_v5({
+                "model": "NovelAI Diffusion V5 Full",
+            })
+        )
+        self.assertTrue(
+            build_v5_sources._is_strict_civitai_v5({
+                "meta": {"Model": "NovelAI Diffusion V5 Curated"},
+            })
+        )
+
     def test_v5_natural_language_classifier_separates_prose_from_syntax(self):
         self.assertTrue(
             build_v5_natural_language.is_natural_language_candidate(
@@ -294,6 +322,7 @@ class ChatGptImagePromptTests(unittest.TestCase):
         self.assertIn("chatgpt_image_prompts.json", build_site.SITE_FILES)
         self.assertIn("v5_tags.json", build_site.SITE_FILES)
         self.assertIn("v5_natural_language.json", build_site.SITE_FILES)
+        self.assertIn("v5_sources.json", build_site.SITE_FILES)
 
     def test_deep_dive_builders_are_scoped_and_valid(self):
         prompts = {prompt["id"]: prompt for prompt in self.data["prompts"]}

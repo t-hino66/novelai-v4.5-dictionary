@@ -14,6 +14,7 @@ aibooru_raw_works.json
 analytics_data.json
 v5_manifest.json
 v5_natural_language.json
+v5_sources.json
 v5_tags.json
 v5_negative.json
 novelai_v5_database.csv

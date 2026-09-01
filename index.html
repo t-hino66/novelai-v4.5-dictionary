@@ -818,6 +818,53 @@
             font-size: 0.75rem;
         }
 
+        .natural-source-list,
+        .natural-explore-list {
+            display: grid;
+            gap: 0.55rem;
+        }
+
+        .natural-source-card,
+        .natural-explore-card {
+            padding: 0.7rem 0.75rem;
+            border-radius: 8px;
+            background: #1e293b;
+        }
+
+        .natural-source-card {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 0.25rem 0.7rem;
+            align-items: start;
+        }
+
+        .natural-source-card a,
+        .natural-explore-card a {
+            color: #93c5fd;
+            font-size: 0.78rem;
+        }
+
+        .natural-source-meta,
+        .natural-explore-meta {
+            color: var(--text-muted);
+            font-size: 0.74rem;
+            line-height: 1.5;
+        }
+
+        .natural-source-status {
+            color: #c4b5fd;
+            font-size: 0.68rem;
+            white-space: nowrap;
+        }
+
+        .natural-explore-card ul {
+            margin: 0.45rem 0 0;
+            padding-left: 1.1rem;
+            color: #cbd5e1;
+            font-size: 0.75rem;
+            line-height: 1.55;
+        }
+
         .natural-builder-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1095,6 +1142,8 @@
             .natural-lab-view { width: 100%; }
             .natural-lab-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .natural-builder-grid { grid-template-columns: 1fr; }
+            .natural-source-card { grid-template-columns: 1fr; }
+            .natural-source-status { white-space: normal; }
         }
     </style>
 </head>
@@ -1450,6 +1499,7 @@
                         <option value="phrases">頻出表現</option>
                         <option value="samples">安全な実例</option>
                         <option value="builder">自然文ビルダー</option>
+                        <option value="sources">追加ソース</option>
                     </select>
                 </div>
 
@@ -1497,6 +1547,14 @@
                     </div>
                     <label class="field-label" for="v5-natural-output" style="margin-top:0.8rem;">出力</label>
                     <textarea id="v5-natural-output" class="form-control" rows="4" readonly placeholder="ここにV5向けのハイブリッドPromptが出力されます"></textarea>
+                </div>
+
+                <div id="v5-natural-sources" class="natural-lab-panel" hidden>
+                    <strong>V5追加ソース室</strong>
+                    <p style="margin:0.35rem 0 0; color:var(--text-muted); font-size:0.76rem;">AITAGの頻度統計へ合算せず、公式仕様・公開実例・コミュニティ参照先を出典別に確認できます。個人PNGや認証が必要なデータは取り込みません。</p>
+                    <div id="v5-natural-source-list" class="natural-source-list" style="margin-top:0.7rem;"></div>
+                    <strong style="display:block; margin-top:1rem;">公式Exploreで確認できるV5実例</strong>
+                    <div id="v5-natural-explore-list" class="natural-explore-list" style="margin-top:0.65rem;"></div>
                 </div>
             </section>
 
@@ -1766,6 +1824,7 @@
         let v5Dictionary = [];
         let v5NegDictionary = [];
         let v5NaturalLanguage = null;
+        let v5Sources = null;
         let selectedDictionaryModel = 'v45';
         let chatGptPromptData = null;
         const chatGptModifierSelections = {};
@@ -1831,6 +1890,14 @@
                     v5NaturalLanguage = await responseV5Natural.json();
                 } catch (naturalError) {
                     console.warn("V5 natural-language report loading skipped:", naturalError);
+                }
+
+                try {
+                    const responseV5Sources = await fetch(`v5_sources.json?v=${cacheBuster}`);
+                    if (!responseV5Sources.ok) throw new Error(`HTTP ${responseV5Sources.status}`);
+                    v5Sources = await responseV5Sources.json();
+                } catch (sourceError) {
+                    console.warn("V5 source catalog loading skipped:", sourceError);
                 }
                 
                 loader.style.display = 'none';
@@ -2482,6 +2549,54 @@
                     </article>
                 `).join('')
                 : '<span style="color:var(--text-muted);">安全判定済みのサンプルがありません。</span>';
+
+            renderV5SourceCatalog();
+        }
+
+        function renderV5SourceCatalog() {
+            const sourceList = document.getElementById('v5-natural-source-list');
+            const exploreList = document.getElementById('v5-natural-explore-list');
+            if (!sourceList || !exploreList) return;
+            if (!v5Sources) {
+                sourceList.innerHTML = '<span style="color:var(--text-muted);">追加ソース情報を読み込めませんでした。</span>';
+                exploreList.innerHTML = '';
+                return;
+            }
+            const typeLabels = {
+                official: '公式仕様',
+                official_observed: '公式公開実例',
+                official_tool: '公式ツール',
+                community: 'コミュニティ',
+                community_observed: '公開メタデータ',
+            };
+            const statusLabels = {
+                active: '参照中',
+                reference_only: '検証方法として参照',
+                manual_only: '手動キュレーション',
+                strict_match_only: 'V5厳格一致のみ',
+                awaiting_strict_matches: 'V5明示データ待ち',
+            };
+            sourceList.innerHTML = (v5Sources.sources || []).map(source => `
+                <article class="natural-source-card">
+                    <div>
+                        <strong>${escapeHtml(source.title)}</strong>
+                        <div class="natural-source-meta">${escapeHtml(typeLabels[source.type] || source.type)} · ${escapeHtml(source.role)}</div>
+                        <div class="natural-source-meta">${escapeHtml(source.ingestion)}</div>
+                    </div>
+                    <div>
+                        <div class="natural-source-status">${escapeHtml(statusLabels[source.status] || source.status)}</div>
+                        <a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">出典を開く</a>
+                    </div>
+                </article>
+            `).join('');
+            exploreList.innerHTML = (v5Sources.official_explore_examples || []).map(example => `
+                <article class="natural-explore-card">
+                    <strong>${escapeHtml(example.title)}</strong>
+                    <div class="natural-explore-meta">${escapeHtml(example.model)} · ${escapeHtml(example.published)}</div>
+                    <ul>${(example.observations || []).map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+                    <a href="${escapeHtml(example.url)}" target="_blank" rel="noopener noreferrer">Exploreの原ページを開く</a>
+                </article>
+            `).join('');
         }
 
         function setV5NaturalView(view) {
@@ -2490,6 +2605,7 @@
                 phrases: 'v5-natural-phrases',
                 samples: 'v5-natural-samples',
                 builder: 'v5-natural-builder',
+                sources: 'v5-natural-sources',
             };
             Object.entries(panels).forEach(([key, id]) => {
                 const panel = document.getElementById(id);

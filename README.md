@@ -60,6 +60,8 @@ V5のAITAG観測データはV4.5と混ぜず、`extracted_works_v5.json`、`nove
   * V5のAITAG実生成Promptだけを独立集計し、V5専用辞書・ネガティブ辞書・作品検索用データを生成します。
 * **`build_v5_natural_language.py`**
   * V5 Promptから文章らしい断片をタグ集計と分離して候補集計し、安全判定済みの自然言語サンプルと構造分析を生成します。判定は保守的なヒューリスティックであり、効果を保証するものではありません。
+* **`build_v5_sources.py`**
+  * NovelAI公式Docs/Journal/Explore、公式Metadataツール、CivitaiのV5厳格一致、コミュニティ参照先を出典別にカタログ化します。個人PNGは取り込みません。
 
 ---
 
@@ -113,7 +115,7 @@ python3 build_v5_dictionary.py
 ## 検証
 
 ```bash
-python3 -m py_compile extract_tags.py extract_tags_v5.py extract_danbooru_tags.py extract_booru_extra.py build_dictionary.py build_v5_dictionary.py build_site.py search_prompts.py extract_knowhow.py
+python3 -m py_compile extract_tags.py extract_tags_v5.py extract_danbooru_tags.py extract_booru_extra.py build_dictionary.py build_v5_dictionary.py build_v5_natural_language.py build_v5_sources.py build_site.py search_prompts.py extract_knowhow.py
 python3 build_dictionary.py
 python3 build_v5_dictionary.py
 python3 -m unittest discover -s tests
