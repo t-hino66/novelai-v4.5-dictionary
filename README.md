@@ -1,6 +1,6 @@
 # NovelAI Diffusion Prompt Evidence Dictionary & Database
 
-aitag.win、Civitai、およびDanbooru系APIから抽出したデータに基づく、NovelAI Diffusion V4.5のプロンプトデータベースおよび日本語タグ辞典です。プロンプトでの観測、コミュニティPrompt、画像Annotationを別の根拠として扱います。
+aitag.win、Civitai、およびDanbooru系APIから抽出したデータに基づく、NovelAI Diffusion V4.5 / V5のプロンプトデータベースおよび日本語タグ辞典です。プロンプトでの観測、コミュニティPrompt、画像Annotationを別の根拠として扱います。
 
 本リポジトリに含まれるプログラムを実行することで、各サイトの公開Prompt・コミュニティ情報・Annotationから自動で最新のEvidenceデータベースを構築できます。
 
@@ -22,7 +22,11 @@ Web UIにはNovelAI系の統計と分離した「ChatGPT画像Prompt」タブも
 * **Civitai**: 公開画像の生成Prompt（APIが匿名公開する場合）または公開モデルのコミュニティタグ。現在の匿名Image APIはPrompt metadataを返さないため、公開モデルタグを使用しています。`civitai_image_count` / `civitai_usage_rate`として独立集計し、NAI V4.5使用率には混ぜません。
 * **AIbooru**: AI画像に付与されたAnnotationタグ。生成時のPromptではありません。`aibooru_count`として独立集計します。
 
-**外部サイトの頻度 ≠ NovelAIでの効果保証**です。また、AITAGでの高頻度も効果の強さや因果関係を証明するものではありません。辞典では`Official`、`NAI V4.5`、`Danbooru`、`Civitai`、`AIbooru`のEvidenceを区別します。
+### NovelAI Diffusion V5
+
+V5のAITAG観測データはV4.5と混ぜず、`extracted_works_v5.json`、`novelai_v5_*`、`v5_*`の独立ファイルとして取得・集計します。V5の使用画像数・使用率はV5観測画像だけを分母にし、V4.5の統計へ影響させません。
+
+**外部サイトの頻度 ≠ NovelAIでの効果保証**です。また、AITAGでの高頻度も効果の強さや因果関係を証明するものではありません。辞典では`Official`、`NAI V4.5`、`NAI V5`、`Danbooru`、`Civitai`、`AIbooru`のEvidenceを区別します。
 
 ## Dictionary schema
 
@@ -31,9 +35,9 @@ Web UIにはNovelAI系の統計と分離した「ChatGPT画像Prompt」タブも
 * `canonical_tag` / `aliases`: 小文字・空白区切りへ正規化したタグと、underscore表記などの元表記。
 * `occurrence_count`: AITAGプロンプト内での総出現回数。
 * `image_count`: AITAGでタグを1回以上含む画像数。
-* `image_usage_rate`: `image_count / AITAG V4.5画像数 * 100`。後方互換の`usage_rate`も同じ値です。
+* `image_usage_rate`: 各モデルのAITAG観測画像数を分母にした使用率。V4.5とV5は別ファイル・別分母です。
 * `stats`: AITAG、Danbooru、Safebooru、Yande.re、Civitai、AIbooruの根拠別集計。
-* `evidence`: `official`、`nai_v45_observed`、`danbooru`、`civitai`、`aibooru`、`community`。
+* `evidence`: `official`、`nai_v45_observed`、`nai_v5_observed`、`danbooru`、`civitai`、`aibooru`、`community`。
 * `related` / `conflicts`: 将来拡張用の配列（現時点では空配列）。
 
 ---
@@ -46,10 +50,14 @@ Web UIにはNovelAI系の統計と分離した「ChatGPT画像Prompt」タブも
 * 生成物は`.gitignore`対象です。ローカルでは`build_dictionary.py`で再生成できます。
 * **`extract_tags.py`**
   * aitag.win から NovelAI Diffusion V4.5 のデータをスクレイピングして `extracted_works.json` を保存するスクリプト。
+* **`extract_tags_v5.py`**
+  * aitag.win から NovelAI Diffusion V5 のデータを取得して `extracted_works_v5.json` を保存するスクリプト。
 * **`extract_danbooru_tags.py`**
   * Danbooru API から高スコアの投稿データ（NSFW含む）を抽出して `danbooru_raw_works.json` を保存するスクリプト。
 * **`build_dictionary.py`**
   * 抽出された生データ（AITAG/Danbooruの片方または両方）を統合し、データベース（CSV/JSON）、タグ辞書CSV、Markdownガイドを自動生成するビルドスクリプト。実行時に自動的に日本語翻訳データ（Danbooru日本語タグマッピング）をWebからダウンロードしてマージします。
+* **`build_v5_dictionary.py`**
+  * V5のAITAG実生成Promptだけを独立集計し、V5専用辞書・ネガティブ辞書・作品検索用データを生成します。
 
 ---
 
@@ -73,7 +81,12 @@ Web UIにはNovelAI系の統計と分離した「ChatGPT画像Prompt」タブも
 python3 extract_tags.py 1000
 ```
 
-#### B. Danbooru（本家学習ソース・NSFW含む）から取得
+#### B. aitag.win（NovelAI V5 ギャラリー）から取得
+```bash
+python3 extract_tags_v5.py 1000
+```
+
+#### C. Danbooru（本家学習ソース・NSFW含む）から取得
 ```bash
 # 引数1: 目標取得件数（デフォルト1000件）, 引数2: 検索クエリ（デフォルト "score:>=50"）
 python3 extract_danbooru_tags.py 1000 "score:>=50"
@@ -85,8 +98,9 @@ python3 extract_danbooru_tags.py 1000 "score:>=50"
 抽出された生データファイルを読み込み、CSV や Markdown を統合・生成します。
 ```bash
 python3 build_dictionary.py
+python3 build_v5_dictionary.py
 ```
-* ※ `extracted_works.json` と `danbooru_raw_works.json` の両方がフォルダにあれば、それらを自動的にマージして一つの巨大なタグ統計辞書をビルドします。
+* ※ V4.5系は `build_dictionary.py`、V5系は `build_v5_dictionary.py` で別々にビルドします。V4.5側は `extracted_works.json` と `danbooru_raw_works.json` の両方があれば、それらを自動的にマージします。
 
 ---
 
@@ -97,8 +111,9 @@ python3 build_dictionary.py
 ## 検証
 
 ```bash
-python3 -m py_compile extract_tags.py extract_danbooru_tags.py extract_booru_extra.py build_dictionary.py build_site.py search_prompts.py extract_knowhow.py
+python3 -m py_compile extract_tags.py extract_tags_v5.py extract_danbooru_tags.py extract_booru_extra.py build_dictionary.py build_v5_dictionary.py build_site.py search_prompts.py extract_knowhow.py
 python3 build_dictionary.py
+python3 build_v5_dictionary.py
 python3 -m unittest discover -s tests
 python3 validate_data.py
 python3 build_site.py

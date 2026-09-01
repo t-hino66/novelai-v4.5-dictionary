@@ -39,26 +39,38 @@ jobs:
             --pattern 'extracted_works.json' \
             --pattern '*_raw_works.json' \
             --dir .
+          gh release download data-snapshot \
+            --pattern 'extracted_works_v5.json' \
+            --dir . || true
 
       - name: Refresh external source data
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         run: |
           python -u extract_tags.py 1000
+          python -u extract_tags_v5.py 1000
           python -u extract_danbooru_tags.py 1000 "score:>=50"
           python -u extract_booru_extra.py 500
           python -u extract_civitai_tags.py 500
           python -u extract_aibooru_tags.py 500
           python -u extract_knowhow.py
 
+      - name: Ensure V5 source snapshot exists
+        run: |
+          if [ ! -f extracted_works_v5.json ]; then
+            python -u extract_tags_v5.py 1000
+          fi
+
       - name: Compile Python scripts
         run: |
           python -m py_compile \
             extract_tags.py \
+            extract_tags_v5.py \
             extract_danbooru_tags.py \
             extract_booru_extra.py \
             extract_civitai_tags.py \
             extract_aibooru_tags.py \
             build_dictionary.py \
+            build_v5_dictionary.py \
             build_site.py \
             search_prompts.py \
             extract_knowhow.py \
@@ -67,6 +79,7 @@ jobs:
       - name: Build and validate dictionaries
         run: |
           python -u build_dictionary.py
+          python -u build_v5_dictionary.py
           python -m unittest discover -s tests
           python validate_data.py
           python build_site.py
@@ -78,6 +91,7 @@ jobs:
           name: data-snapshot-assets
           path: |
             extracted_works.json
+            extracted_works_v5.json
             danbooru_raw_works.json
             booru_extra_raw_works.json
             civitai_raw_works.json
@@ -88,6 +102,13 @@ jobs:
             novelai_v4_5_tag_dictionary.csv
             novelai_v4_5_neg_dictionary.json
             novelai_v4_5_dictionary.md
+            novelai_v5_database.json
+            novelai_v5_database.csv
+            novelai_v5_tag_dictionary.json
+            novelai_v5_tag_dictionary.csv
+            novelai_v5_neg_dictionary.json
+            novelai_v5_neg_dictionary.csv
+            novelai_v5_dictionary.md
           retention-days: 1
 
       - name: Upload GitHub Pages artifact

@@ -781,6 +781,7 @@
                     <select id="filter-source" class="form-control">
                         <option value="all">すべて (All)</option>
                         <option value="aitag.win">NovelAI V4.5 (aitag.win)</option>
+                        <option value="aitag.win-v5">NovelAI V5 (aitag.win)</option>
                         <option value="danbooru">Danbooru (本家スコア画像)</option>
                         <option value="civitai">Civitai (コミュニティ情報)</option>
                         <option value="aibooru">AIbooru (AI画像Annotation)</option>
@@ -1025,6 +1026,12 @@
             
             <div class="dict-controls">
                 <div>
+                    <select id="dict-model-select" class="form-control" style="background:#1e293b; color:#a78bfa; font-weight:bold;">
+                        <option value="v45">🟦 NAI V4.5</option>
+                        <option value="v5">🟪 NAI V5</option>
+                    </select>
+                </div>
+                <div>
                     <select id="dict-mode-select" class="form-control" style="background:#1e293b; color:#60a5fa; font-weight:bold;">
                         <option value="pos">📖 ポジティブタグ図鑑</option>
                         <option value="neg">🛡️ ネガティブプロンプト図鑑</option>
@@ -1056,6 +1063,7 @@
             </div>
 
             <div style="margin:0 0 1rem; padding:0.9rem 1rem; border:1px solid #334155; border-radius:8px; background:#0f172a; color:var(--text-muted); font-size:0.85rem; line-height:1.65;">
+                <strong id="dict-model-note" style="display:block; color:#c4b5fd; margin-bottom:0.25rem;">NAI V4.5の実生成Prompt統計</strong>
                 <strong style="color:#e2e8f0;">件数の読み方：</strong>
                 NAIは実生成Prompt、Civitaiは公開Promptまたはモデルのコミュニティタグ、AIbooruは画像内容のAnnotationです。
                 外部サイトが0件でも「生成Promptとして使われない」という意味ではありません。たとえば品質語はPromptでは一般的でも、画像内容を説明するAIbooru Annotationには通常現れません。
@@ -1317,10 +1325,16 @@
         let db = [];
         let worksManifest = null;
         let worksManifestPromise = null;
+        let v5WorksManifest = null;
+        let v5WorksManifestPromise = null;
         const worksSourceCache = new Map();
+        const v5WorksSourceCache = new Map();
         const cacheBuster = new Date().getTime();
         let dictionary = [];
         let negDictionary = [];
+        let v5Dictionary = [];
+        let v5NegDictionary = [];
+        let selectedDictionaryModel = 'v45';
         let chatGptPromptData = null;
         const chatGptModifierSelections = {};
         const chatGptCustomDetails = {};
@@ -1365,12 +1379,32 @@
                 } catch(ne) {
                     console.warn("Negative dictionary loading skipped:", ne);
                 }
+
+                // V5 is loaded from an independent dictionary and never shares
+                // V4.5's observed counts or denominator.
+                try {
+                    const responseV5Dict = await fetch(`v5_tags.json?v=${cacheBuster}`);
+                    if (!responseV5Dict.ok) throw new Error(`HTTP ${responseV5Dict.status}`);
+                    v5Dictionary = await responseV5Dict.json();
+                    const responseV5NegDict = await fetch(`v5_negative.json?v=${cacheBuster}`);
+                    if (!responseV5NegDict.ok) throw new Error(`HTTP ${responseV5NegDict.status}`);
+                    v5NegDictionary = await responseV5NegDict.json();
+                } catch (v5Error) {
+                    console.warn("V5 dictionary loading skipped:", v5Error);
+                }
                 
                 loader.style.display = 'none';
                 
                 const manifest = await loadWorksManifest();
-                document.getElementById('db-count').textContent = `(収録画像: ${manifest.total_count}件・ソース別遅延読込 | ポジティブ辞書: ${dictionary.length}件 | ネガティブ辞書: ${negDictionary.length}件)`;
-                document.getElementById('dict-count').textContent = `全 ${dictionary.length} 件の統計辞書`;
+                let v5Count = 0;
+                try {
+                    const v5Manifest = await loadV5WorksManifest();
+                    v5Count = v5Manifest.total_count || 0;
+                } catch (v5WorksError) {
+                    console.warn("V5 works manifest loading skipped:", v5WorksError);
+                }
+                document.getElementById('db-count').textContent = `(収録画像: V4.5 ${manifest.total_count}件 / V5 ${v5Count}件・ソース別遅延読込 | V4.5辞書: ${dictionary.length}件 | V5辞書: ${v5Dictionary.length}件)`;
+                updateDictionaryCount();
                 
                 // Initialize Dictionary display
                 resetDictionaryFilters();
@@ -1669,6 +1703,22 @@
             return worksManifestPromise;
         }
 
+        async function loadV5WorksManifest() {
+            if (v5WorksManifest) return v5WorksManifest;
+            if (!v5WorksManifestPromise) {
+                v5WorksManifestPromise = fetch(`v5_works/manifest.json?v=${cacheBuster}`)
+                    .then(response => {
+                        if (!response.ok) throw new Error(`V5 works manifest HTTP ${response.status}`);
+                        return response.json();
+                    })
+                    .then(data => {
+                        v5WorksManifest = data;
+                        return data;
+                    });
+            }
+            return v5WorksManifestPromise;
+        }
+
         async function loadWorksSource(source) {
             if (worksSourceCache.has(source)) return worksSourceCache.get(source);
             const manifest = await loadWorksManifest();
@@ -1684,16 +1734,36 @@
             return loadPromise;
         }
 
+        async function loadV5WorksSource(source) {
+            if (v5WorksSourceCache.has(source)) return v5WorksSourceCache.get(source);
+            const manifest = await loadV5WorksManifest();
+            const sourceEntry = manifest.sources[source];
+            if (!sourceEntry) return [];
+            const loadPromise = Promise.all(sourceEntry.files.map(filename =>
+                fetch(`v5_works/${filename}?v=${cacheBuster}`).then(response => {
+                    if (!response.ok) throw new Error(`V5 ${filename} HTTP ${response.status}`);
+                    return response.json();
+                })
+            )).then(shards => shards.flat());
+            v5WorksSourceCache.set(source, loadPromise);
+            return loadPromise;
+        }
+
         async function loadSearchDatabase(source) {
             const loader = document.getElementById('loader');
             loader.style.display = 'block';
             loader.textContent = '選択したデータソースを読み込み中...';
             try {
-                const manifest = await loadWorksManifest();
+                const isV5 = source === 'aitag.win-v5';
+                const manifest = isV5 ? await loadV5WorksManifest() : await loadWorksManifest();
                 const sources = source === 'all' ? Object.keys(manifest.sources) : [source];
-                db = (await Promise.all(sources.map(loadWorksSource))).flat();
+                const sourceLoader = isV5 ? loadV5WorksSource : loadWorksSource;
+                db = (await Promise.all(sources.map(sourceLoader))).flat();
                 populateSamplers();
-                document.getElementById('db-count').textContent = `(収録画像: ${manifest.total_count}件・今回読込 ${db.length}件 | ポジティブ辞書: ${dictionary.length}件 | ネガティブ辞書: ${negDictionary.length}件)`;
+                const dictModelLabel = isV5 ? 'V5' : 'V4.5';
+                const dictModel = isV5 ? v5Dictionary : dictionary;
+                const negDictModel = isV5 ? v5NegDictionary : negDictionary;
+                document.getElementById('db-count').textContent = `(収録画像: ${manifest.total_count}件・今回読込 ${db.length}件 | NAI ${dictModelLabel}辞書: ${dictModel.length}件 / ネガ: ${negDictModel.length}件)`;
             } finally {
                 loader.style.display = 'none';
             }
@@ -1803,6 +1873,7 @@
                 
                 const sourceDetails = {
                     'aitag.win': { url: `https://aitag.win/i/${item.work_id}`, name: 'NovelAI 4.5', css: 'src-aitag' },
+                    'aitag.win-v5': { url: `https://aitag.win/i/${item.work_id}`, name: 'NovelAI V5', css: 'src-aitag' },
                     danbooru: { url: `https://danbooru.donmai.us/posts/${item.work_id}`, name: 'Danbooru', css: 'src-danbooru' },
                     civitai: { url: item.title?.startsWith('Civitai Model:') ? `https://civitai.com/models/${item.work_id}` : `https://civitai.com/images/${item.work_id}`, name: 'Civitai', css: 'src-danbooru' },
                     aibooru: { url: `https://aibooru.online/posts/${item.work_id}`, name: 'AIbooru', css: 'src-danbooru' },
@@ -1819,7 +1890,7 @@
                     imgHtml = `
                         <div class="work-image-container">
                             <a href="${item.image_url}" target="_blank" title="画像ファイルを別タブで直接開く">
-                                <img class="work-image" src="${item.image_url}" loading="lazy" alt="Preview Image" onerror="this.onerror=null; this.parentNode.innerHTML='<span style='font-size: 0.8rem; color: var(--text-muted);'>No Image</span>';">
+                                <img class="work-image" src="${item.image_url}" loading="lazy" alt="Preview Image" onerror="this.onerror=null; this.parentNode.textContent='No Image';">
                             </a>
                         </div>
                     `;
@@ -1884,16 +1955,46 @@
         // ---------------------------------
         // Tag Dictionary Tab logic
         // ---------------------------------
+        function getActiveDictionary(mode) {
+            if (selectedDictionaryModel === 'v5') {
+                return mode === 'neg' ? v5NegDictionary : v5Dictionary;
+            }
+            return mode === 'neg' ? negDictionary : dictionary;
+        }
+
+        function updateDictionaryModel() {
+            selectedDictionaryModel = document.getElementById('dict-model-select').value;
+            const isV5 = selectedDictionaryModel === 'v5';
+            const note = document.getElementById('dict-model-note');
+            if (note) {
+                note.textContent = isV5
+                    ? 'NAI V5の実生成Prompt統計（V4.5とは別分母）'
+                    : 'NAI V4.5の実生成Prompt統計';
+            }
+            resetDictionaryFilters();
+            updateDictionaryCount();
+            applyDictionaryFilters();
+            renderBuilderExploreList();
+        }
+
+        function updateDictionaryCount() {
+            const mode = document.getElementById('dict-mode-select').value;
+            const active = getActiveDictionary(mode);
+            const modelName = selectedDictionaryModel === 'v5' ? 'V5' : 'V4.5';
+            const modeName = mode === 'neg' ? 'ネガティブ' : 'ポジティブ';
+            document.getElementById('dict-count').textContent = `NAI ${modelName}・全 ${active.length} 件の${modeName}辞書`;
+        }
+
+        document.getElementById('dict-model-select').addEventListener('change', updateDictionaryModel);
         document.getElementById('dict-mode-select').addEventListener('change', () => {
             const mode = document.getElementById('dict-mode-select').value;
             const categorySelect = document.getElementById('dict-filter-category');
             if (mode === 'neg') {
                 categorySelect.disabled = true;
-                document.getElementById('dict-count').textContent = `全 ${negDictionary.length} 件のネガティブ辞書`;
             } else {
                 categorySelect.disabled = false;
-                document.getElementById('dict-count').textContent = `全 ${dictionary.length} 件のポジティブ辞書`;
             }
+            updateDictionaryCount();
             applyDictionaryFilters();
         });
         document.getElementById('dict-search').addEventListener('input', applyDictionaryFilters);
@@ -1901,13 +2002,13 @@
         document.getElementById('dict-sort-key').addEventListener('change', applyDictionaryFilters);
 
         function resetDictionaryFilters() {
-            dictFiltered = [...dictionary];
+            dictFiltered = [...getActiveDictionary('pos')];
             currentPage = 1;
         }
 
         function applyDictionaryFilters() {
             const mode = document.getElementById('dict-mode-select').value;
-            const targetDict = mode === 'neg' ? negDictionary : dictionary;
+            const targetDict = getActiveDictionary(mode);
 
             const query = document.getElementById('dict-search').value.toLowerCase().trim();
             const category = document.getElementById('dict-filter-category').value;
@@ -1974,6 +2075,7 @@
                 const evidenceLabels = [];
                 if (evidence.official) evidenceLabels.push('Official');
                 if (evidence.nai_v45_observed) evidenceLabels.push('NAI V4.5');
+                if (evidence.nai_v5_observed) evidenceLabels.push('NAI V5');
                 if (evidence.danbooru || evidence.danbooru_observed) evidenceLabels.push('Danbooru');
                 if (evidence.civitai) evidenceLabels.push('Civitai');
                 if (evidence.aibooru) evidenceLabels.push('AIbooru');
@@ -2061,7 +2163,7 @@
             container.innerHTML = '';
 
             const query = (document.getElementById('builder-tag-search').value || '').toLowerCase().trim();
-            const sourceDict = currentExploreCat === 'neg' ? negDictionary : dictionary;
+            const sourceDict = getActiveDictionary(currentExploreCat === 'neg' ? 'neg' : 'pos');
 
             const mediaTags = ["traditional media", "faux traditional media", "mixed media", "acrylic paint", "colored pencil", "graphite", "ink", "marker", "oil painting", "pastel", "watercolor", "gouache", "digital painting", "anime screencap", "chalk", "vector", "impasto"];
             const lineartTags = ["no lineart", "lineart", "outline", "sketch", "rough lines", "sketch lines", "thick lines", "thin lines", "clean lines", "bold outlines", "borderless", "crosshatching", "hatching shading", "delicate lineart"];

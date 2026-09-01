@@ -4,6 +4,7 @@ __pycache__/
 
 # Downloaded source snapshots are persisted as assets on the data-snapshot release.
 extracted_works.json
+extracted_works_v5.json
 danbooru_raw_works.json
 booru_extra_raw_works.json
 civitai_raw_works.json
@@ -11,6 +12,17 @@ aibooru_raw_works.json
 
 # Generated exports are built in Actions and deployed as a Pages artifact.
 analytics_data.json
+v5_manifest.json
+v5_tags.json
+v5_negative.json
+novelai_v5_database.csv
+novelai_v5_database.json
+novelai_v5_dictionary.md
+novelai_v5_neg_dictionary.csv
+novelai_v5_neg_dictionary.json
+novelai_v5_tag_dictionary.csv
+novelai_v5_tag_dictionary.json
+v5_works/
 manifest.json
 negative.json
 novelai_v4_5_database.csv

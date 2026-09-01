@@ -3,9 +3,11 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from collections import Counter, defaultdict
 from pathlib import Path
 
 import build_dictionary
+import build_v5_dictionary
 import extract_tags
 import extract_aibooru_tags
 import extract_civitai_tags
@@ -95,6 +97,46 @@ class AitagSchemaTests(unittest.TestCase):
         self.assertEqual(record["image_url"], image["image_url"])
         for field in ("steps", "scale", "sampler", "width", "height", "ai_json"):
             self.assertEqual(record[field], image[field])
+
+
+class V5DictionaryTests(unittest.TestCase):
+    def test_v5_loader_keeps_v45_images_out_and_marks_source(self):
+        fixture = {
+            "work": {"id": 1, "title": "fixture"},
+            "images": [
+                {"model": "NovelAI Diffusion V4.5", "prompt_text": "old"},
+                {"model": "NovelAI Diffusion V5 DB276663", "prompt_text": "masterpiece, girl"},
+            ],
+        }
+        with tempfile.TemporaryDirectory() as temp_dir:
+            source = Path(temp_dir) / "extracted_works_v5.json"
+            source.write_text(json.dumps([fixture]), encoding="utf-8")
+            original = build_v5_dictionary.INPUT_AITAG
+            try:
+                build_v5_dictionary.INPUT_AITAG = str(source)
+                records, _, _, occurrence, image_count, *_ = build_v5_dictionary.load_v5_records()
+            finally:
+                build_v5_dictionary.INPUT_AITAG = original
+
+        self.assertEqual(len(records), 1)
+        self.assertEqual(records[0]["source"], "aitag.win-v5")
+        self.assertEqual(records[0]["model"], "NovelAI Diffusion V5 DB276663")
+        self.assertEqual(occurrence["masterpiece"], 1)
+        self.assertEqual(image_count["girl"], 1)
+
+    def test_v5_rows_use_v5_evidence_and_rates(self):
+        records = [{"prompt": "masterpiece,girl,masterpiece", "image_url": ""}]
+        aliases = defaultdict(set)
+        occurrence = Counter({"masterpiece": 3, "girl": 1})
+        image_count = Counter({"masterpiece": 1, "girl": 1})
+        rows = build_v5_dictionary.build_tag_rows(
+            records, aliases, occurrence, image_count, {}
+        )
+        masterpiece = next(row for row in rows if row["tag"] == "masterpiece")
+        self.assertTrue(masterpiece["evidence"]["nai_v5_observed"])
+        self.assertFalse(masterpiece["evidence"]["nai_v45_observed"])
+        self.assertEqual(masterpiece["nai_v5_image_count"], 1)
+        self.assertEqual(masterpiece["nai_v5_usage_rate"], 100.0)
 
 
 class ExternalSourceSchemaTests(unittest.TestCase):
@@ -211,6 +253,7 @@ class ChatGptImagePromptTests(unittest.TestCase):
         import build_site
 
         self.assertIn("chatgpt_image_prompts.json", build_site.SITE_FILES)
+        self.assertIn("v5_tags.json", build_site.SITE_FILES)
 
     def test_deep_dive_builders_are_scoped_and_valid(self):
         prompts = {prompt["id"]: prompt for prompt in self.data["prompts"]}

@@ -12,6 +12,9 @@ SITE_FILES = (
     "knowhow_database.json",
     "chatgpt_image_prompts.json",
     "manifest.json",
+    "v5_manifest.json",
+    "v5_tags.json",
+    "v5_negative.json",
 )
 
 
@@ -28,6 +31,10 @@ def build_site():
     if not (works_dir / "manifest.json").exists():
         raise FileNotFoundError("Required works/manifest.json is missing")
     shutil.copytree(works_dir, SITE_DIR / "works")
+    v5_works_dir = ROOT / "v5_works"
+    if not (v5_works_dir / "manifest.json").exists():
+        raise FileNotFoundError("Required v5_works/manifest.json is missing")
+    shutil.copytree(v5_works_dir, SITE_DIR / "v5_works")
     print(f"Built Pages artifact at {SITE_DIR}")
 
 
