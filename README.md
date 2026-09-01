@@ -58,6 +58,8 @@ V5のAITAG観測データはV4.5と混ぜず、`extracted_works_v5.json`、`nove
   * 抽出された生データ（AITAG/Danbooruの片方または両方）を統合し、データベース（CSV/JSON）、タグ辞書CSV、Markdownガイドを自動生成するビルドスクリプト。実行時に自動的に日本語翻訳データ（Danbooru日本語タグマッピング）をWebからダウンロードしてマージします。
 * **`build_v5_dictionary.py`**
   * V5のAITAG実生成Promptだけを独立集計し、V5専用辞書・ネガティブ辞書・作品検索用データを生成します。
+* **`build_v5_natural_language.py`**
+  * V5 Promptから文章らしい断片をタグ集計と分離して候補集計し、安全判定済みの自然言語サンプルと構造分析を生成します。判定は保守的なヒューリスティックであり、効果を保証するものではありません。
 
 ---
 

@@ -72,6 +72,7 @@ jobs:
             extract_aibooru_tags.py \
             build_dictionary.py \
             build_v5_dictionary.py \
+            build_v5_natural_language.py \
             build_site.py \
             search_prompts.py \
             extract_knowhow.py \

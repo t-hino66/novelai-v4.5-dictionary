@@ -17,6 +17,7 @@ NEG_DICT_CSV = "novelai_v5_neg_dictionary.csv"
 MD_DICT_FILE = "novelai_v5_dictionary.md"
 TAG_SUMMARY_JSON = "v5_tags.json"
 NEG_SUMMARY_JSON = "v5_negative.json"
+NATURAL_LANGUAGE_JSON = "v5_natural_language.json"
 MANIFEST_JSON = "v5_manifest.json"
 WORKS_DIRECTORY = "v5_works"
 MODEL_MARKER = "NovelAI Diffusion V5"
@@ -284,6 +285,9 @@ def main():
     write_csv(Path(NEG_DICT_CSV), negative_rows)
     write_json(TAG_SUMMARY_JSON, tag_rows)
     write_json(NEG_SUMMARY_JSON, negative_rows)
+    from build_v5_natural_language import build_report
+
+    write_json(NATURAL_LANGUAGE_JSON, build_report(INPUT_AITAG))
     write_v5_works(records)
 
     Path(MD_DICT_FILE).write_text(
@@ -299,6 +303,7 @@ def main():
         "source": "aitag.win",
         "dictionary": TAG_SUMMARY_JSON,
         "negative_dictionary": NEG_SUMMARY_JSON,
+        "natural_language": NATURAL_LANGUAGE_JSON,
         "works_manifest": f"{WORKS_DIRECTORY}/manifest.json",
         "database_json": DATABASE_JSON,
         "database_csv": DATABASE_CSV,

@@ -15,6 +15,7 @@ SITE_FILES = (
     "v5_manifest.json",
     "v5_tags.json",
     "v5_negative.json",
+    "v5_natural_language.json",
 )
 
 

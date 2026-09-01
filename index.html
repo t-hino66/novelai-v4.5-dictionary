@@ -680,6 +680,169 @@
             display: none;
         }
 
+        .v5-natural-lab {
+            margin: 0 0 1.5rem;
+            padding: 1.2rem;
+            border: 1px solid #7c3aed;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(30, 27, 75, 0.92), rgba(15, 23, 42, 0.96));
+        }
+
+        .v5-natural-lab[hidden] { display: none; }
+
+        .natural-lab-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .natural-lab-header h3 {
+            margin: 0;
+            color: #ddd6fe;
+        }
+
+        .natural-lab-header p {
+            margin: 0.35rem 0 0;
+            color: #cbd5e1;
+            font-size: 0.8rem;
+            line-height: 1.55;
+        }
+
+        .natural-lab-view {
+            width: auto;
+            min-width: 165px;
+        }
+
+        .natural-lab-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 0.65rem;
+            margin-bottom: 1rem;
+        }
+
+        .natural-metric {
+            padding: 0.75rem;
+            border: 1px solid #4338ca;
+            border-radius: 9px;
+            background: rgba(15, 23, 42, 0.7);
+        }
+
+        .natural-metric-label {
+            display: block;
+            color: #a5b4fc;
+            font-size: 0.72rem;
+        }
+
+        .natural-metric strong {
+            display: block;
+            margin-top: 0.25rem;
+            color: #f8fafc;
+            font-size: 1.15rem;
+        }
+
+        .natural-lab-panel {
+            padding: 0.9rem;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            background: rgba(15, 23, 42, 0.55);
+        }
+
+        .natural-lab-panel[hidden] { display: none; }
+
+        .natural-structure-list,
+        .natural-phrase-list,
+        .natural-sample-list {
+            display: grid;
+            gap: 0.55rem;
+        }
+
+        .natural-structure-row,
+        .natural-phrase-row,
+        .natural-sample-card {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.8rem;
+            padding: 0.65rem 0.75rem;
+            border-radius: 8px;
+            background: #1e293b;
+        }
+
+        .natural-structure-row span,
+        .natural-phrase-meta,
+        .natural-sample-meta {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        .natural-phrase-text,
+        .natural-sample-text {
+            color: #f8fafc;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .natural-safety-badge {
+            display: inline-block;
+            margin-right: 0.45rem;
+            padding: 0.12rem 0.35rem;
+            border-radius: 999px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            vertical-align: 0.08rem;
+        }
+
+        .natural-safety-badge.safe {
+            color: #bbf7d0;
+            background: rgba(22, 101, 52, 0.65);
+        }
+
+        .natural-safety-badge.review {
+            color: #fde68a;
+            background: rgba(146, 64, 14, 0.7);
+        }
+
+        .natural-phrase-row {
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .natural-sample-card {
+            flex-direction: column;
+        }
+
+        .natural-sample-card a {
+            color: #93c5fd;
+            font-size: 0.75rem;
+        }
+
+        .natural-builder-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+
+        .natural-builder-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.7rem;
+        }
+
+        .natural-builder-actions .btn {
+            width: auto;
+            margin-top: 0;
+        }
+
+        .natural-builder-help {
+            margin: 0 0 0.6rem;
+            color: #cbd5e1;
+            font-size: 0.78rem;
+            line-height: 1.55;
+        }
+
         .dict-table th {
             background-color: rgba(255,255,255,0.02);
             font-weight: 700;
@@ -928,6 +1091,10 @@
             .builder-toolbar { width: 100%; justify-content: stretch; }
             .builder-toolbar .btn,
             .builder-toolbar .form-control { flex: 1 1 140px; }
+            .natural-lab-header { flex-direction: column; }
+            .natural-lab-view { width: 100%; }
+            .natural-lab-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .natural-builder-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -1272,6 +1439,67 @@
                 外部サイトが0件でも「生成Promptとして使われない」という意味ではありません。たとえば品質語はPromptでは一般的でも、画像内容を説明するAIbooru Annotationには通常現れません。
             </div>
 
+            <section id="v5-natural-lab" class="v5-natural-lab" hidden aria-labelledby="v5-natural-lab-title">
+                <div class="natural-lab-header">
+                    <div>
+                        <h3 id="v5-natural-lab-title">🧠 V5自然言語Prompt研究室</h3>
+                        <p>AITAGのV5実生成Promptから、タグと一緒に使われた文章らしい断片を分離して分析します。頻度は観測値であり、効果の強さを保証するものではありません。</p>
+                    </div>
+                    <select id="v5-natural-view" class="form-control natural-lab-view" aria-label="自然言語研究室の表示内容">
+                        <option value="overview">概要・構造</option>
+                        <option value="phrases">頻出表現</option>
+                        <option value="samples">安全な実例</option>
+                        <option value="builder">自然文ビルダー</option>
+                    </select>
+                </div>
+
+                <div class="natural-lab-metrics">
+                    <div class="natural-metric"><span class="natural-metric-label">文章候補を含む画像</span><strong id="v5-natural-candidate-count">-</strong></div>
+                    <div class="natural-metric"><span class="natural-metric-label">候補比率</span><strong id="v5-natural-candidate-rate">-</strong></div>
+                    <div class="natural-metric"><span class="natural-metric-label">安全な表現</span><strong id="v5-natural-safe-count">-</strong></div>
+                    <div class="natural-metric"><span class="natural-metric-label">引用・Text指定</span><strong id="v5-natural-text-count">-</strong></div>
+                </div>
+
+                <div id="v5-natural-overview" class="natural-lab-panel">
+                    <strong>Prompt構造の観測</strong>
+                    <div id="v5-natural-structure-list" class="natural-structure-list" style="margin-top:0.65rem;"></div>
+                    <p class="natural-lab-panel-note" style="margin:0.75rem 0 0; color:var(--text-muted); font-size:0.76rem; line-height:1.55;">この分類は、長さ・句読点・機能語・NovelAIの記法を使った保守的な候補抽出です。自然文の確定分類ではありません。</p>
+                </div>
+
+                <div id="v5-natural-phrases" class="natural-lab-panel" hidden>
+                    <strong>全観測・頻出表現</strong>
+                    <p style="margin:0.35rem 0 0; color:var(--text-muted); font-size:0.76rem;">AITAGで観測された候補を除外せず表示します。安全判定は公開サンプルへの初期表示可否の目安です。</p>
+                    <div id="v5-natural-phrase-list" class="natural-phrase-list" style="margin-top:0.65rem;"></div>
+                </div>
+
+                <div id="v5-natural-samples" class="natural-lab-panel" hidden>
+                    <strong>安全判定済み・観測Prompt断片</strong>
+                    <p style="margin:0.35rem 0 0.7rem; color:var(--text-muted); font-size:0.76rem;">公開Prompt全体に安全判定語がない候補だけを表示しています。元Promptの再現や効果保証ではありません。</p>
+                    <div id="v5-natural-sample-list" class="natural-sample-list"></div>
+                </div>
+
+                <div id="v5-natural-builder" class="natural-lab-panel" hidden>
+                    <strong>V5自然文ビルダー</strong>
+                    <p class="natural-builder-help">このサイトの整理案：主題 → 動作・関係 → 場所・時間 → 光・画面 → 制約。タグは任意で前置きし、文章の内容を具体的に書きます。</p>
+                    <div class="natural-builder-grid">
+                        <div>
+                            <label class="field-label" for="v5-natural-style-tags">任意の補助タグ</label>
+                            <input id="v5-natural-style-tags" class="form-control" placeholder="1girl, portrait, high complexity">
+                        </div>
+                        <div>
+                            <label class="field-label" for="v5-natural-input">自然文で描写する内容</label>
+                            <textarea id="v5-natural-input" class="form-control" rows="4" placeholder="夕暮れの屋上で、風に髪をなびかせながら遠くを見つめる少女。"></textarea>
+                        </div>
+                    </div>
+                    <div class="natural-builder-actions">
+                        <button id="v5-natural-build-btn" type="button" class="btn" style="background:#7c3aed;">ハイブリッドPromptを作る</button>
+                        <button id="v5-natural-copy-btn" type="button" class="btn btn-secondary">結果をコピー</button>
+                    </div>
+                    <label class="field-label" for="v5-natural-output" style="margin-top:0.8rem;">出力</label>
+                    <textarea id="v5-natural-output" class="form-control" rows="4" readonly placeholder="ここにV5向けのハイブリッドPromptが出力されます"></textarea>
+                </div>
+            </section>
+
             <div class="dict-table-container">
                 <table id="dict-table" class="dict-table">
                     <thead>
@@ -1537,6 +1765,7 @@
         let negDictionary = [];
         let v5Dictionary = [];
         let v5NegDictionary = [];
+        let v5NaturalLanguage = null;
         let selectedDictionaryModel = 'v45';
         let chatGptPromptData = null;
         const chatGptModifierSelections = {};
@@ -1594,6 +1823,14 @@
                     v5NegDictionary = await responseV5NegDict.json();
                 } catch (v5Error) {
                     console.warn("V5 dictionary loading skipped:", v5Error);
+                }
+
+                try {
+                    const responseV5Natural = await fetch(`v5_natural_language.json?v=${cacheBuster}`);
+                    if (!responseV5Natural.ok) throw new Error(`HTTP ${responseV5Natural.status}`);
+                    v5NaturalLanguage = await responseV5Natural.json();
+                } catch (naturalError) {
+                    console.warn("V5 natural-language report loading skipped:", naturalError);
                 }
                 
                 loader.style.display = 'none';
@@ -2201,6 +2438,77 @@
             return mode === 'neg' ? negDictionary : dictionary;
         }
 
+        function renderV5NaturalLanguageLab() {
+            const lab = document.getElementById('v5-natural-lab');
+            if (!lab) return;
+            const isV5 = selectedDictionaryModel === 'v5';
+            lab.hidden = !isV5;
+            if (!isV5 || !v5NaturalLanguage) return;
+
+            const metrics = v5NaturalLanguage.metrics || {};
+            const formatCount = value => Number(value || 0).toLocaleString('ja-JP');
+            document.getElementById('v5-natural-candidate-count').textContent = `${formatCount(metrics.candidate_record_count)} / ${formatCount(v5NaturalLanguage.total_images)}`;
+            document.getElementById('v5-natural-candidate-rate').textContent = `${Number(metrics.candidate_record_rate || 0).toFixed(2)}%`;
+            document.getElementById('v5-natural-safe-count').textContent = formatCount(metrics.safe_expression_count);
+            document.getElementById('v5-natural-text-count').textContent = `${formatCount(metrics.quoted_text_prompt_count)}件引用 / ${formatCount(metrics.text_instruction_prompt_count)}件Text`;
+
+            const structureLabels = {
+                tag_only: 'タグ中心',
+                natural_language_mixed: 'タグ + 自然文',
+                natural_language_dominant: '自然文中心',
+            };
+            const structures = metrics.structure_counts || {};
+            document.getElementById('v5-natural-structure-list').innerHTML = Object.entries(structureLabels).map(([key, label]) => `
+                <div class="natural-structure-row"><span>${label}</span><strong>${formatCount(structures[key])}件</strong></div>
+            `).join('');
+
+            const phrases = v5NaturalLanguage.top_phrases || v5NaturalLanguage.top_safe_phrases || [];
+            document.getElementById('v5-natural-phrase-list').innerHTML = phrases.length
+                ? phrases.slice(0, 30).map(item => `
+                    <div class="natural-phrase-row">
+                        <div class="natural-phrase-text"><span class="natural-safety-badge ${item.safe_screened ? 'safe' : 'review'}">${item.safe_screened ? '安全判定' : '要確認'}</span>${escapeHtml(item.text)}</div>
+                        <div class="natural-phrase-meta">${escapeHtml(item.language)} · ${formatCount(item.image_count)}画像 · 観測率 ${Number(item.usage_rate || 0).toFixed(2)}% · ${formatCount(item.occurrence_count)}回</div>
+                    </div>
+                `).join('')
+                : '<span style="color:var(--text-muted);">観測された候補がありません。</span>';
+
+            const samples = v5NaturalLanguage.safe_samples || [];
+            document.getElementById('v5-natural-sample-list').innerHTML = samples.length
+                ? samples.map(sample => `
+                    <article class="natural-sample-card">
+                        <div class="natural-sample-text">${escapeHtml(sample.text)}</div>
+                        <div class="natural-sample-meta">${escapeHtml(sample.language)} · 観測ID ${escapeHtml(sample.work_id)}</div>
+                        <a href="${escapeHtml(sample.source_url)}" target="_blank" rel="noopener noreferrer">AITAGの公開ページを確認</a>
+                    </article>
+                `).join('')
+                : '<span style="color:var(--text-muted);">安全判定済みのサンプルがありません。</span>';
+        }
+
+        function setV5NaturalView(view) {
+            const panels = {
+                overview: 'v5-natural-overview',
+                phrases: 'v5-natural-phrases',
+                samples: 'v5-natural-samples',
+                builder: 'v5-natural-builder',
+            };
+            Object.entries(panels).forEach(([key, id]) => {
+                const panel = document.getElementById(id);
+                if (panel) panel.hidden = key !== view;
+            });
+        }
+
+        function buildV5NaturalPrompt() {
+            const natural = document.getElementById('v5-natural-input').value.trim();
+            const styleTags = document.getElementById('v5-natural-style-tags').value.trim();
+            const output = document.getElementById('v5-natural-output');
+            if (!natural) {
+                output.value = '';
+                output.placeholder = '自然文で描写する内容を入力してください';
+                return;
+            }
+            output.value = [styleTags, natural].filter(Boolean).join(', ');
+        }
+
         function updateModelContext(options = {}) {
             const config = modelConfigs[selectedDictionaryModel] || modelConfigs.v45;
             const isV5 = selectedDictionaryModel === 'v5';
@@ -2231,6 +2539,7 @@
             if (sortAsc) sortAsc.textContent = `${isV5 ? 'V5' : 'NAI'}使用画像数が少ない順`;
             const table = document.getElementById('dict-table');
             if (table) table.classList.toggle('v5-mode', isV5);
+            renderV5NaturalLanguageLab();
 
             const builderTitle = document.getElementById('builder-title');
             if (builderTitle) builderTitle.textContent = `🧙‍♂️ ${config.name} プロンプトスタジオ (左右2分割ワークスペース)`;
@@ -2330,6 +2639,12 @@
         document.getElementById('dict-search').addEventListener('input', applyDictionaryFilters);
         document.getElementById('dict-filter-category').addEventListener('change', applyDictionaryFilters);
         document.getElementById('dict-sort-key').addEventListener('change', applyDictionaryFilters);
+        document.getElementById('v5-natural-view').addEventListener('change', event => setV5NaturalView(event.target.value));
+        document.getElementById('v5-natural-build-btn').addEventListener('click', buildV5NaturalPrompt);
+        document.getElementById('v5-natural-copy-btn').addEventListener('click', () => {
+            const output = document.getElementById('v5-natural-output');
+            if (output.value) copyText('v5-natural-output');
+        });
 
         function resetDictionaryFilters() {
             dictFiltered = [...getActiveDictionary('pos')];

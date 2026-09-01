@@ -13,6 +13,7 @@ aibooru_raw_works.json
 # Generated exports are built in Actions and deployed as a Pages artifact.
 analytics_data.json
 v5_manifest.json
+v5_natural_language.json
 v5_tags.json
 v5_negative.json
 novelai_v5_database.csv

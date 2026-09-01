@@ -8,6 +8,7 @@ from pathlib import Path
 
 import build_dictionary
 import build_v5_dictionary
+import build_v5_natural_language
 import extract_tags
 import extract_aibooru_tags
 import extract_civitai_tags
@@ -100,6 +101,44 @@ class AitagSchemaTests(unittest.TestCase):
 
 
 class V5DictionaryTests(unittest.TestCase):
+    def test_v5_natural_language_classifier_separates_prose_from_syntax(self):
+        self.assertTrue(
+            build_v5_natural_language.is_natural_language_candidate(
+                "holding a red umbrella in one hand"
+            )
+        )
+        self.assertFalse(
+            build_v5_natural_language.is_natural_language_candidate(
+                "1.2::very aesthetic::"
+            )
+        )
+
+    def test_v5_natural_language_report_is_safe_screened_and_provenance_scoped(self):
+        fixture = {
+            "work": {"id": 1, "title": "fixture"},
+            "images": [
+                {
+                    "model": "NovelAI Diffusion V5 DB276663",
+                    "prompt_text": "1girl, holding a red umbrella in one hand, city",
+                },
+                {
+                    "model": "NovelAI Diffusion V5 DB276663",
+                    "prompt_text": "nude, holding a blue umbrella in one hand, city",
+                },
+            ],
+        }
+        with tempfile.TemporaryDirectory() as temp_dir:
+            source = Path(temp_dir) / "extracted_works_v5.json"
+            source.write_text(json.dumps([fixture]), encoding="utf-8")
+            report = build_v5_natural_language.build_report(source)
+
+        self.assertEqual(report["total_images"], 2)
+        self.assertEqual(report["metrics"]["candidate_record_count"], 2)
+        self.assertTrue(report["safe_samples"])
+        self.assertTrue(all(sample["safe_screened"] for sample in report["safe_samples"]))
+        self.assertNotIn("blue umbrella", " ".join(item["text"] for item in report["safe_samples"]))
+        self.assertTrue(any("blue umbrella" in item["text"] for item in report["top_phrases"]))
+
     def test_v5_loader_keeps_v45_images_out_and_marks_source(self):
         fixture = {
             "work": {"id": 1, "title": "fixture"},
@@ -254,6 +293,7 @@ class ChatGptImagePromptTests(unittest.TestCase):
 
         self.assertIn("chatgpt_image_prompts.json", build_site.SITE_FILES)
         self.assertIn("v5_tags.json", build_site.SITE_FILES)
+        self.assertIn("v5_natural_language.json", build_site.SITE_FILES)
 
     def test_deep_dive_builders_are_scoped_and_valid(self):
         prompts = {prompt["id"]: prompt for prompt in self.data["prompts"]}
