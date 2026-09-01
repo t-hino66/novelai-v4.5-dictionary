@@ -59,6 +59,7 @@ jobs:
           if [ ! -f extracted_works_v5.json ]; then
             python -u extract_tags_v5.py 1000
           fi
+          test -s extracted_works_v5.json
 
       - name: Compile Python scripts
         run: |
